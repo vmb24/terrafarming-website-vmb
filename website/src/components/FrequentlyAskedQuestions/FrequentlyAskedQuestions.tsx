@@ -16,7 +16,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
   }
 
   return (
-    <div className="flex flex-col border border-gray-100 px-4 py-4 rounded-md mt-4 bg-white">
+    <div className="flex flex-col border border-gray-100 px-4 py-4 rounded-md mt-4 max-md:mt-8 max-lg:mt-8 bg-white">
       <div className="flex flex-row justify-between items-center cursor-pointer" onClick={handleToggle}>
         <h1>{question}</h1>
         <IoArrowDownCircleOutline size={25} className={`${isOpen ? 'rotate-180' : ''} transition-transform`} />
@@ -32,14 +32,14 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
 
 export const FrequentlyAskedQuestions: React.FC = () => {
   return (
-    <div className="flex flex-col px-12 mt-40">
+    <div className="flex flex-col px-12 mt-20">
       <div className='flex flex-row'>
         <h1 className='text-[#020405] text-4xl font-normal'>Frequently Asked Questions</h1>
         <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 mt-9 ml-12'>
           <text className='text-white'>----------------------------------</text>
-          <text className='text-white'>----------------------------------</text>
-          <text className='text-white'>----------------------------------</text>
-          <text className='text-white'>----------------------------------------</text>
+          <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+          <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+          <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------------</text>
         </div>
       </div>
 

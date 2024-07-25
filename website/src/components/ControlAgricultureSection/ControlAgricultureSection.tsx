@@ -20,16 +20,16 @@ export const ControlAgricultureSection = () => {
                 <h1 className='text-white text-3xl font-normal'>Terrafarming Control Agriculture</h1>
             </div>
 
-            <div className='flex flex-col mt-64'>
+            <div className='flex flex-col mt-64 max-md:mt-56 max-lg:mt-56'>
                 <div className='flex flex-col absolute'>
-                    <h1 className='text-bold text-7xl text-white'>Smart Control Agriculture,</h1>
-                    <h1 className='text-bold text-7xl text-white'>Greater Yields</h1>
+                    <h1 className='text-bold text-7xl max-md:text-5xl max-lg:text-5xl text-white'>Smart Control Agriculture,</h1>
+                    <h1 className='text-bold text-7xl max-md:text-5xl max-lg:text-5xl text-white'>Greater Yields</h1>
                 </div>
-                <div className='flex flex-col absolute mt-40'>
+                <div className='flex flex-col absolute mt-40 max-md:mt-40 max-lg:mt-40'>
                     <h1 className='text-bold text-xl text-white'>Control Agriculture using AI with dashboard and mobile app</h1>
                     <h1 className='text-bold text-xl text-white'>VMB Robotics Solutions</h1>
                 </div>
-                <button className='absolute p-4 w-52 rounded-full bg-green-500 mt-64'>
+                <button className='absolute p-4 w-52 rounded-full bg-green-500 mt-72'>
                     <text className='text-white font-normal'>Learn more</text>
                 </button>
             </div>

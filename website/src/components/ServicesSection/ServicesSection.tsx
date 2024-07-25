@@ -10,19 +10,19 @@ export const ServicesSection = () => {
         <div className='flex flex-col px-12'>
             <div className='flex flex-row mt-12'>
                 <h1 className='text-[#020405] text-3xl font-normal'>Terrafarming Robot - AI Smart Picking, Harvesting & Sensoring</h1>
-                <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 mt-9 ml-2'>
+                <div className='flex flex-row lg:border-t-2 flex max-md:border-b-2 max-lg:border-b-2 border-gray-400 border-x-gray-400 mt-7 ml-4'>
                     <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
                 </div>
             </div>
 
-            <div className='flex flex-row justify-between mt-20'>
+            <div className='flex flex-row max-md:flex-col max-lg:flex-col justify-between mt-20 max-md:mt-4 max-lg:mt-4'>
                 <div className='flex flex-col'>
-                    <div className='bg-slate-400 rounded-xl w-96 h-72 mt-12 relative overflow-hidden'>
+                    <div className='bg-slate-400 rounded-xl w-96 h-72 max-md:w-80 max-lg:w-80 mt-12 relative overflow-hidden'>
                         <Image
                             alt=""
                             src={smartHarvestRobot}
@@ -31,7 +31,7 @@ export const ServicesSection = () => {
                         />  
                     </div>
                     <div>
-                        <h1 className='text-center mt-2 text-xl'>Smart Harvesting</h1>
+                        <h1 className='text-center mt-4 text-xl'>Smart Harvesting</h1>
                         <p className='mt-4 text-base text-gray-700 max-w-sm mx-auto break-words'>
                             Usamos soluções da AWS de AI para que o robô execute uma 
                             colheita inteligênte, analisando as frutas que podem ser 
@@ -41,7 +41,7 @@ export const ServicesSection = () => {
                 </div>
 
                 <div className='flex flex-col'>
-                    <div className='bg-slate-400 rounded-xl w-96 h-72 mt-12 relative overflow-hidden'>
+                    <div className='bg-slate-400 rounded-xl w-96 h-72 max-md:w-80 max-lg:w-80 mt-12 relative overflow-hidden'>
                         <Image
                             alt=""
                             src={analyseSoilRobot}
@@ -50,7 +50,7 @@ export const ServicesSection = () => {
                         />  
                     </div>
                     <div>
-                        <h1 className='text-center mt-2 text-xl'>Smart Soil Analysis</h1>
+                        <h1 className='text-center mt-4 text-xl'>Smart Soil Analysis</h1>
                         <p className='mt-4 text-base text-gray-700 max-w-sm mx-auto break-words'>
                             Usamos soluções da AWS de AI para que o robô colete as medidas de
                             pH, temperatura e umidade do solo, captando também o clima da semana
@@ -61,7 +61,7 @@ export const ServicesSection = () => {
                 </div>
 
                 <div className='flex flex-col'>
-                    <div className='bg-slate-400 rounded-xl w-96 h-72 mt-12 relative overflow-hidden'>
+                    <div className='bg-slate-400 rounded-xl w-96 h-72 max-md:w-80 max-lg:w-80 mt-12 relative overflow-hidden'>
                         <Image
                             alt=""
                             src={sensorsSoilRebot}
@@ -70,7 +70,7 @@ export const ServicesSection = () => {
                         />  
                     </div>
                     <div>
-                        <h1 className='text-center mt-2 text-xl'>Smart Sensors</h1>
+                        <h1 className='text-center mt-4 text-xl'>Smart Sensors</h1>
                         <p className='mt-4 text-base text-gray-700 max-w-sm mx-auto break-words'>
                             Sensores de proximidade, rodas de trator, cameras e outros Sensores
                             do mesmo são usados no robô para que suas atividades possam ser 
@@ -80,18 +80,18 @@ export const ServicesSection = () => {
                 </div>
             </div>
 
-            <div className='flex flex-row mt-32'>
+            <div className='flex flex-row mt-32 max-md:mt-20 max-lg:mt-20'>
                 <h1 className='text-[#020405] text-3xl font-normal'>Outros Serviços utilizando AI</h1>
-                <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 mt-9'>
+                <div className='flex flex-row lg:border-t-2 max-md:border-b-2 max-lg:border-b-2 border-gray-400 border-x-gray-400 mt-9'>
                     <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
-                    <text className='text-white'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
                 </div>
             </div>
-            <div className="flex flex-row  mt-6 justify-between">
+            <div className="flex flex-row justify-between max-md:flex-col max-lg:flex-col max-md:space-y-4 max-lg:space-y-4 mt-6 max-md:mt-12 max-lg:mt-12">
                 <h1 className='text-[#020405] text-base font-normal underline underline-offset-2'>Controle de Estufas</h1>
                 <h1 className='text-[#020405] text-base font-normal underline underline-offset-2'>Analise do clima sob o solo</h1>
                 <h1 className='text-[#020405] text-base font-normal underline underline-offset-2'>Mapeamento da fazenda</h1>
