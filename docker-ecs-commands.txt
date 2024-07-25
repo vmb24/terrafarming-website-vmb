@@ -1,0 +1,6 @@
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 590184100199.dkr.ecr.us-east-1.amazonaws.com
+docker buildx build --platform linux/amd64 -t terrafarming-website-repo:latest .
+docker tag terrafarming-website-repo:latest 590184100199.dkr.ecr.us-east-1.amazonaws.com/terrafarming-website-repo:latest
+docker run -p 3000:3000 590184100199.dkr.ecr.us-east-1.amazonaws.com/terrafarming-website-repo:latest
+docker push 590184100199.dkr.ecr.us-east-1.amazonaws.com/terrafarming-website-repo:latest
+aws ecs update-service --cluster terrafarming-website-cluster --service website-service --force-new-deployment
