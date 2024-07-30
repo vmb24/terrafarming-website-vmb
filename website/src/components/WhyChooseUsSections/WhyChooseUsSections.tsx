@@ -5,19 +5,44 @@ import { SiClockify } from 'react-icons/si'
 
 export const WhyChooseUsSections = () => {
     return (
-        <div className="flex flex-col bg-white px-12 mt-40 max-md:mt-16 max-lg:mt-16">
-            <div className='flex flex-row'>
-                <h1 className='text-[#020405] text-4xl font-normal'>Why Choose Us ?</h1>
-                <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 mt-9 ml-12'>
-                    <text className='text-white'>----------------------------------</text>
+        <div className="flex flex-col bg-white px-12 mt-20 max-md:mt-16 max-lg:mt-16">
+            <div className='flex flex-row mt-12'>
+                <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Why Choose Us ?</h1>
+                <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2'>
+                    <text className='text-white flex lg:hidden'>--</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>--------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>--------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>-----------------------</text>
+                    {/* <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text> 
                     <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
-                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
-                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
-                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text> */}
                 </div>
+                <a className='text-green-700 text-xl max-md:ml-2 max-lg:ml-2'>TerraFarming</a>
+                <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2'>
+                    <text className='text-white flex lg:hidden'>--</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>-----------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>-----------------------------</text>
+                    {/* <text className='text-white flex max-md:hidden max-lg:hidden'>---------------</text> 
+                    {/* <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
+                    <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text> */}
+                </div>
+                <a className='max-md:text-sm max-lg:text-sm ml-2 max-md:mt-1 max-lg:mt-1'>© {new Date().getFullYear()}</a>
             </div>
 
-            <div className="flex flex-row max-md:flex-col max-lg:flex-col justify-between mt-16 max-md:space-y-12 max-lg:space-y-12">
+            <div className='flex flex-col items-end mt-12'>
+                <p className='text-4xl'>
+                    <a className='text-[#a1a1a1]'>Why Choose TerraFarming</a> for Your Agricultural Journey ?
+                </p>
+                <p className='text-4xl pr-8'>
+                    Unveiling the Unique Advantages and Sustainable AI Robot Solutions  
+                </p>
+                <p className='text-4xl pr-44'>
+                    That Cultivate Success and <a className='text-[#a1a1a1]'>Foster Growth Together</a>
+                </p>
+            </div>
+
+            <div className="flex flex-row max-md:flex-col max-lg:flex-col justify-between mt-20 max-md:space-y-12 max-lg:space-y-12">
                 <div className='flex flex-col items-center'>
                     <div className="flex flex-col bg-[#f6f6f6] rounded-xl w-72 h-56 relative overflow-hidden justify-center items-center">
                         <RiRobot3Line size={100}/>
