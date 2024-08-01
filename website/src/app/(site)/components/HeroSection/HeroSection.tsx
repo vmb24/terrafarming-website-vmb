@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from 'next/image'
 
 import { FaCircleArrowRight } from "react-icons/fa6"
-import smartHarvestRobot from '../../assets/smart-harvest-robots.png'
+import smartHarvestRobot from '@/assets/smart-harvest-robots.png'
 
 export const HeroSection = () => {
     return (
@@ -35,11 +35,11 @@ export const HeroSection = () => {
                     ))}
                 </div> */}
 
-                <Link href="/login" className='flex items-center justify-center max-md:hidden max-lg:hidden bg-green-500 rounded-full group-hover:opacity-80 transition-opacity duration-300 mt-4 md:mt-0 lg:w-28'>
+                <Link href="/sign-in" className='flex items-center justify-center max-md:hidden max-lg:hidden bg-green-500 rounded-full group-hover:opacity-80 transition-opacity duration-300 mt-4 md:mt-0 lg:w-28'>
                     <h1 className='text-white text-base md:text-xl font-normal group-hover:text-white transition-colors duration-300 cursor-pointer hover:bg-green-300 rounded py-2'>
                         Login
                     </h1>
-                    <FaCircleArrowRight size={20} className='ml-2'/>
+                    <FaCircleArrowRight size={20} color="white" className='ml-2'/>
                 </Link>
             </div>
 
@@ -61,20 +61,20 @@ export const HeroSection = () => {
                     </h1>
                 </div>
 
-                <button className='flex items-center justify-center max-md:hidden max-lg:hidden p-2 w-60 md:w-72 rounded-full bg-green-500'>
+                <Link href="/plans" className='flex items-center justify-center max-md:hidden max-lg:hidden p-2 w-60 md:w-72 rounded-full bg-green-500'>
                     <span className='text-white text-lg md:text-xl font-normal'>Get started</span>
-                    <FaCircleArrowRight size={20} className='ml-2'/>
-                </button>
+                    <FaCircleArrowRight size={20} color="white" className='ml-2'/>
+                </Link>
 
                 <div className='flex flex-row lg:hidden space-x-4'>
-                    <button className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500'>
+                    <Link href="/plans" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500'>
                         <span className='text-white text-lg md:text-xl font-normal'>Get started</span>
                         <FaCircleArrowRight size={20} className='ml-2'/>
-                    </button>
-                    <button className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500'>
+                    </Link>
+                    <Link href="/sign-in" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500'>
                         <span className='text-white text-lg md:text-xl font-normal'>Login</span>
-                        <FaCircleArrowRight size={20} className='ml-2'/>
-                    </button>
+                        <FaCircleArrowRight size={20} color="white" className='ml-2'/>
+                    </Link>
                 </div>
             </div>
         </div>

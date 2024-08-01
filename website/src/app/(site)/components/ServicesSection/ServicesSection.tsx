@@ -2,9 +2,9 @@
 import React from 'react'
 import Image from 'next/image'
 
-import smartHarvestRobot from '../../assets/picking.jpg'
-import analyseSoilRobot from '../../assets/analyse-soil-robot.png'
-import sensorsSoilRebot from '../../assets/robot-farmer-soil.jpg'
+import smartHarvestRobot from '@/assets/picking.jpg'
+import analyseSoilRobot from '@/assets/analyse-soil-robot.png'
+import sensorsSoilRebot from '@/assets/robot-farmer-soil.jpg'
 
 import { CgArrowTopRightO } from "react-icons/cg"
 

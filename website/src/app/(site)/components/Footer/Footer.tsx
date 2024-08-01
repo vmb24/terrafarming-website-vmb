@@ -3,7 +3,7 @@ import { CgArrowTopRightO } from "react-icons/cg"
 
 export const Footer = () => {
     return (
-        <div className="flex flex-col h-auto mt-8 max-md:mt-20 max-lg:mt-20 bg-white px-12">
+        <div className="flex flex-col h-auto mt-8 max-md:mt-20 max-lg:mt-20 bg-gray-50 px-12">
 
             <div className='flex flex-row justify-center mt-8'>
                 <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Join Us</h1>
@@ -162,7 +162,7 @@ export const Footer = () => {
             </div>
 
             <div>
-                <h1 className="text-start text-green-700 text-[245px]">Terra Farming</h1>
+                <h1 className="text-center text-green-700 text-[245px]">TerraFarming</h1>
             </div>
 
             <div className="flex flex-row justify-between mt-4 mb-12 max-md:mb-8 max-lg:mb-8">

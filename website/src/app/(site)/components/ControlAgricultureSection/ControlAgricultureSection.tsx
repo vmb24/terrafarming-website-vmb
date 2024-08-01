@@ -1,5 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from "next/link"
+
 import { GoArrowLeft, GoArrowRight } from "react-icons/go"
 
 import controlAgriculture from '@/assets/control-agriculture.jpeg'
@@ -30,10 +32,10 @@ export const ControlAgricultureSection = () => {
                     <h1 className='text-bold text-xl text-white'>Our dashboard provides real-time insights into your farm’s operations,</h1>
                     <h1 className='text-bold text-xl text-white'>from greenhouse control to soil climate analysis.</h1>
                 </div>
-                <button className='flex flex-row justify-center space-x-2 absolute p-4 w-52 rounded-full bg-white mt-64'>
-                    <text className='text-green-500 font-normal'>Get started</text>
+                <Link href="/plans" className='flex flex-row justify-center space-x-2 absolute p-4 w-52 rounded-full bg-white mt-64'>
+                    <text className='text-green-500 font-bold'>Get started</text>
                     <GoArrowRight size={25} color='green'/>
-                </button>
+                </Link>
             </div>
         </div>
     )
