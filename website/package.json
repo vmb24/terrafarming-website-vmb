@@ -10,18 +10,27 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.2.8",
+    "@hono/clerk-auth": "^2.0.0",
+    "@hono/zod-validator": "^0.2.2",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@stripe/stripe-js": "^4.1.0",
     "amazon-cognito-identity-js": "^6.3.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "hono": "^4.5.3",
     "lucide-react": "^0.418.0",
     "next": "14.2.5",
     "next-auth": "^4.24.7",
+    "nodemailer": "^6.9.14",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
+    "react-use": "^17.5.1",
+    "stripe": "^16.5.0",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

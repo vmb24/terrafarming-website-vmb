@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import smartHarvestRobot from '@/assets/picking.jpg'
 import analyseSoilRobot from '@/assets/analyse-soil-robot.png'
@@ -163,9 +164,9 @@ export const ServicesSection = () => {
 
             <div className='flex flex-row justify-between mt-12'>
                 <a className='text-xl font-normal text-[#757575]'>Discover the Distinct Advantages of Partnering with Terra Farming</a>
-                <button className='bg-green-700 py-4 px-8 rounded-full'>
-                    <a className='text-white'>All Benefits</a>
-                </button>
+                <Link href="/plans" className='bg-green-700 py-4 px-8 rounded-full'>
+                    <h1 className='text-white'>All Benefits</h1>
+                </Link>
             </div>
 
             <div className="flex flex-col max-md:flex-col max-lg:flex-col justify-between max-md:space-y-12 max-lg:space-y-12">

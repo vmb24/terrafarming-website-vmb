@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useState } from 'react'
+import Link from "next/link"
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { SliderBar } from '../Slider/SliderBar'
 
@@ -79,9 +80,9 @@ export const AboutSection = () => {
                             and agricultural enthusiasts in cultivating success sustainably.
                         </p>
                     </div>
-                    <button className='bg-green-500 rounded-full py-2 px-4'>
+                    <Link href="/plans" className='flex items-center bg-green-500 rounded-full py-2 px-4'>
                         <h1 className='text-white'>All Services</h1>
-                    </button>
+                    </Link>
                 </div>
                 {/* <h1 className='text-[#020405] text-base font-normal'>
                     We are on a mission to transform modern agriculture through cutting-edge
