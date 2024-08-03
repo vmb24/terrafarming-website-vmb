@@ -61,17 +61,17 @@ export const HeroSection = () => {
                     </h1>
                 </div>
 
-                <Link href="/plans" className='flex items-center justify-center max-md:hidden max-lg:hidden p-2 w-60 md:w-72 rounded-full bg-green-500'>
-                    <span className='text-white text-lg md:text-xl font-normal'>Get started</span>
+                <Link href="/plans" className='flex items-center justify-center max-md:hidden max-lg:hidden p-2 w-60 md:w-72 rounded-full bg-green-500 mb-8'>
+                    <span className='text-white text-lg md:text-xl font-normal'>Faça parte!</span>
                     <FaCircleArrowRight size={20} color="white" className='ml-2'/>
                 </Link>
 
                 <div className='flex flex-row lg:hidden space-x-4'>
-                    <Link href="/plans" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500'>
-                        <span className='text-white text-lg md:text-xl font-normal'>Get started</span>
-                        <FaCircleArrowRight size={20} className='ml-2'/>
+                    <Link href="/plans" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500 mb-8'>
+                        <span className='text-white text-lg md:text-xl font-normal'>Faça parte!</span>
+                        <FaCircleArrowRight size={20} color="white" className='ml-2'/>
                     </Link>
-                    <Link href="/sign-in" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500'>
+                    <Link href="/sign-in" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500 mb-8'>
                         <span className='text-white text-lg md:text-xl font-normal'>Login</span>
                         <FaCircleArrowRight size={20} color="white" className='ml-2'/>
                     </Link>

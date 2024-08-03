@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { GoArrowLeft, GoArrowRight } from 'react-icons/go'
-
 import Image from 'next/image'
-
 import { CgArrowTopRightO } from 'react-icons/cg'
 
 import greenhouseAnalisysFruits from '@/assets/picking.jpg'
@@ -11,7 +9,6 @@ import farmMapping from '@/assets/robot-farmer-soil.jpg'
 import agricultureRobotHarvesting from '@/assets/smart-harvest-robots.png'
 import agriculturalComputerVision from '@/assets/services/agricultural-compute-vision.png'
 import agricultureTechnologyChat from '@/assets/agriculture-technology-chat.png'
-
 
 const slides = [
   { title: 'Greenhouse Control', image: greenhouseAnalisysFruits, description: 'Monitor and manage the location and health of crops.' },
@@ -22,14 +19,7 @@ const slides = [
   { title: 'Farmer Interaction', image: agricultureTechnologyChat, description: 'Connect with other farmers in a social network for shared insights.' },
 ]
 
-// image: agricultureRobotHarvesting
-// image: agricultureRobotHarvesting
-// image: agricultureRobotHarvesting
-// image: agricultureRobotHarvesting
-// image: agricultureRobotHarvesting
-// image: agricultureRobotHarvesting
-
-const ITEMS_PER_PAGE = 4
+const ITEMS_PER_PAGE = 1 // Show one item per page on smaller screens
 
 export const SliderBar = () => {
   const [currentPage, setCurrentPage] = useState(0)
@@ -50,41 +40,45 @@ export const SliderBar = () => {
   return (
     <div className='relative w-full mx-auto p-4 mt-12'>
       {/* Slide Container */}
-      <div className='flex overflow-x-hidden'>
-        <div className='flex flex-nowrap space-x-4'>
-          {visibleSlides.map((slide, index) => (
-            <div key={index} className='relative overflow-hidden w-1/4 h-full bg-gray-100 rounded-lg shadow-lg'>
-                <Image
-                    alt=''
-                    src={slide.image}
-                    objectFit='cover'
-                    style={{
-                        filter: 'blur(2px) brightness(0.5)',
-                    }}
-                    className='w-auto h-full'
-                /> 
-                <div className='flex flex-col absolute top-0 left-0 right-0 p-4'>                 
-                  <div className='flex flex-row justify-between'>
-                        <h2 className='text-xl font-normal text-white'>{slide.title}</h2>
-                        <CgArrowTopRightO size={40} color='white'/>
-                  </div>
-                  <p className='flex flex-row justify-between top-12 left-0 right-0 text-white mt-8'>{slide.description}</p>
-                </div> 
+      <div className='flex overflow-x-auto space-x-4 pb-4'>
+        <div className='flex flex-nowrap space-x-3' style={{ transform: `translateX(-${currentPage * 100}%)` }}>
+          {slides.map((slide, index) => (
+            <div key={index} className='relative flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1.5/6 bg-gray-100 rounded-lg shadow-lg'>
+              <Image
+                alt=''
+                src={slide.image}
+                layout='responsive'
+                width={500}
+                height={300}
+                objectFit='cover'
+                className='rounded-t-lg w-auto h-auto'
+                style={{
+                  filter: 'blur(2px) brightness(0.5)',
+                }}
+              />
+              <div className='absolute inset-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent rounded-lg'>
+                <div className='flex justify-between items-start'>
+                  <h2 className='text-lg sm:text-base md:text-lg font-normal text-white'>{slide.title}</h2>
+                  <CgArrowTopRightO size={20} color='white'/>
+                </div>
+                <p className='text-md sm:text-sm md:text-base text-white mt-2'>{slide.description}</p>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
       {/* Progress Indicator */}
-      <div className='flex flex-row justify-center mt-4 space-x-4'>
-        <div className='relative w-[25vw] bg-gray-200 rounded-full mt-8 h-2'>
+      <div className='flex flex-col items-center mt-4'>
+        <div className='relative w-full bg-gray-200 rounded-full h-2'>
           <div
             className='absolute top-0 left-0 h-full bg-green-500 rounded-full'
             style={{ width: `${((currentPage + 1) / totalPages) * 100}%` }}
           />
         </div>
+
         {/* Navigation Controls */}
-        <div className='flex justify-between items-center mt-4 space-x-4'>
+        <div className='flex justify-between items-center w-full mt-4'>
           <button
             onClick={handlePrev}
             disabled={currentPage === 0}

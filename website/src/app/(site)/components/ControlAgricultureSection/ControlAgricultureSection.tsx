@@ -25,15 +25,15 @@ export const ControlAgricultureSection = () => {
 
             <div className='flex flex-col mt-64 max-md:mt-56 max-lg:mt-56'>
                 <div className='flex flex-col absolute'>
-                    <h1 className='text-bold text-6xl max-md:text-5xl max-lg:text-5xl text-white'>Optimize Your Farming</h1>
-                    <h1 className='text-bold text-6xl max-md:text-5xl max-lg:text-5xl text-white'>With Our Advanced Dashboard</h1>
+                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>Optimize Your Farming</h1>
+                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>With Our Advanced Dashboard</h1>
                 </div>
-                <div className='flex flex-col absolute mt-40 max-md:mt-40 max-lg:mt-40'>
+                <div className='flex flex-col absolute mt-40 max-md:mt-32 max-lg:mt-32'>
                     <h1 className='text-bold text-xl text-white'>Our dashboard provides real-time insights into your farm’s operations,</h1>
                     <h1 className='text-bold text-xl text-white'>from greenhouse control to soil climate analysis.</h1>
                 </div>
                 <Link href="/plans" className='flex flex-row justify-center space-x-2 absolute p-4 w-52 rounded-full bg-white mt-64'>
-                    <text className='text-green-500 font-bold'>Get started</text>
+                    <text className='text-green-500 font-bold'>Faça parte!</text>
                     <GoArrowRight size={25} color='green'/>
                 </Link>
             </div>

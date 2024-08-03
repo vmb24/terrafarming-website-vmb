@@ -32,28 +32,12 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer }) => {
 
 export const FrequentlyAskedQuestions: React.FC = () => {
   return (
-    <div className="flex flex-col px-12 mt-20">
-      <div className='flex flex-row mt-20'>
+    <div className="flex flex-col px-12 mt-20 max-md:mt-8 max-lg:mt-8">
+      <div className='flex flex-row mt-12'>
           <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Frequently Asked Questions</h1>
-          <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2'>
-              <text className='text-white flex lg:hidden'>--</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>-------------------</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>-------------------</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>-----------------------</text>
-              {/* <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text> 
-              <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text> */}
-          </div>
-          <a className='text-green-700 text-xl max-md:ml-2 max-lg:ml-2'>TerraFarming</a>
-          <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2'>
-              <text className='text-white flex lg:hidden'>--</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>-----------------------------</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>-----------------------------</text>
-              {/* <text className='text-white flex max-md:hidden max-lg:hidden'>---------------</text> 
-              {/* <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text>
-              <text className='text-white flex max-md:hidden max-lg:hidden'>----------------------------------</text> */}
-          </div>
+          <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[25vw] max-md:w-[2vw] max-lg:w-[2vw]' />
+          <a className='text-green-700 text-xl max-md:text-lg max-lg:text-lg max-md:ml-2 max-lg:ml-2'>TerraFarming</a>
+          <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[41vw] max-md:w-[2vw] max-lg:w-[2vw]' />
           <a className='max-md:text-sm max-lg:text-sm ml-2 max-md:mt-1 max-lg:mt-1'>© {new Date().getFullYear()}</a>
       </div>
 

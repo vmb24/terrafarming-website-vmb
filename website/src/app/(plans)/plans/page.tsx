@@ -1,33 +1,35 @@
+import { FC } from 'react'
 import Link from "next/link"
+import CheckoutButton from '@/app/(plans)/plans/components/CheckoutButton'
+
 import { Footer } from '@/app/(site)/components/Footer/Footer'
 import { FaCircleArrowLeft } from "react-icons/fa6"
-import { FC } from 'react'
 
 const PlansPage: FC = () => {
   return (
     <div>
-      <div className='flex flex-row justify-between bg-gray-50 py-8 px-12'>
+      <div className='flex flex-row justify-between bg-white py-8 px-12'>
         <h1 className="text-4xl font-normal text-green-700 mb-4">TerraFarming</h1>
         <Link href="/">
-          <h1 className='flex items-center justify-center max-md:hidden max-lg:hidden bg-green-500 rounded-full group-hover:opacity-80 transition-opacity duration-300 mt-4 md:mt-0 lg:w-48'>
-            <FaCircleArrowLeft size={20} color="white" className='mr-2'/>
-            <span className='text-white text-base md:text-xl font-normal group-hover:text-white transition-colors duration-300 cursor-pointer hover:bg-green-300 rounded py-2'>
+          <h1 className='flex items-center justify-center bg-green-500 rounded-full group-hover:opacity-80 transition-opacity duration-300 mt-4 max-md:mt-0 max-lg:mt-0 md:mt-0 lg:w-48'>
+            <FaCircleArrowLeft size={20} color="white" className='mr-2 max-lg:mr-0 max-md:mr-0 max-lg:h-12 max-md:h-12 max-lg:w-12 max-md:w-12 max-lg:p-2 max-md:p-2'/>
+            <span className='text-white text-base md:text-xl font-normal group-hover:text-white transition-colors duration-300 cursor-pointer hover:bg-green-300 rounded py-2 max-lg:hidden max-md:hidden'>
               HomePage
             </span>
           </h1>
         </Link>
       </div>
 
-      <div className="min-h-screen flex flex-col bg-gray-50 items-center justify-center py-8">
-        <h2 className="text-2xl font-semibold text-green-700 mb-4 underline underline-offset-1">
+      <div className="min-h-screen flex flex-col items-center justify-center py-8">
+        <h2 className="text-2xl max-md:text-xl max-lg:text-xl font-semibold text-green-700 mb-4 underline underline-offset-1">
           <a className="text-gray-600">Escolha o Plano</a> Ideal para Sua Fazenda
         </h2>
         <p className="text-lg text-gray-600 mb-16 text-center px-4 max-w-[80vw]">
           TerraFarming é a solução completa para gerenciar sua fazenda com inteligência. Com nossos planos, você terá acesso a métricas detalhadas, recomendações personalizadas e monitoramento de equipamentos, tudo para otimizar suas operações agrícolas e reduzir custos.
         </p>
         <div className="flex flex-col md:flex-row gap-8 mb-16">
-          {/* Plano Básico */}
-          <div className="bg-green-100 p-6 rounded-lg shadow-lg flex-1 max-w-md">
+          Plano Básico
+          <div className="bg-green-100 p-6 rounded-lg shadow-lg flex-1 max-w-md max-md:max-w-sm max-lg:max-w-sm">
             <h3 className="text-xl font-semibold text-green-700 mb-4">Plano Básico</h3>
             <p className="text-2xl font-bold text-green-700 mb-4">$49/mês</p>
             <ul className="list-disc list-inside mb-4">
@@ -37,15 +39,16 @@ const PlansPage: FC = () => {
               <li><strong>Informações Climáticas:</strong> Dados meteorológicos básicos.</li>
               <li><strong>Configurações:</strong> Ajustes gerais da aplicação e preferências do usuário.</li>
             </ul>
-            <Link href="/buy-basic">
+            {/* <Link href="/buy-basic">
               <h1 className="block mt-80 text-center bg-green-800 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300">
                 Comprar Plano Básico
               </h1>
-            </Link>
+            </Link> */}
+            <CheckoutButton priceId="price_id_plano_basico" />
           </div>
 
           {/* Plano Profissional */}
-          <div className="bg-green-200 p-6 rounded-lg shadow-lg flex-1 max-w-md">
+          <div className="bg-green-200 p-6 rounded-lg shadow-lg flex-1 max-w-md max-md:max-w-sm max-lg:max-w-sm">
             <h3 className="text-xl font-semibold text-green-800 mb-4">Plano Profissional</h3>
             <p className="text-2xl font-bold text-green-800 mb-4">$99/mês</p>
             <ul className="list-disc list-inside mb-4">
@@ -57,15 +60,16 @@ const PlansPage: FC = () => {
               <li><strong>Controle de Estufas:</strong> Controle e monitoramento de condições das estufas.</li>
               <li><strong>Configurações:</strong> Ajustes gerais e preferências do usuário, com opções avançadas de personalização.</li>
             </ul>
-            <Link href="/buy-professional">
+            {/* <Link href="/buy-professional">
               <h1 className="block text-center mt-44 bg-green-800 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300">
                 Comprar Plano Profissional
               </h1>
-            </Link>
+            </Link> */}
+            <CheckoutButton priceId="price_id_plano_profissional" />
           </div>
 
           {/* Plano Premium */}
-          <div className="bg-green-300 p-6 rounded-lg shadow-lg flex-1 max-w-md">
+          <div className="bg-green-300 p-6 rounded-lg shadow-lg flex-1 max-w-md max-w-md max-md:max-w-sm max-lg:max-w-sm">
             <h3 className="text-xl font-semibold text-green-900 mb-4">Plano Premium</h3>
             <p className="text-2xl font-bold text-green-900 mb-4">$149/mês</p>
             <ul className="list-disc list-inside mb-4">
@@ -79,11 +83,12 @@ const PlansPage: FC = () => {
               <li><strong>Pagamentos:</strong> Integração completa com o banco do agricultor, histórico de pagamentos e relatórios financeiros.</li>
               <li><strong>Configurações:</strong> Ajustes gerais e preferências do usuário, com opções avançadas e personalização extensiva.</li>
             </ul>
-            <Link href="/buy-premium">
+            {/* <Link href="/buy-premium">
               <h1 className="block text-center bg-green-800 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300">
                 Comprar Plano Premium
               </h1>
-            </Link>
+            </Link> */}
+            <CheckoutButton priceId="price_id_plano_premium" />
           </div>
         </div>
         <Footer />

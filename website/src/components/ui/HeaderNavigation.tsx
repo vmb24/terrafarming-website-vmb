@@ -20,24 +20,28 @@ const routes = [
         label: 'Overview',
     },
     {
+        href: '/task-management',
+        label: 'Task Management',
+    },
+    {
         href: '/harvest-health',
         label: 'Harvest Health',
     },
-    {
-        href: '/equipments-health',
-        label: 'Equips Health',
-    },
+    // {
+    //     href: '/equipments-health',
+    //     label: 'Equips Health',
+    // },
     {
         href: '/soil-metrics',
         label: 'Soil Metrics',
     },
     {
-        href: '/greenhouses',
-        label: 'Greenhouses',
+        href: '/climate-metrics',
+        label: 'Climate Metrics',
     },
     {
-        href: '/weather-metrics',
-        label: 'Weather Metrics',
+        href: '/greenhouses-control',
+        label: 'Greenhouses',
     },
     {
         href: '/cost-management',
@@ -60,8 +64,6 @@ export const HeaderNavigation = () => {
     const pathname = usePathname()
     const isMobile = useMedia('(max-width: 1024px)', false)
 
-    
-
     const onClick = (href: string) => {
         router.push(href)
         setIsOpen(false)
@@ -77,7 +79,7 @@ export const HeaderNavigation = () => {
                         size='sm'
                         className='
                             font-normal 
-                            bg-white/10 
+                            bg-white/10
                             hover:bg-white/20 
                             hover:text-white 
                             border-none 
@@ -85,19 +87,20 @@ export const HeaderNavigation = () => {
                             focus-visible:ring-transparent
                             outline-none
                             text-white
-                            focus:bg-white/30
+                            focus:bg-white/20
                             transition'
                         >
                             <Menu className='size-4' />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side='left' className='px-2'>
+                <SheetContent side='left' className='bg-white px-2'>
                     <nav className='flex flex-col gap-y-2 pt-6'>
                         {routes.map((route) => (
                             <Button
                                 key={route.href}
                                 variant={route.href === pathname ? 'secondary' : 'ghost'}
                                 onClick={() => onClick(route.href)}
+                                className='w-full justify-start'
                             >
                                 {route.label}
                             </Button>

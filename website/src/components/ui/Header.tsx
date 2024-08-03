@@ -1,5 +1,10 @@
-import { HeaderLogo } from "./HeaderLogo"
-import { HeaderNavigation } from "./HeaderNavigation"
+import { UserButton } from "@clerk/nextjs"
+import { Loader2 } from 'lucide-react'
+import { ClerkLoaded, ClerkLoading } from '@clerk/nextjs'
+
+import { HeaderLogo } from "@/components/ui/HeaderLogo"
+import { HeaderNavigation } from "@/components/ui/HeaderNavigation"
+import { WelcomeMsg } from "@/components/ui/WelcomeMsg"
 
 export const Header = () => {
     return (
@@ -10,9 +15,15 @@ export const Header = () => {
                         <div className="flex items-center lg:gap-x-16">
                             <HeaderLogo />
                             <HeaderNavigation />
-                            {/* {children} */}
                         </div>
+                        <ClerkLoaded>
+                            <UserButton signInUrl="/sign-in"/>
+                        </ClerkLoaded>
+                        <ClerkLoading>
+                            <Loader2 className="size-8 animate-spin text-slate-400"/>
+                        </ClerkLoading>
                     </div>
+                    <WelcomeMsg />
                 </div>
         </header>
     )
