@@ -24,13 +24,9 @@ const routes = [
         label: 'Task Management',
     },
     {
-        href: '/harvest-health',
-        label: 'Harvest Health',
+        href: '/farm-health', // Verificação de praga, colheita e funcionamento de equipamentos
+        label: 'Farm Health',
     },
-    // {
-    //     href: '/equipments-health',
-    //     label: 'Equips Health',
-    // },
     {
         href: '/soil-metrics',
         label: 'Soil Metrics',
