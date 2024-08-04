@@ -20,20 +20,16 @@ const routes = [
         label: 'Overview',
     },
     {
-        href: '/task-management',
-        label: 'Task Management',
+        href: '/planner-task-management',
+        label: 'Planner Task Management',
     },
     {
         href: '/farm-health', // Verificação de praga, colheita e funcionamento de equipamentos
-        label: 'Farm Health',
+        label: 'Farm Health Metrics',
     },
     {
-        href: '/soil-metrics',
-        label: 'Soil Metrics',
-    },
-    {
-        href: '/climate-metrics',
-        label: 'Climate Metrics',
+        href: '/improving-soil', // Metricas para melhoria do solo junto com as mudanças climaticas
+        label: 'Improving Soil Metrics',
     },
     {
         href: '/greenhouses-control',

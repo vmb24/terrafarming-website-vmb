@@ -28,7 +28,6 @@ const PlansPage: FC = () => {
           TerraFarming é a solução completa para gerenciar sua fazenda com inteligência. Com nossos planos, você terá acesso a métricas detalhadas, recomendações personalizadas e monitoramento de equipamentos, tudo para otimizar suas operações agrícolas e reduzir custos.
         </p>
         <div className="flex flex-col md:flex-row gap-8 mb-16">
-          Plano Básico
           <div className="bg-green-100 p-6 rounded-lg shadow-lg flex-1 max-w-md max-md:max-w-sm max-lg:max-w-sm">
             <h3 className="text-xl font-semibold text-green-700 mb-4">Plano Básico</h3>
             <p className="text-2xl font-bold text-green-700 mb-4">$49/mês</p>
@@ -69,7 +68,7 @@ const PlansPage: FC = () => {
           </div>
 
           {/* Plano Premium */}
-          <div className="bg-green-300 p-6 rounded-lg shadow-lg flex-1 max-w-md max-w-md max-md:max-w-sm max-lg:max-w-sm">
+          <div className="bg-green-300 p-6 rounded-lg shadow-lg flex-1 max-w-md max-md:max-w-sm max-lg:max-w-sm">
             <h3 className="text-xl font-semibold text-green-900 mb-4">Plano Premium</h3>
             <p className="text-2xl font-bold text-green-900 mb-4">$149/mês</p>
             <ul className="list-disc list-inside mb-4">
