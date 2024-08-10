@@ -5,7 +5,7 @@ import { useMedia } from 'react-use'
 import { usePathname, useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
-import { NavButton } from '@/components/ui/NavButton'
+import { NavButton } from '@/components/ui/atoms/NavButton'
 
 import { 
     Sheet,

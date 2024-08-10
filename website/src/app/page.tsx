@@ -1,5 +1,5 @@
 import React from 'react'
-import { Home } from '@/app/(site)/Home'
+import { Home } from '@/components/ui/templates/Home'
 
 const HomePage = () => {
   return (

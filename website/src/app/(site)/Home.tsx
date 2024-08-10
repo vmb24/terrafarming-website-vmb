@@ -1,5 +1,5 @@
 import React from 'react'
-import { HeroSection } from './components/HeroSection/HeroSection'
+// import { HeroSection } from './components/HeroSection/'
 import { AboutSection } from './components/AboutSection/AboutSection'
 import { ControlAgricultureSection } from './components/ControlAgricultureSection/ControlAgricultureSection'
 import { ServicesSection } from './components/ServicesSection/ServicesSection'
@@ -11,7 +11,7 @@ import { JoinUsSection } from './components/JoinUsSection/JoinUsSection'
 export const Home = () => {
     return (
         <div>
-            <HeroSection />
+            {/* <HeroSection /> */}
             <AboutSection />
             <ControlAgricultureSection />
             <ServicesSection />
