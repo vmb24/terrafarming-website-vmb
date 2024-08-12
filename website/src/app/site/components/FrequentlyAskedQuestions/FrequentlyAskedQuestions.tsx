@@ -34,7 +34,7 @@ export const FrequentlyAskedQuestions: React.FC = () => {
   return (
     <div className="flex flex-col px-12 mt-20 max-md:mt-8 max-lg:mt-8">
       <div className='flex flex-row mt-12'>
-          <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Frequently Asked Questions</h1>
+          <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Perguntas frequentes</h1>
           <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[25vw] max-md:w-[2vw] max-lg:w-[2vw]' />
           <a className='text-green-700 text-xl max-md:text-lg max-lg:text-lg max-md:ml-2 max-lg:ml-2'>TerraFarming</a>
           <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[41vw] max-md:w-[2vw] max-lg:w-[2vw]' />
@@ -42,20 +42,20 @@ export const FrequentlyAskedQuestions: React.FC = () => {
       </div>
 
       <FAQItem 
-        question="1. What is TerraRobot technology and how does it work in fruit picking ?"
-        answer="TerraRobot technology uses advanced sensors and AI to efficiently pick fruits..."
+        question="1. O que é a tecnologia TerraRobot e como ela funciona na colheita de frutas?"
+        answer="A tecnologia TerraRobot usa sensores avançados e IA para colher frutas com eficiência..."
       />
       <FAQItem 
-        question="2. Are the TerraRobot robots safe for the fruit trees and plants ?"
-        answer="Yes, TerraRobot robots are designed with care to ensure the safety of trees and plants..."
+        question="2. Os robôs TerraRobot são seguros para as árvores frutíferas e plantas?"
+        answer="Sim, os robôs TerraRobot são projetados com cuidado para garantir a segurança de árvores e plantas..."
       />
       <FAQItem 
-        question="3. How does TerraRobot fruit transportation work and what are its benefits ?"
-        answer="The transportation system uses secure containers and optimized routes to deliver fruits..."
+        question="3. Como funciona o transporte de frutas do TerraRobot e quais são seus benefícios?"
+        answer="O sistema de transporte utiliza contêineres seguros e rotas otimizadas para entregar frutas..."
       />
       <FAQItem 
-        question="4. How do I integrate TerraRobot technology into my farm operations ?"
-        answer="Integration involves a few steps, including installation of sensors and calibration..."
+        question="4. Como faço para integrar a tecnologia TerraRobot em minhas operações agrícolas?"
+        answer="A integração envolve algumas etapas, incluindo a instalação de sensores e a calibração..."
       />
     </div>
   )

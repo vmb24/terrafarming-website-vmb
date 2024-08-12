@@ -11,9 +11,9 @@ import { CgArrowTopRightO } from "react-icons/cg"
 
 export const ServicesSection = () => {
     return (
-        <div className='flex flex-col px-12 mt-12 max-md:px-12 max-lg:px-12'>
+        <div className='flex flex-col px-12 mt-[800px] max-md:px-12 max-lg:px-12'>
             <div className='flex flex-row'>
-                <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Our Services</h1>
+                <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Nossos Serviços</h1>
                 <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[37vw] max-md:w-[10vw] max-lg:w-[10vw]' />
                 <a className='text-green-700 text-xl max-md:ml-2 max-lg:ml-2'>TerraFarming</a>
                 <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[37vw] max-md:w-[10vw] max-lg:w-[10vw]' />
@@ -22,13 +22,13 @@ export const ServicesSection = () => {
 
             <div className='flex flex-col items-end mt-12'>
                 <p className='text-4xl max-md:text-3xl max-lg:text-3xl'>
-                    <a className='text-[#a1a1a1]'>Transform Your Farming Experience with</a> Our Cutting-Edge Solutions
+                    <a className='text-[#a1a1a1]'>Transforme sua experiência agrícola com</a> Nossas soluções de ponta
                 </p>
                 <p className='text-4xl pr-8 max-md:text-3xl max-lg:text-3xl'>
-                    Elevate your agricultural practices with our all-encompassing suite of services  
+                    Eleve suas práticas agrícolas com nosso conjunto abrangente de serviços  
                 </p>
                 <p className='text-4xl pr-44 max-md:text-3xl max-lg:text-3xl max-md:pr-20 max-lg:pr-20'>
-                    leverage our technology <a className='text-[#a1a1a1] pr-96 max-md:pr-4 max-lg:pr-4'>for machinery analysis</a> 
+                    Aproveite nossa tecnologia <a className='text-[#a1a1a1] pr-96 max-md:pr-4 max-lg:pr-4'>para análise inteligente.</a> 
                 </p>
             </div>
 
@@ -46,7 +46,7 @@ export const ServicesSection = () => {
                     />  
                     <div className='flex flex-col absolute'>
                         <div className='flex flex-row justify-between items-center'>
-                            <h1 className='text-center text-xl text-[#cecdce]'>Smart Harvesting</h1>
+                            <h1 className='text-center text-xl text-[#cecdce]'>Colheita inteligente</h1>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <p className='mt-12 text-base text-[#cecdce] max-w-sm mx-auto break-words'>
@@ -69,7 +69,7 @@ export const ServicesSection = () => {
                     />  
                     <div className='flex flex-col absolute'>
                         <div className='flex flex-row justify-between items-center'>
-                            <h1 className='text-center text-xl text-[#cecdce]'>Smart Soil Analysis</h1>
+                            <h1 className='text-center text-xl text-[#cecdce]'>Análise inteligente do solo</h1>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <p className='mt-12 text-base text-[#cecdce] max-w-sm mx-auto break-words'>
@@ -94,7 +94,7 @@ export const ServicesSection = () => {
                     />  
                     <div className='flex flex-col absolute'>
                         <div className='flex flex-row justify-between items-center'>
-                            <h1 className='text-center text-xl text-[#cecdce]'>Smart Sensors</h1>
+                            <h1 className='text-center text-xl text-[#cecdce]'>Sensores inteligentes</h1>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <p className='mt-12 text-base text-[#cecdce] max-w-sm mx-auto break-words'>
@@ -106,8 +106,8 @@ export const ServicesSection = () => {
                 </div>
             </div>
 
-            <div className='flex flex-row'>
-                <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-9 max-lg:mt-9 font-normal'>Our Services</h1>
+            <div className='flex flex-row mt-12'>
+                <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-9 max-lg:mt-9 font-normal'>Nossos Serviços</h1>
                 <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-12 max-lg:mt-12 mt-4 ml-2 lg:w-[37vw] max-md:w-[10vw] max-lg:w-[10vw]' />
                 <a className='text-green-700 text-xl max-md:ml-2 max-lg:ml-2 max-md:mt-8 max-lg:mt-8'>TerraFarming</a>
                 <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-12 max-lg:mt-12 mt-4 ml-2 lg:w-[37vw] max-md:w-[10vw] max-lg:w-[10vw]' />
@@ -119,19 +119,19 @@ export const ServicesSection = () => {
 
             <div className='flex flex-col px-32 max-md:px-0 max-lg:px-0 mt-12 max-md:mt-8 max-lg:mt-8'>
                 <p className='px-44 max-md:px-0 max-lg:px-0 text-4xl max-md:text-3xl max-lg:text-3xl'>
-                    <a className='text-[#a1a1a1]'>Our advanced services include greenhouse management</a>
+                    <a className='text-[#a1a1a1]'>Nossos serviços avançados incluem o gerenciamento de estufas</a>
                 </p>
-                <p className='text-4xl px-44 max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>for real-time crop health and location insights,</p>
+                <p className='text-4xl px-44 max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>para obter informações em tempo real sobre a saúde da cultura e a localização,</p>
                 <p className='px-16 text-4xl max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>
-                    precise soil climate analysis, in-depth soil climate analysis,
+                    análise precisa do clima do solo, análise aprofundada do clima do solo,
                 </p>
                 <p className='px-8 text-4xl max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>
-                    comprehensive farm mapping, <a className='text-[#a1a1a1]'>and detailed fruit control.</a> 
+                mapeamento abrangente de fazendas, <a className='text-[#a1a1a1]'>e controle detalhado de frutas.</a> 
                 </p>
             </div> 
 
             <div className='flex flex-row justify-between mt-12'>
-                <a className='text-xl font-normal text-[#757575]'>Discover the Distinct Advantages of Partnering with Terra Farming</a>
+                <a className='text-xl font-normal text-[#757575]'>Descubra as vantagens distintas da parceria com a Terra Farming</a>
                 <Link href="/plans" className='bg-green-700 py-4 max-md:p-4 max-lg:p-4 px-8 rounded-full'>
                     <h1 className='text-white max-md:text-sm max-lg:text-sm'>Todos os Benefícios</h1>
                 </Link>
@@ -168,8 +168,8 @@ export const ServicesSection = () => {
                             </div>
                         </div>
                         <div className='flex flex-col mt-20 max-md:mt-4 max-lg:mt-4'>                            
-                            <p className='text-[#a0a0a0] text-3xl max-md:hidden max-lg:hidden'>// Sustainable Agriculture,</p>
-                            <a className='text-end text-3xl max-md:hidden max-lg:hidden'>Shared Values.</a>
+                            <p className='text-[#a0a0a0] text-3xl max-md:hidden max-lg:hidden'>// Agricultura sustentável,</p>
+                            <a className='text-end text-3xl max-md:hidden max-lg:hidden'>Valores compartilhados.</a>
                         </div>
                     </div>
 
@@ -202,8 +202,8 @@ export const ServicesSection = () => {
 
                     <div className='flex flex-col w-auto'>
                         <div className='flex flex-col'>                            
-                            <p className='text-[#a0a0a0] text-3xl max-md:hidden max-lg:hidden'>// Sustainable Agriculture,</p>
-                            <a className='text-end text-3xl max-md:hidden max-lg:hidden'>Shared Values.</a>
+                            <p className='text-[#a0a0a0] text-3xl max-md:hidden max-lg:hidden'>// Agricultura sustentável,</p>
+                            <a className='text-end text-3xl max-md:hidden max-lg:hidden'>Valores compartilhados.</a>
                         </div>
                         <div className="flex flex-col bg-green-800 rounded-xl w-auto h-full px-4 py-4 mt-20 max-md:mt-4 max-lg:mt-4 relative overflow-hidden">
                             <div className='flex flex-row justify-between'>

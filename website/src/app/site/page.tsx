@@ -1,5 +1,5 @@
 import React from 'react'
-import { Home } from '@/components/ui/templates/Home'
+import { HomeSite } from '@/app/site/HomeSite'
 
 import { Container } from "@/components/ui/atoms/Container"
 
@@ -10,15 +10,15 @@ const MENUITEMS: MenuItem[] = [
   { label: 'Entenda a TerraFarming', href: '/site' }
 ]
 
-const HomePage = () => {
+const HomeSitePage = () => {
   return (
-    <>
+    <>    
       <HomeHeader menuItems={MENUITEMS} />
       <Container>
-        <Home />
+        <HomeSite />
       </Container>
     </>
   )
 }
 
-export default HomePage
+export default HomeSitePage

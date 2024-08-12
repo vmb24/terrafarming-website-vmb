@@ -24,7 +24,7 @@ export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
         className="p-2"
         aria-label="Open main menu"
       >
-        <IconMenu2 className="w-5 h-5" />
+        <IconMenu2 className="w-5 h-5" color='black' />
       </button>
       <Sidebar open={open} setOpen={setOpen}>
         <div className="flex flex-col items-start space-y-1">

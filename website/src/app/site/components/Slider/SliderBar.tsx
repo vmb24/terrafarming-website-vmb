@@ -11,12 +11,12 @@ import agriculturalComputerVision from '@/assets/services/agricultural-compute-v
 import agricultureTechnologyChat from '@/assets/agriculture-technology-chat.png'
 
 const slides = [
-  { title: 'Greenhouse Control', image: greenhouseAnalisysFruits, description: 'Monitor and manage the location and health of crops.' },
-  { title: 'Soil Climate Analysis', image: analyseSoilRobot, description: 'Analyze soil climate conditions for better farming decisions.' },
-  { title: 'Farm Mapping', image: farmMapping, description: 'Map out your farm to optimize your agricultural operations.' },
-  { title: 'Fruit Control & Analysis', image: agricultureRobotHarvesting, description: 'Track and analyze the status of your fruits for improved yield.' },
-  { title: 'Machine Analysis by Image', image: agriculturalComputerVision, description: 'Evaluate machinery conditions through image analysis.' },
-  { title: 'Farmer Interaction', image: agricultureTechnologyChat, description: 'Connect with other farmers in a social network for shared insights.' },
+  { title: 'Controle de Estufas', image: greenhouseAnalisysFruits, description: 'Monitorar e gerenciar a localização e a saúde das culturas.' },
+  { title: 'Análise climática do solo', image: analyseSoilRobot, description: 'Analise as condições climáticas do solo para tomar melhores decisões agrícolas.' },
+  { title: 'Mapeamento de fazendas', image: farmMapping, description: 'Mapeie sua fazenda para otimizar suas operações agrícolas.' },
+  { title: 'Controle e análise de frutas', image: agricultureRobotHarvesting, description: 'Rastreie e analise o status de suas frutas para melhorar o rendimento.' },
+  { title: 'Análise de máquina por imagem', image: agriculturalComputerVision, description: 'Avalie as condições do maquinário por meio da análise de imagens.' },
+  { title: 'Interação com o agricultor', image: agricultureTechnologyChat, description: 'Conecte-se com outros agricultores em uma rede social para obter insights compartilhados.' },
 ]
 
 const ITEMS_PER_PAGE = 1 // Show one item per page on smaller screens
@@ -38,7 +38,7 @@ export const SliderBar = () => {
   const visibleSlides = slides.slice(startIndex, startIndex + ITEMS_PER_PAGE)
 
   return (
-    <div className='relative w-full mx-auto p-4 mt-12'>
+    <div className='relative w-full mx-auto p-4 mt-12 max-md:mt-8 max-lg:mt-8'>
       {/* Slide Container */}
       <div className='flex overflow-x-auto space-x-4 pb-4'>
         <div className='flex flex-nowrap space-x-3' style={{ transform: `translateX(-${currentPage * 100}%)` }}>
@@ -87,7 +87,7 @@ export const SliderBar = () => {
             <GoArrowLeft size={20} />
           </button>
           <span className='text-sm text-gray-500'>
-            Page {currentPage + 1} of {totalPages}
+            Página {currentPage + 1} of {totalPages}
           </span>
           <button
             onClick={handleNext}

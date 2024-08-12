@@ -7,7 +7,7 @@ import smartHarvestRobot from '@/assets/smart-harvest-robots.png'
 
 export const HeroSection = () => {
     return (
-        <div className="relative w-full h-screen px-12 overflow-hidden">
+        <div className="absolute top-0 bottom-0 left-0 right-0 overflow-hidden">
             <Image
                 alt=""
                 src={smartHarvestRobot}
@@ -18,7 +18,7 @@ export const HeroSection = () => {
                 }}
             />
 
-            <div className="absolute top-0 left-0 right-0 flex flex-col md:flex-row justify-between md:p-8 z-10 max-md:px-8 max-lg:px-8">
+            <div className="absolute container sm:px-2 mx-auto top-12 left-0 right-0 flex flex-col md:flex-row justify-between md:p-8 z-10 max-md:px-8 max-lg:px-8">
                 <a href="#TerraFarming" className='flex justify-start mb-4 md:mb-0'>
                     <h1 className='text-green-500 text-4xl max-md:text-3xl max-lg:text-3xl max-md:mt-4 max-lg:mt-4 font-normal group-hover:text-green-200 transition-colors duration-300 cursor-pointer hover:bg-green-300 rounded py-2'>
                         TerraFarming
@@ -35,29 +35,30 @@ export const HeroSection = () => {
                     ))}
                 </div> */}
 
-                <Link href="/sign-in" className='flex items-center justify-center max-md:hidden max-lg:hidden bg-green-500 rounded-full group-hover:opacity-80 transition-opacity duration-300 mt-4 md:mt-0 lg:w-28'>
+                {/* <Link href="/sign-in" className='flex items-center justify-center max-md:hidden max-lg:hidden bg-green-500 rounded-full group-hover:opacity-80 transition-opacity duration-300 mt-4 md:mt-0 lg:w-28'>
                     <h1 className='text-white text-base md:text-xl font-normal group-hover:text-white transition-colors duration-300 cursor-pointer hover:bg-green-300 rounded py-2'>
                         Login
                     </h1>
                     <FaCircleArrowRight size={20} color="white" className='ml-2'/>
-                </Link>
+                </Link> */}
             </div>
 
-            <div className='absolute inset-x-0 bottom-0 flex flex-col items-start mb-8 md:mb-8 px-8 md:px-8 max-md:mt-20 max-lg:mt-20'>
+            <div className='absolute container sm:px-2 mx-auto inset-x-0 bottom-0 flex flex-col items-start mb-8 md:mb-8 px-8 md:px-8 max-md:mt-20 max-lg:mt-20'>
                 <div className='mb-4'>
                     <h1 className='text-4xl max-md:text-3xl max-lg:text-3xl font-bold text-white mb-2'>
-                        Smart Agriculture,
+                        Agricultura inteligente,
                     </h1>
                     <h1 className='text-4xl max-md:text-3xl max-lg:text-3xl font-bold text-white'>
-                        Greater Yields
+                        Maiores rendimentos
                     </h1>
                 </div>
                 <div className='mb-8 max-md:w-[80vw] max-lg:w-[80vw] lg:w-[30vw]'>
                     <h1 className='text-lg md:text-xl font-normal text-white mb-2 break-words'>
-                        We are passionate about sustainable
-                        agriculture and committed to providing 
-                        high-quality products and services that
-                        nourish both people and the planet.
+                    Somos apaixonados pela agricultura sustentável
+                    agricultura sustentável e estamos comprometidos 
+                    em fornecer produtos e serviços de alta qualidade 
+                    que nutrem as pessoas e o planeta através das nossas 
+                    soluções tecnológicas, utilizando inteligência artificial.
                     </h1>
                 </div>
 
@@ -71,10 +72,10 @@ export const HeroSection = () => {
                         <span className='text-white text-lg md:text-xl font-normal'>Faça parte!</span>
                         <FaCircleArrowRight size={20} color="white" className='ml-2'/>
                     </Link>
-                    <Link href="/sign-in" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500 mb-8'>
+                    {/* <Link href="/sign-in" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500 mb-8'>
                         <span className='text-white text-lg md:text-xl font-normal'>Login</span>
                         <FaCircleArrowRight size={20} color="white" className='ml-2'/>
-                    </Link>
+                    </Link> */}
                 </div>
             </div>
         </div>

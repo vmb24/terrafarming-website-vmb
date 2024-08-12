@@ -16,18 +16,25 @@ export const Brand = ({
     <div className={`grid place-items-center z-50 ${className}`}>
       <div className="text-xl ">
         {shortForm ? (
-          <div className="flex gap-1">
-            <BrandIcon /> TerraFarming.
+          <div className="flex items-center gap-2 font-medium tracking-tighter font-playfair">
+          <BrandIcon />
+          <div>
+              <div className="flex gap-1">
+                <h1 className='text-green-700 text-sm'>TerraFarming</h1>
+                {type ? <span className="text-xs">{type}</span> : null}
+              </div>
+              <h1 className="text-xs text-gray-500">VMB</h1>
+            </div>
           </div>
         ) : (
           <div className="flex items-center gap-2 font-medium tracking-tighter font-playfair">
             <BrandIcon />
             <div>
               <div className="flex gap-1">
-                <div>TerraFarming</div>
+                <h1 className='text-green-700'>TerraFarming</h1>
                 {type ? <span className="text-xs">{type}</span> : null}
               </div>
-              <div className="text-xs text-gray">VMB</div>
+              <h1 className="text-xs text-gray-500">VMB</h1>
             </div>
           </div>
         )}

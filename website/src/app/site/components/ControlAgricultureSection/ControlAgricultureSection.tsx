@@ -8,7 +8,7 @@ import controlAgriculture from '@/assets/control-agriculture.jpeg'
 
 export const ControlAgricultureSection = () => {
     return (
-        <div className="flex flex-col px-12 mt-12 max-md:px-8 max-lg:px-8 relative w-full h-[80vh] overflow-hidden">
+        <div className="flex flex-col absolute top-[1570px] bottom-0 left-0 right-0 px-32 max-md:mt-32 max-lg:mt-32 max-md:px-8 max-lg:px-8 w-full h-[80vh] overflow-hidden">
             <Image
                 alt=""
                 src={controlAgriculture}
@@ -20,17 +20,17 @@ export const ControlAgricultureSection = () => {
             />
 
             <div className='flex flex-row mt-8 relative overflow-hidden'>
-                <h1 className='text-white text-3xl font-normal'>TerraFarming Control Agriculture</h1>
+                <h1 className='text-white text-3xl font-normal'>TerraFarming Controle da Agricultura</h1>
             </div>
 
             <div className='flex flex-col mt-64 max-md:mt-56 max-lg:mt-56'>
                 <div className='flex flex-col absolute'>
-                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>Optimize Your Farming</h1>
-                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>With Our Advanced Dashboard</h1>
+                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>Otimize sua agricultura</h1>
+                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>Com nosso painel de controle avançado</h1>
                 </div>
                 <div className='flex flex-col absolute mt-40 max-md:mt-32 max-lg:mt-32'>
-                    <h1 className='text-bold text-xl text-white'>Our dashboard provides real-time insights into your farm’s operations,</h1>
-                    <h1 className='text-bold text-xl text-white'>from greenhouse control to soil climate analysis.</h1>
+                    <h1 className='text-bold text-xl text-white'>Nosso painel de controle fornece informações em tempo real sobre as operações de sua fazenda,</h1>
+                    <h1 className='text-bold text-xl text-white'>do controle de estufas à análise climática do solo.</h1>
                 </div>
                 <Link href="/plans" className='flex flex-row justify-center space-x-2 absolute p-4 w-52 rounded-full bg-white mt-64'>
                     <text className='text-green-500 font-bold'>Faça parte!</text>

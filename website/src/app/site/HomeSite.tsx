@@ -1,5 +1,5 @@
 import React from 'react'
-// import { HeroSection } from './components/HeroSection/'
+import { HeroSection } from './components/HeroSection/HeroSection'
 import { AboutSection } from './components/AboutSection/AboutSection'
 import { ControlAgricultureSection } from './components/ControlAgricultureSection/ControlAgricultureSection'
 import { ServicesSection } from './components/ServicesSection/ServicesSection'
@@ -8,10 +8,10 @@ import { FrequentlyAskedQuestions } from './components/FrequentlyAskedQuestions/
 import { Footer } from './components/Footer/Footer'
 import { JoinUsSection } from './components/JoinUsSection/JoinUsSection'
 
-export const Home = () => {
+export const HomeSite = () => {
     return (
         <div>
-            {/* <HeroSection /> */}
+            <HeroSection />
             <AboutSection />
             <ControlAgricultureSection />
             <ServicesSection />
