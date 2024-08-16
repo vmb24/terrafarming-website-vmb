@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const Settings = () => {
+const Settings = () => {
     return (
         <div>
             Settings Page

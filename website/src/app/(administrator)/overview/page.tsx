@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const Overview = () => {
+const Overview = () => {
     return (
         <div>
             Overview Page

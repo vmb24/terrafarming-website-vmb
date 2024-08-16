@@ -1,5 +1,4 @@
 'use client'
-import { FarmScene } from '@/components/ui/scenes/FarmScene'
 import { IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
 import { SlideHomePage } from '../organisms/SlideHomePage'

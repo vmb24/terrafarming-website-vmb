@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const ImprovingSoil = () => {
+const ImprovingSoil = () => {
     return (
         <div>
             Improving Soil Page - Metricas para melhoria do solo junto com as mudanças climaticas

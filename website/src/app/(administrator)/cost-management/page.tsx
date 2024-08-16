@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const CostManagement = () => {
+const CostManagement = () => {
     return (
         <div>
             CostManagement Page

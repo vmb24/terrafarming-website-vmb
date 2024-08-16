@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const ClimateMetrics = () => {
+const ClimateMetrics = () => {
     return (
         <div>
             Climate Metrics Page

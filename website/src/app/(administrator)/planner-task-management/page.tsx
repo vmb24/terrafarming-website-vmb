@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const TaskManagement = () => {
+const TaskManagement = () => {
     return (
         <div>
             TaskManagement Page

@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const HarvestHealth = () => {
+const HarvestHealth = () => {
     return (
         <div>
             Harvest Health Page

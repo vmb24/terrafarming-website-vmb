@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const SoilMetrics = () => {
+const SoilMetrics = () => {
     return (
         <div>
             SoilMetrics Page

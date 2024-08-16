@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const GreenhousesControl = () => {
+const GreenhousesControl = () => {
     return (
         <div>
             Greenhouses Control Page

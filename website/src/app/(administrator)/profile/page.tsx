@@ -1,6 +1,6 @@
 import { UserButton } from "@clerk/nextjs"
 
-export const Profile = () => {
+const Profile = () => {
     return (
         <div>
             Profile Page
