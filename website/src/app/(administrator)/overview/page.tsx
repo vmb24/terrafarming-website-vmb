@@ -1,3 +1,4 @@
+// page.tsx (Overview)
 'use client'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -31,18 +32,18 @@ const Overview: React.FC = () => {
         <div className="px-4 mt-[-80px]">
           <div className="flex justify-between max-w-2xl">
             <SoilCard
-              title="Soil Moisture"
-              value={moisture?.moisture ?? null}
+              title="Umidade do Solo"
+              value={moisture?.moisture}
               unit="%"
-              status={moisture?.status ?? null}
-              date={moisture?.timestamp ?? null}
+              status={moisture?.status}
+              date={moisture?.timestamp}
             />
             <SoilCard
-              title="Soil Temperature"
-              value={temperature?.temperature ?? null}
+              title="Temperatura do Solo"
+              value={temperature?.temperature}
               unit="°C"
-              status={temperature?.status ?? null}
-              date={temperature?.timestamp ?? null}
+              status={temperature?.status}
+              date={temperature?.timestamp}
             />
           </div>
         </div>

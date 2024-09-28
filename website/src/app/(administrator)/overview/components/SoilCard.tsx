@@ -1,17 +1,16 @@
 // components/SoilCard.tsx
-
 import React from 'react';
 
 interface SoilCardProps {
   title: string;
-  value: number | null;
+  value: number | undefined;
   unit: string;
-  status: string | null;
-  date: string | null;
+  status: string | undefined;
+  date: string | undefined;
 }
 
 const SoilCard: React.FC<SoilCardProps> = ({ title, value, unit, status, date }) => {
-  const hasData = value !== null && status !== null && date !== null;
+  const hasData = value !== undefined && status !== undefined && date !== undefined;
 
   return (
     <div className="bg-white rounded-lg w-72 shadow-md p-6">
@@ -21,8 +20,8 @@ const SoilCard: React.FC<SoilCardProps> = ({ title, value, unit, status, date })
           <p className="text-3xl font-bold mb-2">
             {value.toFixed(1)} {unit}
           </p>
-          <p className="text-sm text-gray-600 mb-2">Status: {status}</p>
-          <p className="text-sm text-gray-600">{new Date(date).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-600 mb-2">{status}</p>
+          <p className="text-sm text-gray-600">Criado em: {new Date(date).toLocaleDateString()}</p>
         </>
       ) : (
         <>

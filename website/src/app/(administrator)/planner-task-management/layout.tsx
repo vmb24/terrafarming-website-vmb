@@ -8,7 +8,7 @@ const TaskManagementLayout = ({ children }: Props) => {
     return (
         <>  
             <Header />
-            <main className="px-3 lg:px-14">
+            <main className="px-3 lg:px-10">
                 {children}
             </main>
         </>
