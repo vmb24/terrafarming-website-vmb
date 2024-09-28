@@ -2,8 +2,8 @@
 import React from 'react';
 
 interface SidebarProps {
-  activeCategory: 'moisture' | 'temperature';
-  setActiveCategory: (category: 'moisture' | 'temperature') => void;
+  activeCategory: 'moisture' | 'temperature' | 'moistureRecommendations' | 'temperatureRecommendations';
+  setActiveCategory: (category: 'moisture' | 'temperature' | 'moistureRecommendations' | 'temperatureRecommendations') => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ activeCategory, setActiveCategory }) => {
@@ -18,10 +18,22 @@ const Sidebar: React.FC<SidebarProps> = ({ activeCategory, setActiveCategory }) 
           Umidade do Solo
         </li>
         <li 
-          className={`cursor-pointer p-2 rounded ${activeCategory === 'temperature' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+          className={`cursor-pointer p-2 mb-2 rounded ${activeCategory === 'temperature' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
           onClick={() => setActiveCategory('temperature')}
         >
           Temperatura do Solo
+        </li>
+        <li 
+          className={`cursor-pointer p-2 mb-2 rounded ${activeCategory === 'moistureRecommendations' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+          onClick={() => setActiveCategory('moistureRecommendations')}
+        >
+          Recomendações de Umidade
+        </li>
+        <li 
+          className={`cursor-pointer p-2 rounded ${activeCategory === 'temperatureRecommendations' ? 'bg-blue-500 text-white' : 'hover:bg-gray-200'}`}
+          onClick={() => setActiveCategory('temperatureRecommendations')}
+        >
+          Recomendações de Temperatura
         </li>
       </ul>
     </div>

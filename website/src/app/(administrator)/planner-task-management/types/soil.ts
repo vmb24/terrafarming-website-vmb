@@ -1,16 +1,4 @@
 // types/soil.ts
-
-export interface SoilMoisture {
-    moisture: number;
-    status: string;
-    timestamp: string;
-  }
-  
-  export interface SoilTemperature {
-    temperature: number;
-    status: string;
-    timestamp: string;
-  }
   
   export interface MoisturePlan {
     plan: {

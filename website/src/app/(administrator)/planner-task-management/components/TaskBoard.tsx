@@ -16,17 +16,15 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
       ? (plan as MoisturePlan).plan.recommendations 
       : (plan as TemperaturePlan).plan;
   
-    console.log("Conteúdo do plano:", content);
-  
     const weeklyTasks: { [key: string]: string[] } = {};
     columns.forEach(week => {
       weeklyTasks[week] = [];
     });
   
     const weekRegex = /Semana \d+([\s\S]*?)(?=Semana \d+|$)/g;
-    let match = content.match(weekRegex);
+    let match;
   
-    if (match) {
+    if ((match = content.match(weekRegex))) {
       // Caso 1: O plano está dividido por semanas
       while ((match = weekRegex.exec(content)) !== null) {
         const weekContent = match[0];
@@ -59,12 +57,11 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
       });
     }
   
-    console.log("Tarefas extraídas:", weeklyTasks);
     return weeklyTasks;
   };
 
   const distributePlans = () => {
-    const distribution: { [key: string]: string[] } = {
+    const distribution: { [key: string]: { task: string; value: number }[] } = {
       'Semana 1': [],
       'Semana 2': [],
       'Semana 3': [],
@@ -73,14 +70,17 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
   
     plans.forEach((plan) => {
       const weeklyTasks = extractTasksFromPlan(plan);
+      const value = category === 'temperature' 
+        ? (plan as TemperaturePlan).temperature 
+        : (plan as MoisturePlan).moisture;
+      
       columns.forEach(week => {
         if (weeklyTasks[week]) {
-          distribution[week].push(...weeklyTasks[week]);
+          distribution[week].push(...weeklyTasks[week].map(task => ({ task, value })));
         }
       });
     });
   
-    console.log("Tarefas distribuídas:", distribution);
     return distribution;
   };
 
@@ -94,7 +94,12 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
           <div className="space-y-4">
             {distributedTasks[column].length > 0 ? (
               distributedTasks[column].map((task, index) => (
-                <TaskCard key={`${column}-${index}`} task={task} />
+                <TaskCard 
+                  key={`${column}-${index}`} 
+                  task={task.task}
+                  value={task.value}
+                  category={category}
+                />
               ))
             ) : (
               <p className="text-gray-500 italic">Nenhuma tarefa para esta semana</p>

@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from './components/SideBar';
 import TaskBoard from './components/TaskBoard';
-import { MoisturePlan, TemperaturePlan } from './types/soil';
+import RecommendationsBoard from './components/RecommendationsBoard';
+import { MoisturePlan, TemperaturePlan, MoistureRecommendations, TemperatureRecommendations } from './types/soil';
 
 const sampleMoisturePlans: MoisturePlan[] = [
   {
@@ -69,7 +70,9 @@ const processTemperaturePlans = (apiData: any[]): TemperaturePlan[] => {
 const PlannerTaskManagement: React.FC = () => {
   const [moisturePlans, setMoisturePlans] = useState<MoisturePlan[]>(sampleMoisturePlans);
   const [temperaturePlans, setTemperaturePlans] = useState<TemperaturePlan[]>(sampleTemperaturePlans);
-  const [activeCategory, setActiveCategory] = useState<'moisture' | 'temperature'>('moisture');
+  const [moistureRecommendations, setMoistureRecommendations] = useState<MoistureRecommendations | null>(null);
+  const [temperatureRecommendations, setTemperatureRecommendations] = useState<TemperatureRecommendations | null>(null);
+  const [activeCategory, setActiveCategory] = useState<'moisture' | 'temperature' | 'moistureRecommendations' | 'temperatureRecommendations'>('moisture');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,9 +82,17 @@ const PlannerTaskManagement: React.FC = () => {
 
         const temperatureResponse = await axios.get('https://3qcils9mbk.execute-api.us-east-1.amazonaws.com/prod/task-plan');
         setTemperaturePlans(processTemperaturePlans(temperatureResponse.data));
+        // Buscar recomendações de umidade do solo
+        const moistureRecommendationsResponse = await axios.get('https://81dkc5z9yd.execute-api.us-east-1.amazonaws.com/prod/recommendations');
+        setMoistureRecommendations(JSON.parse(moistureRecommendationsResponse.data['agriculture/soil/moisture']));
+
+        // Buscar recomendações de temperatura
+        const temperatureRecommendationsResponse = await axios.get('https://uphc1w9gfc.execute-api.us-east-1.amazonaws.com/prod/recommendations');
+        setTemperatureRecommendations(JSON.parse(temperatureRecommendationsResponse.data.completion));
+
       } catch (error) {
         console.error('Error fetching data:', error);
-        // Usando dados de exemplo em caso de falha na API
+        // Use dados de exemplo em caso de falha na API
         setMoisturePlans(sampleMoisturePlans);
         setTemperaturePlans(sampleTemperaturePlans);
       }
@@ -99,10 +110,18 @@ const PlannerTaskManagement: React.FC = () => {
       <div className="flex-1 overflow-auto">
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">Gerenciamento de Tarefas do Planejador</h1>
-          <TaskBoard
-            plans={activeCategory === 'moisture' ? moisturePlans : temperaturePlans}
-            category={activeCategory}
-          />
+          {(activeCategory === 'moisture' || activeCategory === 'temperature') && (
+            <TaskBoard
+              plans={activeCategory === 'moisture' ? moisturePlans : temperaturePlans}
+              category={activeCategory}
+            />
+          )}
+          {(activeCategory === 'moistureRecommendations' || activeCategory === 'temperatureRecommendations') && (
+            <RecommendationsBoard
+              recommendations={activeCategory === 'moistureRecommendations' ? moistureRecommendations : temperatureRecommendations}
+              category={activeCategory}
+            />
+          )}
         </div>
       </div>
     </div>

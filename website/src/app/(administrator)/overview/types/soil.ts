@@ -12,35 +12,16 @@ export interface SoilTemperature {
   timestamp: string;
 }
   
-  export interface MoisturePlan {
-    plan: {
-      createdAt: number;
-      planId: string;
-      moisture: number;
-      recommendations: string;
-      status: string;
-      timestamp: number;
-    };
-    planId: string;
-    moisture: number;
-    createdAt: string;
-    updatedAt: string;
-    status: string;
-  }
-  
-  export interface TemperaturePlan {
-    plan: string;
-    planId: string;
-    createdAt: string;
+  export interface AirData {
     temperature: number;
-    updatedAt: string;
+    humidity: number;
+    tempStatus: string;
+    humidityStatus: string;
+    timestamp: string;
+  }
+  
+  export interface Luminosity {
+    luminosity: number;
     status: string;
-  }
-  
-  export interface MoistureRecommendations {
-    [key: string]: string;
-  }
-  
-  export interface TemperatureRecommendations {
-    [key: string]: string;
+    timestamp: string;
   }
