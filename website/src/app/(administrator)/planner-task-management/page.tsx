@@ -102,14 +102,14 @@ const PlannerTaskManagement: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen -mt-20">
       <Sidebar
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
       />
       <div className="flex-1 overflow-auto">
         <div className="p-4">
-          <h1 className="text-2xl font-bold mb-4">Gerenciamento de Tarefas do Planejador</h1>
+          {/* <h1 className="text-2xl font-bold mb-4">Gerenciamento de Tarefas do Planejador</h1> */}
           {(activeCategory === 'moisture' || activeCategory === 'temperature') && (
             <TaskBoard
               plans={activeCategory === 'moisture' ? moisturePlans : temperaturePlans}
