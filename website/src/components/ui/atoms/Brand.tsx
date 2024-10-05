@@ -20,7 +20,7 @@ export const Brand = ({
           <BrandIcon />
           <div>
               <div className="flex gap-1">
-                <h1 className='text-green-700 text-sm'>TerraFarming</h1>
+                <h1 className='text-green-800 text-sm'>TerraFarming</h1>
                 {type ? <span className="text-xs">{type}</span> : null}
               </div>
               <h1 className="text-xs text-gray-500">VMB</h1>
@@ -31,7 +31,7 @@ export const Brand = ({
             <BrandIcon />
             <div>
               <div className="flex gap-1">
-                <h1 className='text-green-700'>TerraFarming</h1>
+                <h1 className='text-green-800'>TerraFarming</h1>
                 {type ? <span className="text-xs">{type}</span> : null}
               </div>
               <h1 className="text-xs text-gray-500">VMB</h1>

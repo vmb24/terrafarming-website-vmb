@@ -77,39 +77,77 @@ const PlannerTaskManagement: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Moisture Plans
         const moistureResponse = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        setMoisturePlans(processMoisturePlans(moistureResponse.data));
-
+        if (moistureResponse.data && Array.isArray(moistureResponse.data)) {
+          setMoisturePlans(processMoisturePlans(moistureResponse.data));
+        } else {
+          console.error('Invalid moisture data:', moistureResponse.data);
+          setMoisturePlans(sampleMoisturePlans);
+        }
+  
+        // Temperature Plans
         const temperatureResponse = await axios.get('https://3qcils9mbk.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        setTemperaturePlans(processTemperaturePlans(temperatureResponse.data));
-        // Buscar recomendações de umidade do solo
+        if (temperatureResponse.data && Array.isArray(temperatureResponse.data)) {
+          setTemperaturePlans(processTemperaturePlans(temperatureResponse.data));
+        } else {
+          console.error('Invalid temperature data:', temperatureResponse.data);
+          setTemperaturePlans(sampleTemperaturePlans);
+        }
+  
+        // Moisture Recommendations
         const moistureRecommendationsResponse = await axios.get('https://81dkc5z9yd.execute-api.us-east-1.amazonaws.com/prod/recommendations');
-        setMoistureRecommendations(JSON.parse(moistureRecommendationsResponse.data['agriculture/soil/moisture']));
-
-        // Buscar recomendações de temperatura
+        if (moistureRecommendationsResponse.data && moistureRecommendationsResponse.data['agriculture/soil/moisture']) {
+          try {
+            // Primeiro, fazemos o parse do objeto externo
+            const outerObject = JSON.parse(moistureRecommendationsResponse.data['agriculture/soil/moisture']);
+            // Agora, definimos o estado com esse objeto
+            setMoistureRecommendations(outerObject);
+          } catch (parseError) {
+            console.error('Error parsing moisture recommendations:', parseError);
+            console.log('Raw moisture recommendations data:', moistureRecommendationsResponse.data['agriculture/soil/moisture']);
+            setMoistureRecommendations(null);
+          }
+        } else {
+          console.error('Invalid moisture recommendations data:', moistureRecommendationsResponse.data);
+          setMoistureRecommendations(null);
+        }
+  
+        // Temperature Recommendations
         const temperatureRecommendationsResponse = await axios.get('https://uphc1w9gfc.execute-api.us-east-1.amazonaws.com/prod/recommendations');
-        setTemperatureRecommendations(JSON.parse(temperatureRecommendationsResponse.data.completion));
-
+        if (temperatureRecommendationsResponse.data && temperatureRecommendationsResponse.data.completion) {
+          try {
+            const parsedTemperatureRecommendations = JSON.parse(temperatureRecommendationsResponse.data.completion);
+            setTemperatureRecommendations(parsedTemperatureRecommendations);
+          } catch (parseError) {
+            console.error('Error parsing temperature recommendations:', parseError);
+            setTemperatureRecommendations(null);
+          }
+        } else {
+          console.error('Invalid temperature recommendations data:', temperatureRecommendationsResponse.data);
+          setTemperatureRecommendations(null);
+        }
+  
       } catch (error) {
         console.error('Error fetching data:', error);
-        // Use dados de exemplo em caso de falha na API
         setMoisturePlans(sampleMoisturePlans);
         setTemperaturePlans(sampleTemperaturePlans);
+        setMoistureRecommendations(null);
+        setTemperatureRecommendations(null);
       }
     };
-
+  
     fetchData();
   }, []);
 
   return (
-    <div className="flex h-screen -mt-20">
+    <div className="flex h-screen w-full overflow-hidden -mt-20">
       <Sidebar
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
       />
-      <div className="flex-1 overflow-auto">
-        <div className="p-4">
-          {/* <h1 className="text-2xl font-bold mb-4">Gerenciamento de Tarefas do Planejador</h1> */}
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full p-4 overflow-y-auto">
           {(activeCategory === 'moisture' || activeCategory === 'temperature') && (
             <TaskBoard
               plans={activeCategory === 'moisture' ? moisturePlans : temperaturePlans}

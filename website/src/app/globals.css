@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import 'react-calendar-heatmap/dist/styles.css';
+
+.react-calendar-heatmap .color-empty { fill: #eeeeee; }
+
+.react-calendar-heatmap .color-blue-1 { fill: #c6dbef; }
+.react-calendar-heatmap .color-blue-2 { fill: #9ecae1; }
+.react-calendar-heatmap .color-blue-3 { fill: #6baed6; }
+.react-calendar-heatmap .color-blue-4 { fill: #3182bd; }
+.react-calendar-heatmap .color-blue-5 { fill: #08519c; }
+
+.react-calendar-heatmap .color-green-1 { fill: #c7e9c0; }
+.react-calendar-heatmap .color-green-2 { fill: #a1d99b; }
+.react-calendar-heatmap .color-green-3 { fill: #74c476; }
+.react-calendar-heatmap .color-green-4 { fill: #31a354; }
+.react-calendar-heatmap .color-green-5 { fill: #006d2c; }
+
+.react-calendar-heatmap .color-yellow-1 { fill: #fee391; }
+.react-calendar-heatmap .color-yellow-2 { fill: #fec44f; }
+.react-calendar-heatmap .color-yellow-3 { fill: #fe9929; }
+.react-calendar-heatmap .color-yellow-4 { fill: #ec7014; }
+.react-calendar-heatmap .color-yellow-5 { fill: #cc4c02; }

@@ -17,35 +17,31 @@ import { Menu } from 'lucide-react'
 const routes = [
     {
         href: '/overview',
-        label: 'Overview',
+        label: 'Visão geral',
     },
     {
         href: '/planner-task-management',
-        label: 'Planner Task Management',
+        label: 'Gerenciamento de Tarefas',
     },
     {
-        href: '/farm-health', // Verificação de praga, colheita e funcionamento de equipamentos
-        label: 'Farm Health Metrics',
+        href: '/predictive-analysis',
+        label: 'Análise Preditiva',
     },
     {
-        href: '/improving-soil', // Metricas para melhoria do solo junto com as mudanças climaticas
-        label: 'Improving Soil Metrics',
+        href: '/crop-management',
+        label: 'Gestão de Culturas',
     },
     {
-        href: '/greenhouses-control',
-        label: 'Greenhouses',
+        href: '/education-community',
+        label: 'Educação & Comunidade',
     },
     {
-        href: '/cost-management',
-        label: 'Cost Management',
-    },
-    {
-        href: '/transactions',
-        label: 'Transactions',
+        href: '/marketplace-resources',
+        label: 'Marketplace e Recursos',
     },
     {
         href: '/settings',
-        label: 'Settings',
+        label: 'Configurações',
     },
 ]
 

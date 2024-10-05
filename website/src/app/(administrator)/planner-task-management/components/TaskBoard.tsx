@@ -61,7 +61,7 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
   };
 
   const distributePlans = () => {
-    const distribution: { [key: string]: { task: string; value: number }[] } = {
+    const distribution: { [key: string]: { task: string; value: number; createdAt: string }[] } = {
       'Semana 1': [],
       'Semana 2': [],
       'Semana 3': [],
@@ -73,10 +73,11 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
       const value = category === 'temperature' 
         ? (plan as TemperaturePlan).temperature 
         : (plan as MoisturePlan).moisture;
+      const createdAt = plan.createdAt;
       
       columns.forEach(week => {
         if (weeklyTasks[week]) {
-          distribution[week].push(...weeklyTasks[week].map(task => ({ task, value })));
+          distribution[week].push(...weeklyTasks[week].map(task => ({ task, value, createdAt })));
         }
       });
     });
@@ -87,11 +88,11 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
   const distributedTasks = distributePlans();
 
   return (
-    <div className="flex overflow-x-auto">
-      {columns.map((column) => (
-        <div key={column} className="flex-shrink-0 w-80 bg-gray-200 rounded-lg p-4 mr-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 h-full">
+      {columns.map((column, columnIndex) => (
+        <div key={column} className="bg-gray-200 rounded-lg p-4 flex flex-col min-h-[500px]">
           <h3 className="text-lg font-semibold mb-4">{column}</h3>
-          <div className="space-y-4">
+          <div className="space-y-4 overflow-y-auto flex-grow">
             {distributedTasks[column].length > 0 ? (
               distributedTasks[column].map((task, index) => (
                 <TaskCard 
@@ -99,6 +100,10 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
                   task={task.task}
                   value={task.value}
                   category={category}
+                  week={(columnIndex + 1) as 1 | 2 | 3 | 4}
+                  createdAt={task.createdAt}
+                  taskImagePath="/images/task-agriculture.png"
+                  plantingImagePath="/images/generic-fruits.png"
                 />
               ))
             ) : (

@@ -14,7 +14,7 @@ const RecommendationsBoard: React.FC<RecommendationsBoardProps> = ({ recommendat
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">
+      <h2 className="text-xl text-white font-bold mb-4">
         {category === 'moistureRecommendations' ? 'Recomendações de Umidade do Solo' : 'Recomendações de Temperatura do Solo'}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
