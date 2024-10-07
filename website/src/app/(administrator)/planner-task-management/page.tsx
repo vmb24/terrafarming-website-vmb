@@ -97,19 +97,31 @@ const PlannerTaskManagement: React.FC = () => {
   
         // Moisture Recommendations
         const moistureRecommendationsResponse = await axios.get('https://81dkc5z9yd.execute-api.us-east-1.amazonaws.com/prod/recommendations');
-        if (moistureRecommendationsResponse.data && moistureRecommendationsResponse.data['agriculture/soil/moisture']) {
+        if (moistureRecommendationsResponse.data) {
           try {
-            // Primeiro, fazemos o parse do objeto externo
-            const outerObject = JSON.parse(moistureRecommendationsResponse.data['agriculture/soil/moisture']);
-            // Agora, definimos o estado com esse objeto
-            setMoistureRecommendations(outerObject);
+            let parsedData;
+            if (typeof moistureRecommendationsResponse.data === 'string') {
+              // Se a resposta for uma string, tenta fazer o parse
+              parsedData = JSON.parse(moistureRecommendationsResponse.data);
+            } else if (typeof moistureRecommendationsResponse.data === 'object') {
+              // Se já for um objeto, usa diretamente
+              parsedData = moistureRecommendationsResponse.data;
+            }
+
+            if (parsedData && parsedData['agriculture/soil/moisture']) {
+              // Se o campo esperado existe, tenta fazer o parse dele
+              const moistureData = JSON.parse(parsedData['agriculture/soil/moisture']);
+              setMoistureRecommendations(moistureData);
+            } else {
+              throw new Error('Dados de recomendação de umidade não encontrados na resposta');
+            }
           } catch (parseError) {
-            console.error('Error parsing moisture recommendations:', parseError);
-            console.log('Raw moisture recommendations data:', moistureRecommendationsResponse.data['agriculture/soil/moisture']);
+            console.error('Erro ao analisar as recomendações de umidade:', parseError);
+            console.log('Dados brutos de recomendações de umidade:', moistureRecommendationsResponse.data);
             setMoistureRecommendations(null);
           }
         } else {
-          console.error('Invalid moisture recommendations data:', moistureRecommendationsResponse.data);
+          console.error('Dados de recomendações de umidade inválidos:', moistureRecommendationsResponse);
           setMoistureRecommendations(null);
         }
   

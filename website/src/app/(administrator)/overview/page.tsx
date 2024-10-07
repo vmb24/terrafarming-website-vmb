@@ -117,87 +117,8 @@ return (
     <MetricsHeatmap />
 
     <PlanMap />
-
-    {/* <div className='text-xl mt-16 font-semibold px-4'>Médias coletados nos últimos 7 dias</div> */}
-    
-    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-8">
-      <MetricActivityCard
-        title="Umidade do Solo"
-        metricValue={soilMoisture?.moisture ?? null}
-        metricUnit="%"
-        status={soilMoisture?.status || "N/A"}
-        historicalData={historicalData?.soilMoisture || []}
-        recommendations={[
-          "Mantenha a irrigação regular",
-          "Verifique o sistema de drenagem",
-          "Ajuste a quantidade de água conforme necessário"
-        ]}
-        createdAt={soilMoisture?.timestamp || new Date().toISOString()}
-        color="#3498db"
-      />
-      
-      <MetricActivityCard
-        title="Temperatura do Solo"
-        metricValue={soilTemperature?.temperature ?? null}
-        metricUnit="°C"
-        status={soilTemperature?.status || "N/A"}
-        historicalData={historicalData?.soilTemperature || []}
-        recommendations={[
-          "Monitore a temperatura diariamente",
-          "Aplique cobertura vegetal se necessário",
-          "Ajuste a irrigação para regular a temperatura"
-        ]}
-        createdAt={soilTemperature?.timestamp || new Date().toISOString()}
-        color="#e74c3c"
-      />
-      
-      <MetricActivityCard
-        title="Luminosidade"
-        metricValue={luminosity?.luminosity ?? null}
-        metricUnit="lux"
-        status={luminosity?.status || "N/A"}
-        historicalData={historicalData?.luminosity || []}
-        recommendations={[
-          "Verifique a exposição solar das plantas",
-          "Considere o uso de telas de sombreamento",
-          "Ajuste o espaçamento entre as plantas se necessário"
-        ]}
-        createdAt={luminosity?.timestamp || new Date().toISOString()}
-        color="#f1c40f"
-      />
-      
-      <MetricActivityCard
-        title="Umidade do Ar"
-        metricValue={airHumidity?.humidity ?? null}
-        metricUnit="%"
-        status={airHumidity?.status || "N/A"}
-        historicalData={historicalData?.airHumidity || []}
-        recommendations={[
-          "Monitore a umidade do ar regularmente",
-          "Use sistemas de nebulização se necessário",
-          "Ajuste a ventilação do ambiente"
-        ]}
-        createdAt={airHumidity?.timestamp || new Date().toISOString()}
-        color="#2ecc71"
-      />
-      
-      <MetricActivityCard
-        title="Temperatura do Ar"
-        metricValue={airTemperature?.temperature ?? null}
-        metricUnit="°C"
-        status={airTemperature?.status || "N/A"}
-        historicalData={historicalData?.airTemperature || []}
-        recommendations={[
-          "Controle a temperatura com sistemas de climatização",
-          "Use telas térmicas quando necessário",
-          "Ajuste a ventilação para regular a temperatura"
-        ]}
-        createdAt={airTemperature?.timestamp || new Date().toISOString()}
-        color="#e67e22"
-      />
-    </div> */}
   </div>
-);
+  );
 };
 
 export default Overview;

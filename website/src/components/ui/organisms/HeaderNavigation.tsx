@@ -37,7 +37,7 @@ const routes = [
     },
     {
         href: '/marketplace-resources',
-        label: 'Marketplace e Recursos',
+        label: 'Marketplace & Recursos',
     },
     {
         href: '/settings',
