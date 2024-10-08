@@ -1,50 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { EllipsisHorizontalIcon, CheckIcon, LockClosedIcon, PlayIcon, ArrowRightIcon } from '@heroicons/react/24/solid';
+import { CloudIcon, BeakerIcon, WrenchIcon, SunIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 
 interface Task {
   id: string;
   title: string;
   description: string;
   status: 'completed' | 'upcoming' | 'in_progress';
-  icon: string;
+  icon: React.ElementType;
   recommendations: string[];
-  temperature?: string;
-  moisture?: string;
 }
 
-type Metric = 'Umidade do Solo' | 'Temperatura do Solo' | 'Luminosidade' | 'Umidade do Ar' | 'Temperatura do Ar';
+type TabType = 'all' | 'soil_moisture' | 'soil_temperature' | 'brightness' | 'air_temperature' | 'air_humidity';
+
+interface TabButtonProps {
+  children: React.ReactNode;
+  active: boolean;
+  onClick: () => void;
+}
+
+interface StatusBarProps {
+  tasks: Task[];
+}
+
 
 const PlanMap: React.FC = () => {
-  const [tasks, setTasks] = useState<{ [key in Metric]: Task[] }>({
-    'Umidade do Solo': [],
-    'Temperatura do Solo': [],
-    'Luminosidade': [],
-    'Umidade do Ar': [],
-    'Temperatura do Ar': []
-  });
-  const [selectedMetric, setSelectedMetric] = useState<Metric>('Umidade do Solo');
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const moistureResponse = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        const temperatureResponse = await axios.get('https://3qcils9mbk.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        
-        const moistureTasks = processTasks(moistureResponse.data, 'moisture');
-        const temperatureTasks = processTasks(temperatureResponse.data, 'temperature');
-        
-        setTasks({
-          'Umidade do Solo': moistureTasks,
-          'Temperatura do Solo': temperatureTasks,
-          'Luminosidade': [],
-          'Umidade do Ar': [],
-          'Temperatura do Ar': []
-        });
+        const response = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
+        const processedTasks = processTasks(response.data);
+        setTasks(processedTasks);
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Failed to load tasks. Please try again later.');
@@ -56,36 +49,25 @@ const PlanMap: React.FC = () => {
     fetchData();
   }, []);
 
-  const processTasks = (data: any[], category: 'moisture' | 'temperature'): Task[] => {
+  const processTasks = (data: any[]): Task[] => {
     if (!Array.isArray(data)) {
       console.error('Data is not an array:', data);
       return [];
     }
+    const icons = [CloudIcon, BeakerIcon, WrenchIcon, SunIcon, ArrowPathIcon];
     return data.reduce((acc: Task[], item, index) => {
-      const content = category === 'moisture' ? item.plan.recommendations : item.plan;
+      const content = item.plan.recommendations;
       const activities = extractActivities(content);
       const newTasks = activities.map((activity, activityIndex) => ({
-        id: `${item.planId || category}-${index}-${activityIndex}`,
-        title: `${category === 'moisture' ? 'Moisture' : 'Temperature'} Management`,
+        id: `task-${index}-${activityIndex}`,
+        title: 'Moisture Management',
         description: activity,
         status: index === 0 && activityIndex === 0 ? 'in_progress' : 'upcoming',
-        icon: category === 'moisture' ? '💧' : '🌡️',
-        temperature: category === 'temperature' ? extractTemperature(activity) : undefined,
-        moisture: category === 'moisture' ? extractMoisture(activity) : undefined,
+        icon: icons[index % icons.length],
         recommendations: [`Recomendação padrão para ${activity}`],
       }));
       return [...acc, ...newTasks];
     }, []);
-  };
-
-  const extractTemperature = (activity: string): string | undefined => {
-    const temperatureMatch = activity.match(/(\d+([.,]\d+)?)\s*°C/);
-    return temperatureMatch ? temperatureMatch[0] : undefined;
-  };
-
-  const extractMoisture = (activity: string): string | undefined => {
-    const moistureMatch = activity.match(/(\d+([.,]\d+)?)\s*%/);
-    return moistureMatch ? moistureMatch[0] : undefined;
   };
 
   const extractActivities = (content: string | string[]): string[] => {
@@ -95,147 +77,140 @@ const PlanMap: React.FC = () => {
     return content.split('\n-').slice(1).map(activity => activity.trim()).filter(activity => activity !== '');
   };
 
-  const renderTaskMap = (tasks: Task[], title: string) => {
-    if (tasks.length === 0) {
-      return <p className="text-center p-4">Tarefas e recomendações não encontradas para gerar um plano agrícola.</p>;
-    }
+  if (isLoading) return <div className="text-center p-4">Carregando tarefas...</div>;
+  if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
 
+  const TabButton: React.FC<TabButtonProps> = ({ children, active = false, onClick }) => {
     return (
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">{title}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
-          {tasks.map((task, index) => (
-            <div key={task.id} className="relative">
-              <TaskCard task={task} />
-              {index % 3 < 2 && index < tasks.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-green-500">
-                  <ArrowRightIcon className="w-4 h-4 text-green-500 absolute -right-1 -top-1.5" />
-                </div>
-              )}
-              {index < tasks.length - 3 && (
-                <div className="hidden lg:block absolute -bottom-4 left-1/2 w-0.5 h-8 bg-green-500">
-                  <ArrowRightIcon className="w-4 h-4 text-green-500 absolute -bottom-1 -left-1.5 transform rotate-90" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+      <button
+        onClick={onClick}
+        className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 
+        ${active 
+          ? 'bg-blue-500 text-white' 
+          : 'bg-white text-gray-700 hover:bg-gray-100'
+        }`}
+      >
+        {children}
+      </button>
     );
   };
 
-  if (isLoading) {
-    return <div className="text-center p-4">Carregando tarefas...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center p-4 text-red-500">{error}</div>;
-  }
-
-  const allTasks = Object.values(tasks).flat();
-  const totalTasks = allTasks.length;
-  const completedTasks = allTasks.filter(task => task.status === 'completed').length;
-  const upcomingTasks = allTasks.filter(task => task.status === 'upcoming').length;
-  const inProgressTasks = allTasks.filter(task => task.status === 'in_progress').length;
-
   return (
-    <div className="bg-white shadow-md p-4 min-h-screen rounded-md mt-20">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-        <h1 className="text-xl font-semibold mb-4 md:mb-0">Plano de tarefas Agrícola</h1>
-        <div className="flex space-x-4">
-          <div className="bg-blue-100 rounded-lg p-2">
-            <span className="block text-2xl font-bold text-center">{totalTasks}</span>
-            <span className="text-sm text-gray-600">Total</span>
-          </div>
-          <div className="bg-green-100 rounded-lg p-2">
-            <span className="block text-2xl font-bold text-center">{completedTasks}</span>
-            <span className="text-sm text-gray-600">Completed</span>
-          </div>
-          <div className="bg-yellow-100 rounded-lg p-2">
-            <span className="block text-2xl font-bold text-center">{upcomingTasks}</span>
-            <span className="text-sm text-gray-600">Upcoming</span>
-          </div>
-          <div className="bg-purple-100 rounded-lg p-2">
-            <span className="block text-2xl font-bold text-center">{inProgressTasks}</span>
-            <span className="text-sm text-gray-600">In Progress</span>
+    <div className="bg-gray-100 p-8 min-h-screen">
+      <h1 className="text-2xl font-bold mb-6">Plano de tarefas Agrícola</h1>
+      <StatusBar tasks={tasks} />
+      <div className="relative mt-8 bg-white rounded-lg shadow-lg p-8">
+        <div className="flex flex-col items-center">
+          <StartNode />
+          <VerticalArrow />
+          <WebhookNode />
+          <VerticalArrow />
+          <CheckSubmitNode />
+          <VerticalArrow />
+          <div className="flex flex-col items-center space-y-4">
+            {tasks.map((task, index) => (
+              <React.Fragment key={task.id}>
+                <TaskNode task={task} />
+                {index < tasks.length - 1 && <VerticalArrow />}
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </div>
-      
-      <div className="mb-12">
-        <div className="flex space-x-2 overflow-x-auto">
-          {Object.keys(tasks).map((metric) => (
-            <button
-              key={metric}
-              className={`px-4 py-2 text-sm font-medium rounded-full ${
-                selectedMetric === metric
-                  ? 'bg-green-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-              onClick={() => setSelectedMetric(metric as Metric)}
-            >
-              {metric}
-            </button>
-          ))}
-        </div>
-      </div>
-      
-      {renderTaskMap(tasks[selectedMetric], `Tarefas & Recomendações de ${selectedMetric}`)}
     </div>
   );
 };
 
-const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
+const StatusBar: React.FC<{ tasks: Task[] }> = ({ tasks }) => (
+  <div className="flex justify-end space-x-4 mb-6">
+    <StatusBox label="Total" value={tasks.length} color="bg-blue-100" />
+    <StatusBox label="Completed" value={tasks.filter(t => t.status === 'completed').length} color="bg-green-100" />
+    <StatusBox label="Upcoming" value={tasks.filter(t => t.status === 'upcoming').length} color="bg-yellow-100" />
+    <StatusBox label="In Progress" value={tasks.filter(t => t.status === 'in_progress').length} color="bg-purple-100" />
+  </div>
+);
+
+const StatusBox: React.FC<{ label: string; value: number; color: string }> = ({ label, value, color }) => (
+  <div className={`${color} rounded-lg p-2 text-center`}>
+    <span className="block text-2xl font-bold">{value}</span>
+    <span className="text-sm text-gray-600">{label}</span>
+  </div>
+);
+
+const StartNode: React.FC = () => (
+  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mb-2">
+    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+    </svg>
+  </div>
+);
+
+const WebhookNode: React.FC = () => (
+  <div className="bg-white border border-gray-300 rounded-lg p-4 flex items-center mb-2">
+    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+    <div>
+      <h3 className="font-semibold">Webhook</h3>
+      <p className="text-sm text-gray-600">Receive URLs</p>
+    </div>
+  </div>
+);
+
+const CheckSubmitNode: React.FC = () => (
+  <div className="bg-orange-100 border border-orange-300 rounded-lg p-4 mb-2">
+    <h3 className="font-semibold">Check submit</h3>
+  </div>
+);
+
+const TaskNode: React.FC<{ task: Task }> = ({ task }) => {
+  const IconComponent = task.icon;
   return (
-    <div className="bg-white rounded-lg p-4 shadow mt-6">
-      <div className="flex items-start">
-        <div className="flex-shrink-0 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-xl">
-          {task.icon}
-        </div>
-        <div className="ml-3 flex-grow">
-          <h2 className="text-md font-semibold">{task.title}</h2>
-          <p className="text-sm text-gray-600">{task.description}</p>
-          {task.temperature && (
-            <p className="text-sm font-semibold text-red-500 mt-1">Temperatura: {task.temperature}</p>
-          )}
-          {task.moisture && (
-            <p className="text-sm font-semibold text-blue-500 mt-1">Umidade: {task.moisture}</p>
-          )}
-        </div>
-        <div className="flex items-center space-x-2">
-          <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
-            task.status === 'completed' ? 'bg-green-100 text-green-800' :
-            task.status === 'upcoming' ? 'bg-yellow-100 text-yellow-800' :
-            'bg-blue-100 text-blue-800'
-          }`}>
-            {task.status === 'completed' ? 'Completed' :
-             task.status === 'upcoming' ? 'Upcoming' :
-             'In Progress'}
-          </span>
-          <EllipsisHorizontalIcon className="w-5 h-5 text-gray-400" />
-          {task.status === 'completed' ? (
-            <CheckIcon className="w-5 h-5 text-green-500" />
-          ) : task.status === 'upcoming' ? (
-            <LockClosedIcon className="w-5 h-5 text-gray-400" />
-          ) : (
-            <CheckIcon className="w-5 h-5 text-green-500" />
-          )}
-        </div>
+    <div className="bg-white border border-gray-300 rounded-lg p-4 w-full max-w-md">
+      <div className="flex items-center mb-2">
+        <IconComponent className="w-5 h-5 mr-2 text-blue-500" />
+        <h3 className="font-semibold">{task.title}</h3>
       </div>
-      {task.status === 'in_progress' && (
-        <div className="mt-2 bg-purple-100 rounded-lg p-2 flex items-center">
-          <PlayIcon className="w-5 h-5 text-purple-500 mr-2" />
-          <span className="text-xs font-medium">Implementing task</span>
-        </div>
-      )}
-      {task.recommendations && task.recommendations.length > 0 && (
-        <div className="mt-2 bg-blue-100 rounded-lg p-2">
-          <h3 className="text-sm font-semibold mb-1">Recomendação:</h3>
-          <p className="text-xs">{task.recommendations[0]}</p>
-        </div>
-      )}
+      <p className="text-sm text-gray-600 mb-2">{task.description}</p>
+      <div className="bg-blue-100 rounded p-2 mt-2">
+        <h4 className="font-semibold text-xs mb-1">Recomendação:</h4>
+        <p className="text-xs">{task.recommendations[0]}</p>
+      </div>
+      <div className={`mt-2 text-xs font-semibold ${getStatusColor(task.status)}`}>
+        {getStatusText(task.status)}
+      </div>
     </div>
   );
+};
+
+const VerticalArrow: React.FC = () => (
+  <svg className="w-6 h-6 text-gray-400 my-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+  </svg>
+);
+
+const ArrowIcon: React.FC = () => (
+  <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+  </svg>
+);
+
+const getStatusColor = (status: Task['status']): string => {
+  switch (status) {
+    case 'completed': return 'text-green-500';
+    case 'in_progress': return 'text-blue-500';
+    case 'upcoming': return 'text-yellow-500';
+    default: return 'text-gray-500';
+  }
+};
+
+const getStatusText = (status: Task['status']): string => {
+  switch (status) {
+    case 'completed': return 'Concluído';
+    case 'in_progress': return 'Em andamento';
+    case 'upcoming': return 'Próxima tarefa';
+    default: return 'Status desconhecido';
+  }
 };
 
 export default PlanMap;

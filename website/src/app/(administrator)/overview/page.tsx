@@ -8,6 +8,7 @@ import PlanMap from './components/PlanMap';
 
 import { SoilMoisture, SoilTemperature, AirHumidity, AirTemperature, Luminosity } from './types/metrics'
 import MetricsHeatmap from './components/MetricsHeatmap';
+import WorkflowDiagram from './components/WorkflowDiagram';
 
 interface HistoricalDataPoint {
   day: string;
@@ -116,7 +117,7 @@ return (
 
     <MetricsHeatmap />
 
-    <PlanMap />
+    <WorkflowDiagram />
   </div>
   );
 };
