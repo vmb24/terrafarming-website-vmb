@@ -11,4 +11,5 @@ export interface Recommendation {
     description: string;
     storeCoordinates: [number, number];
     storeName: string;
+    imageUrl: string
   }

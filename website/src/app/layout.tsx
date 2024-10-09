@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -5,6 +6,7 @@ import "./globals.css"
 import { ClerkProvider } from '@clerk/nextjs'
 import { Container } from "@/components/ui/atoms/Container"
 import { ToastContainer } from "@/components/ui/molecules/Toast"
+import { ThemeProvider } from '@/components/ui/layout/ThemeProvider'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -20,11 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider afterSignOutUrl="/">
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
             <ToastContainer />
-          </body>
+          </ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
   )

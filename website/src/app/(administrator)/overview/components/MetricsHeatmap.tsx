@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
@@ -5,6 +7,7 @@ import { format, eachMonthOfInterval, startOfYear, endOfYear, subYears, isSameYe
 import { ptBR } from 'date-fns/locale';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import { useTheme } from 'next-themes';
 
 interface DataPoint {
   date: string;
@@ -40,6 +43,7 @@ const fetchData = async (endpoint: string): Promise<DataPoint[]> => {
 };
 
 const MetricsHeatmap: React.FC = () => {
+  const { theme } = useTheme();
   const [data, setData] = useState<DataPoint[]>([]);
   const [metric, setMetric] = useState<string>(metrics[0].value);
   const [selectedMonth, setSelectedMonth] = useState<string>(format(new Date(), 'yyyy-MM'));
@@ -53,6 +57,17 @@ const MetricsHeatmap: React.FC = () => {
     value: format(date, 'yyyy-MM'),
     label: format(date, 'MMMM', { locale: ptBR })
   }));
+
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .react-calendar-heatmap .color-empty { fill: ${getEmptyColor()} !important; }
+    `;
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [theme]);
 
   useEffect(() => {
     const selectedMetric = metrics.find(m => m.value === metric);
@@ -70,7 +85,10 @@ const MetricsHeatmap: React.FC = () => {
     }
   }, [metric]);
 
-  const getColorClass = (value: number): string => {
+  const getColorClass = (value: number | null): string => {
+    if (value === null) {
+      return 'color-empty';
+    }
     const selectedMetric = metrics.find(m => m.value === metric);
     if (selectedMetric) {
       const intensity = Math.min(Math.floor(value / 20), 4);
@@ -82,21 +100,25 @@ const MetricsHeatmap: React.FC = () => {
   const getColorStyle = (level: number) => {
     const selectedMetric = metrics.find(m => m.value === metric);
     if (selectedMetric) {
-      const opacity = 0.2 + (level * 0.2); // Adjust opacity from 0.2 to 1
+      const opacity = 0.2 + (level * 0.2);
       return { backgroundColor: `${selectedMetric.color}`, opacity };
     }
     return {};
   };
 
+  const getEmptyColor = () => {
+    return theme === 'dark' ? '#2D3748' : '#EBEDF0';
+  };
+
   return (
-    <div className="metrics-heatmap w-full font-sans p-6 bg-white rounded-lg shadow-md mt-20">
+    <div className="metrics-heatmap w-full font-sans p-6 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-md mt-20">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Métricas</h2>
         <div className="flex items-center space-x-4">
           <select
             value={metric}
             onChange={(e) => setMetric(e.target.value)}
-            className="p-2 text-base border border-gray-300 rounded-md"
+            className="p-2 text-base border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white rounded-md"
           >
             {metrics.map((m) => (
               <option key={m.value} value={m.value}>
@@ -108,7 +130,7 @@ const MetricsHeatmap: React.FC = () => {
             <select
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="p-2 pl-8 pr-10 text-base border border-gray-300 rounded-md appearance-none bg-white"
+              className="p-2 pl-8 pr-10 text-base border bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-black dark:text-white rounded-md appearance-none"
             >
               {monthOptions.map(option => (
                 <option key={option.value} value={option.value}>
@@ -116,7 +138,7 @@ const MetricsHeatmap: React.FC = () => {
                 </option>
               ))}
             </select>
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-2 text-gray-700">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
               <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z"/>
               </svg>
@@ -161,6 +183,15 @@ const MetricsHeatmap: React.FC = () => {
             'data-tooltip-id': "calendar-tooltip",
             'data-tooltip-content': `${format(new Date(value.date), 'dd/MM/yyyy')}: ${value.value} ${metrics.find(m => m.value === metric)?.label}`,
           };
+        }}
+        transformDayElement={(element, value, index) => {
+          if (!value) {
+            return React.cloneElement(element, {
+              ...element.props,
+              style: { ...element.props.style, fill: getEmptyColor() }
+            });
+          }
+          return element;
         }}
       />
       <ReactTooltip id="calendar-tooltip" />

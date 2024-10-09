@@ -1,15 +1,20 @@
+'use client'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { CloudIcon, BeakerIcon, WrenchIcon, SunIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
+import { useTheme } from 'next-themes';
 
 interface Task {
-  id: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   title: string;
   description: string;
-  status: 'completed' | 'upcoming' | 'in_progress';
-  icon: React.ElementType;
   recommendations: string[];
+  status: 'completed' | 'in_progress' | 'upcoming';
 }
+
+type StatusColors = {
+  [key in Task['status']]: string;
+};
 
 interface SensorNodeProps {
     icon: React.ReactNode;
@@ -44,8 +49,8 @@ const TabButton: React.FC<TabButtonProps> = ({ children, active = false, onClick
       onClick={onClick}
       className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 
       ${active 
-        ? 'bg-blue-500 text-white' 
-        : 'bg-white text-gray-700 hover:bg-gray-100'
+        ? 'bg-blue-500 text-black dark:text-white' 
+        : 'bg-white dark:bg-gray-800 text-gray-500 hover:bg-white'
       }`}
     >
       {children}
@@ -112,15 +117,6 @@ const WorkflowDiagram = () => {
 
     if (isLoading) return <div className="text-center p-4">Carregando tarefas...</div>;
     if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
-
-    const getStatusColor = (status: Task['status']): string => {
-        switch (status) {
-          case 'completed': return 'text-green-500';
-          case 'in_progress': return 'text-blue-500';
-          case 'upcoming': return 'text-yellow-500';
-          default: return 'text-gray-500';
-        }
-      };
       
       const getStatusText = (status: Task['status']): string => {
         switch (status) {
@@ -131,18 +127,43 @@ const WorkflowDiagram = () => {
         }
       };
 
-    const TaskNode: React.FC<{ task: Task }> = ({ task }) => {
+      const TaskNode: React.FC<{ task: Task }> = ({ task }) => {
+        const { theme } = useTheme();
         const IconComponent = task.icon;
+      
+        const getStatusColor = (status: Task['status']): string => {
+          const baseColors: StatusColors = {
+            completed: 'text-green-500',
+            in_progress: 'text-blue-500',
+            upcoming: 'text-yellow-500'
+          };
+          const darkColors: StatusColors = {
+            completed: 'text-green-400',
+            in_progress: 'text-blue-400',
+            upcoming: 'text-yellow-400'
+          };
+          return theme === 'dark' ? darkColors[status] : baseColors[status];
+        };
+      
+        const getStatusText = (status: Task['status']): string => {
+          const statusTexts: StatusColors = {
+            completed: 'Concluído',
+            in_progress: 'Em andamento',
+            upcoming: 'Próximo'
+          };
+          return statusTexts[status];
+        };
+      
         return (
-          <div className="bg-white border border-gray-300 rounded-lg p-4 w-full max-w-md">
+          <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-4 w-full max-w-md">
             <div className="flex items-center mb-2">
-              <IconComponent className="w-5 h-5 mr-2 text-blue-500" />
-              <h3 className="font-semibold">{task.title}</h3>
+              <IconComponent className="w-5 h-5 mr-2 text-blue-500 dark:text-blue-400" />
+              <h3 className="font-semibold text-gray-800 dark:text-gray-200">{task.title}</h3>
             </div>
-            <p className="text-sm text-gray-600 mb-2">{task.description}</p>
-            <div className="bg-blue-100 rounded p-2 mt-2">
-              <h4 className="font-semibold text-xs mb-1">Recomendação:</h4>
-              <p className="text-xs">{task.recommendations[0]}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{task.description}</p>
+            <div className="bg-blue-100 dark:bg-blue-800 rounded p-2 mt-2">
+              <h4 className="font-semibold text-xs mb-1 text-gray-800 dark:text-gray-200">Recomendação:</h4>
+              <p className="text-xs text-gray-600 dark:text-gray-400">{task.recommendations[0]}</p>
             </div>
             <div className={`mt-2 text-xs font-semibold ${getStatusColor(task.status)}`}>
               {getStatusText(task.status)}
@@ -157,52 +178,82 @@ const WorkflowDiagram = () => {
         </svg>
       );
 
-      const StatusBox: React.FC<{ label: string; value: number; color: string }> = ({ label, value, color }) => (
-        <div className={`${color} rounded-lg p-2 text-center`}>
-          <span className="block text-2xl font-bold">{value}</span>
-          <span className="text-sm text-gray-600">{label}</span>
-        </div>
-      );      
-
-      const StatusBar: React.FC<{ tasks: Task[] }> = ({ tasks }) => (
-        <div className="flex justify-end space-x-4 mb-6">
-          <StatusBox label="Total" value={tasks.length} color="bg-blue-100" />
-          <StatusBox label="Completed" value={tasks.filter(t => t.status === 'completed').length} color="bg-green-100" />
-          <StatusBox label="Upcoming" value={tasks.filter(t => t.status === 'upcoming').length} color="bg-yellow-100" />
-          <StatusBox label="In Progress" value={tasks.filter(t => t.status === 'in_progress').length} color="bg-purple-100" />
-        </div>
-      );
+      const StatusBox: React.FC<{ label: string; value: number; lightColor: string; darkColor: string }> = ({ label, value, lightColor, darkColor }) => {
+        const { theme } = useTheme();
+        
+        return (
+          <div className={`${theme === 'dark' ? darkColor : lightColor} rounded-lg p-2 text-center`}>
+            <span className="block text-2xl font-bold">{value}</span>
+            <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{label}</span>
+          </div>
+        );
+      };
+      
+      const StatusBar: React.FC<{ tasks: Task[] }> = ({ tasks }) => {
+        return (
+          <div className="flex justify-end space-x-4 mb-6">
+            <StatusBox 
+              label="Total" 
+              value={tasks.length} 
+              lightColor="bg-blue-100" 
+              darkColor="bg-blue-800"
+            />
+            <StatusBox 
+              label="Completed" 
+              value={tasks.filter(t => t.status === 'completed').length} 
+              lightColor="bg-green-100" 
+              darkColor="bg-green-800"
+            />
+            <StatusBox 
+              label="Upcoming" 
+              value={tasks.filter(t => t.status === 'upcoming').length} 
+              lightColor="bg-yellow-100" 
+              darkColor="bg-yellow-800"
+            />
+            <StatusBox 
+              label="In Progress" 
+              value={tasks.filter(t => t.status === 'in_progress').length} 
+              lightColor="bg-purple-100" 
+              darkColor="bg-purple-800"
+            />
+          </div>
+        );
+      };
 
       const AlexaNode: React.FC<{ x: string, y: string }> = ({ x, y }) => (
         <div className={`absolute ${x} ${y} transform -translate-x-1/2 rounded-lg shadow-md hover:shadow-md transition-all duration-300 hover:-translate-y-1`}>
           <div className="bg-[#00CAFF] rounded-lg p-3 w-32 h-32 flex items-center justify-center shadow-lg">
             <div className="text-center">
-              <svg className="w-16 h-16 text-white mb-2 mx-auto" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-16 h-16 text-black dark:text-white mb-2 mx-auto" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
                 <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
                 <circle cx="12" cy="12" r="2"/>
               </svg>
-              <span className="font-semibold text-white text-center text-xs">Integração Alexa</span>
+              <span className="font-semibold text-black dark:text-white text-center text-xs">Integração Alexa</span>
             </div>
           </div>
         </div>
       )
 
-      const SensorNode: React.FC<SensorNodeProps> = ({ icon, title, description, color, left, top }) => (
-        <div style={{ position: 'absolute', left: `${left}px`, top: `${top}px`, transform: 'translateX(-50%)' }}>
-          <div className={`bg-white border-2 border-${color}-300 rounded-lg p-4 w-52 shadow-lg hover:shadow-xl transition-shadow duration-300`}>
-            <div className="flex items-center">
-              <div className={`bg-${color}-100 rounded-full p-2 mr-3`}>
-                {icon}
-              </div>
-              <div>
-                <div className="font-semibold text-gray-800">{title}</div>
-                <div className="text-xs text-gray-600">{description}</div>
+      const SensorNode: React.FC<SensorNodeProps> = ({ icon, title, description, color, left, top }) => {
+        const { theme } = useTheme();
+      
+        return (
+          <div style={{ position: 'absolute', left: `${left}px`, top: `${top}px`, transform: 'translateX(-50%)' }}>
+            <div className={`bg-white dark:bg-gray-800 border-2 border-${color}-300 dark:border-${color}-700 rounded-lg p-4 w-52 shadow-lg hover:shadow-xl transition-shadow duration-300`}>
+              <div className="flex items-center">
+                <div className={`bg-${color}-100 dark:bg-${color}-800 rounded-full p-2 mr-3`}>
+                  {icon}
+                </div>
+                <div>
+                  <div className={`font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>{title}</div>
+                  <div className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{description}</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )      
+        );
+      };     
       
       const MoistureIcon: React.FC = () => (
         <svg className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -299,8 +350,8 @@ const WorkflowDiagram = () => {
       };
       
   return (
-    <div className="bg-gray-100 p-4 font-sans mt-20">
-      <div className="bg-white rounded-lg shadow-lg p-6 h-[4300px]">
+    <div className="bg-white dark:bg-gray-800 p-4 font-sans mt-20 rounded-md">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[4300px]">
         <div className="flex flex-col mb-8">
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center space-x-4">
@@ -355,7 +406,7 @@ const WorkflowDiagram = () => {
         
         <div className="relative">
           {/* Background grid */}
-          <div className="absolute inset-0 h-[4150px]" style={{
+          <div className="absolute inset-0 h-[4050px]" style={{
             backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
             backgroundSize: '20px 20px'
           }}></div>
@@ -364,7 +415,7 @@ const WorkflowDiagram = () => {
           <div className="absolute left-1/2 top-4 transform -translate-x-1/2">
             <div className="text-md mb-1 text-center">Iniciar</div>
             <div className="bg-green-400 rounded-full w-10 h-10 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-6 h-6 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
             </div>
@@ -458,7 +509,7 @@ const WorkflowDiagram = () => {
           </div>
 
           <div className="absolute left-1/2 top-[650px] transform -translate-x-1/2">
-            <div className="bg-white border rounded-lg p-3 w-48 shadow-md">
+            <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
               <div className="flex items-center">
                 <div className="bg-green-100 rounded-full p-1 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -490,7 +541,7 @@ const WorkflowDiagram = () => {
 
           {/* Email nodes */}
           <div className="absolute left-1/4 top-[3950px]">
-            <div className="bg-white border rounded-lg p-3 w-48 shadow-md">
+            <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
               <div className="flex items-center">
                 <div className="bg-green-100 rounded-full p-1 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -506,7 +557,7 @@ const WorkflowDiagram = () => {
           </div>
 
           <div className="absolute right-1/4 top-[3950px]">
-            <div className="bg-white border rounded-lg p-3 w-48 shadow-md">
+            <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
               <div className="flex items-center">
                 <div className="bg-green-100 rounded-full p-1 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

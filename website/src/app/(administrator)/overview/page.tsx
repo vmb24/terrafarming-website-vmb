@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MetricCard from './components/MetricCard';
-import MetricActivityCard from './components/MetricActivityCard';
 import WeeklyTasksOverview from './components/WeeklyTasksOverview';
-import PlanMap from './components/PlanMap';
 
 import { SoilMoisture, SoilTemperature, AirHumidity, AirTemperature, Luminosity } from './types/metrics'
 import MetricsHeatmap from './components/MetricsHeatmap';
