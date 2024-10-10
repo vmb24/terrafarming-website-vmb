@@ -3,7 +3,7 @@ import MarketplaceRecommendationsLocations from "./components/MarketplaceRecomme
 
 const MarketplaceResources = () => {
     return (
-        <div>
+        <div className="-mt-12">
             <MarketplaceRecommendationsLocations />
         </div>
     )

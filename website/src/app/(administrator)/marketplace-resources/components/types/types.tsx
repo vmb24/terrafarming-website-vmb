@@ -12,4 +12,15 @@ export interface Recommendation {
     storeCoordinates: [number, number];
     storeName: string;
     imageUrl: string
-  }
+    rating: string
+}
+
+export interface AuxiliaryProduct {
+  id: string;
+  name: string;
+  imageUrl: string;
+  store: string;
+  date: string;
+  coordinates: [number, number];
+}
+  

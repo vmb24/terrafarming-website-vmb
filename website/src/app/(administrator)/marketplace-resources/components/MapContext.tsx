@@ -2,7 +2,7 @@
 'use client'
 import React, { createContext, useState, useContext, ReactNode, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { Recommendation } from './types/types';
+import { Recommendation, AuxiliaryProduct } from './types/types';
 
 interface MapContextType {
   map: React.MutableRefObject<mapboxgl.Map | null>;
@@ -13,6 +13,10 @@ interface MapContextType {
   setSelectedRecommendation: (recommendation: Recommendation | null) => void;
   recommendations: Recommendation[];
   setRecommendations: (recommendations: Recommendation[]) => void;
+  selectedAuxiliaryProduct: AuxiliaryProduct | null;
+  setSelectedAuxiliaryProduct: (auxiliaryProduct: AuxiliaryProduct | null) => void;
+  auxiliaryProducts: AuxiliaryProduct[];
+  setAuxiliaryProducts: (auxiliaryProduct: AuxiliaryProduct[]) => void;
 }
 
 const MapContext = createContext<MapContextType | undefined>(undefined);
@@ -22,6 +26,8 @@ export const MapProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [selectedRecommendation, setSelectedRecommendation] = useState<Recommendation | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [selectedAuxiliaryProduct, setSelectedAuxiliaryProduct] = useState<AuxiliaryProduct | null>(null);
+  const [auxiliaryProducts, setAuxiliaryProducts] = useState<AuxiliaryProduct[]>([]);
 
   const setMap = (map: mapboxgl.Map | null) => {
     mapRef.current = map;
@@ -37,6 +43,10 @@ export const MapProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       setSelectedRecommendation,
       recommendations,
       setRecommendations,
+      selectedAuxiliaryProduct,
+      setSelectedAuxiliaryProduct,
+      auxiliaryProducts,
+      setAuxiliaryProducts,
     }}>
       {children}
     </MapContext.Provider>
