@@ -2,6 +2,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import PredictiveMetricCard from './components/PredictiveMetricCard';
+import WeatherAlert from './components/WeatherAlert';
 
 interface PredictiveData {
   yieldForecast: number | null;
@@ -72,6 +73,8 @@ const PredictiveAnalysisBoard: React.FC = () => {
                 type="pest"
             />
         </div>
+
+        <WeatherAlert />
         
     </div>
   );

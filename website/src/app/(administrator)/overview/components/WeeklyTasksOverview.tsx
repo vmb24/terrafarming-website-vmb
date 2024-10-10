@@ -98,7 +98,7 @@ const WeeklyTasksOverview: React.FC = () => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+    <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-200">
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +113,7 @@ const WeeklyTasksOverview: React.FC = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {tasks.map((task) => (
-          <div key={task.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow overflow-hidden flex">
+          <div key={task.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow overflow-hidden flex">
             <div className={`w-1 ${priorityColors[task.priority]}`}></div>
             <div className="flex-1 p-4">
               <div className="flex justify-between items-start mb-3">
