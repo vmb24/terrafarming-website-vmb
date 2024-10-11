@@ -55,7 +55,7 @@ const WeatherAlert: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-900 rounded-lg shadow-lg p-6 max-w-2xl mx-auto mb-8 text-white">
+    <div className="bg-gray-800 h-[400px] rounded-lg shadow-lg p-6 max-w-2xl mb-8 text-white">
       <h2 className="text-2xl font-semibold mb-6">Alerta Climático</h2>
       <div className="grid grid-cols-4 gap-4 mb-8">
         <div>

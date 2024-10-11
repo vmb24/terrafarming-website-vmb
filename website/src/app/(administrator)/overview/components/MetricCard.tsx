@@ -62,7 +62,7 @@ const MetricCard: React.FC<MetricCardProps> = ({ title, value, unit, status, dat
   const barColor = getBarColor();
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg w-72 shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg w-72 shadow-md p-6">
       <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{title}</h2>
       {hasData ? (
         <>

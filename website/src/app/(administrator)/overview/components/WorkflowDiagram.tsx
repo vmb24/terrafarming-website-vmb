@@ -50,7 +50,7 @@ const TabButton: React.FC<TabButtonProps> = ({ children, active = false, onClick
       className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 
       ${active 
         ? 'bg-blue-500 text-black dark:text-white' 
-        : 'bg-white dark:bg-gray-900 text-gray-500 hover:bg-white'
+        : 'bg-white dark:bg-gray-800 text-gray-500 hover:bg-white'
       }`}
     >
       {children}
@@ -350,8 +350,8 @@ const WorkflowDiagram = () => {
       };
       
   return (
-    <div className="bg-white dark:bg-gray-900 p-4 font-sans mt-20 rounded-md">
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 h-[4300px]">
+    <div className="bg-white dark:bg-gray-800 p-4 font-sans mt-20 rounded-md">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[4300px]">
         <div className="flex flex-col mb-8">
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center space-x-4">
