@@ -3,6 +3,7 @@
 import { Role } from '@/utils/types'
 import { BrandIcon } from './BrandIcon'
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 
 export interface IBrandProps {
   className?: string
@@ -15,7 +16,16 @@ export const Brand = ({
   className,
   type = undefined,
 }: IBrandProps) => {
+  const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className={`grid place-items-center z-50 ${className}`}>
@@ -28,7 +38,7 @@ export const Brand = ({
                 <h1 className='text-green-800 dark:text-green-400 text-sm'>TerraFarming</h1>
                 {type ? <span className="text-xs text-gray-600 dark:text-gray-400">{type}</span> : null}
               </div>
-              <h1 className="text-xs text-gray-700 dark:text-gray-300">VMB</h1>
+              <h1 className="text-xs text-gray-700 dark:text-gray-500">VMB</h1>
             </div>
           </div>
         ) : (
@@ -39,7 +49,7 @@ export const Brand = ({
                 <h1 className='text-green-800 dark:text-green-400'>TerraFarming</h1>
                 {type ? <span className="text-xs text-gray-600 dark:text-gray-400">{type}</span> : null}
               </div>
-              <h1 className="text-xs text-gray-700 dark:text-gray-300">VMB</h1>
+              <h1 className="text-xs text-gray-700 dark:text-gray-500">VMB</h1>
             </div>
           </div>
         )}

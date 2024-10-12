@@ -1,10 +1,16 @@
-import { UserButton } from "@clerk/nextjs"
+import AgricultureReport from "./components/AgricultureReport"
+import CropDisplay from "./components/CropCard"
 
 const AgricultureTecnology = () => {
     return (
-        <div>
-            AgriTec
-        </div>
+       <div className="container px-4">
+            <CropDisplay />
+
+            <div className="mt-20"> 
+                <AgricultureReport />
+            </div>
+            {/* Outros componentes da página */}
+      </div>
     )
 }
 
