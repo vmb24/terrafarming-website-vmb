@@ -1,7 +1,9 @@
+import HarvestCalendar from "./components/HarvestCalendar";
+
 const CropManagement: React.FC = () => {
   return (
-    <div>
-      <h1>Gestão de Culturas</h1>
+    <div className="px-4 -mt-20">
+      <HarvestCalendar />
     </div>
   );
 };

@@ -1,11 +1,11 @@
 import { UserButton } from "@clerk/nextjs"
 
-const SoilMetrics = () => {
+const AgricultureTecnology = () => {
     return (
         <div>
-            SoilMetrics Page
+            AgriTec
         </div>
     )
 }
 
-export default SoilMetrics
+export default AgricultureTecnology

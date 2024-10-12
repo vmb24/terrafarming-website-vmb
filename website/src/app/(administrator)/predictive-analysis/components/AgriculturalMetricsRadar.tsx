@@ -88,7 +88,7 @@ const AgriculturalMetricsRadar: React.FC = () => {
   };
 
   return (
-    <div className={`p-6 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} mb-8`}>
+    <div className={`p-6 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'} mb-8 w-[850px]`}>
       <h2 className="text-2xl font-bold mb-6">Análise de Impacto Agrícola</h2>
       <div className="flex justify-center">
         <div className="w-full h-[300px] relative">

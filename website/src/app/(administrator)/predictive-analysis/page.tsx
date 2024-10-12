@@ -5,6 +5,7 @@ import PredictiveMetricCard from './components/PredictiveMetricCard';
 import WeatherAlert from './components/WeatherAlert';
 import HarvestCalendar from './components/HarvestCalendar';
 import AgriculturalMetricsRadar from './components/AgriculturalMetricsRadar';
+import AgricultureImageAnalysis from './components/AgricultureImageAnalysis';
 
 interface PredictiveData {
   yieldForecast: number | null;
@@ -81,8 +82,8 @@ const PredictiveAnalysisBoard: React.FC = () => {
 
           <AgriculturalMetricsRadar />
         </div>
-        
-        <HarvestCalendar />
+
+        <AgricultureImageAnalysis />
 
     </div>
   );

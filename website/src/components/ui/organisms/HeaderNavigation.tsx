@@ -32,16 +32,16 @@ const routes = [
         label: 'Gestão de Culturas',
     },
     {
-        href: '/education-community',
-        label: 'Educação & Comunidade',
-    },
-    {
         href: '/marketplace-resources',
         label: 'Marketplace & Recursos',
     },
     {
-        href: '/settings',
-        label: 'Configurações',
+        href: '/agriculture-tecnology',
+        label: 'AgriTec',
+    },
+    {
+        href: '/settings-transactions',
+        label: 'Configurações & Transações',
     },
 ]
 
