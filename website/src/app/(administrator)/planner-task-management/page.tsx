@@ -5,170 +5,144 @@ import axios from 'axios';
 import Sidebar from './components/SideBar';
 import TaskBoard from './components/TaskBoard';
 import RecommendationsBoard from './components/RecommendationsBoard';
-import { MoisturePlan, TemperaturePlan, MoistureRecommendations, TemperatureRecommendations } from './types/soil';
+import { AirMoisturePlan, AirTemperaturePlan, BrightnessPlan, SoilMoisturePlan, SoilTemperaturePlan } from './types/types';
 
-const sampleMoisturePlans: MoisturePlan[] = [
-  {
-    planId: '1',
-    moisture: 30,
-    status: 'Crítico',
-    createdAt: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    plan: {
-      createdAt: Date.now(),
-      planId: '1',
-      moisture: 30,
-      recommendations: 'Irrigar imediatamente',
-      status: 'Crítico',
-      timestamp: Date.now()
-    }
-  },
-  // Adicione mais exemplos conforme necessário
-];
+type Category = 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
+type RecommendationCategory = `${Category}Recommendations`;
+type AllCategories = Category | RecommendationCategory;
 
-const sampleTemperaturePlans: TemperaturePlan[] = [
-  {
-    planId: '1',
-    temperature: 25,
-    status: 'Normal',
-    createdAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-    plan: 'Manter monitoramento'
-  },
-  // Adicione mais exemplos conforme necessário
-];
+type Plan = SoilMoisturePlan | SoilTemperaturePlan | BrightnessPlan | AirTemperaturePlan | AirMoisturePlan;
 
-const processMoisturePlans = (apiData: any[]): MoisturePlan[] => {
-  return apiData.map(item => ({
-    planId: item.planId,
-    moisture: item.moisture,
-    status: item.status,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-    plan: {
-      createdAt: item.plan.createdAt,
-      planId: item.plan.planId,
-      moisture: item.plan.moisture,
-      recommendations: item.plan.recommendations,
-      status: item.plan.status,
-      timestamp: item.plan.timestamp
-    }
-  }));
-};
-
-const processTemperaturePlans = (apiData: any[]): TemperaturePlan[] => {
-  return apiData.map(item => ({
-    planId: item.planId,
-    temperature: item.temperature,
-    status: item.status,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-    plan: item.plan
-  }));
-};
+interface Recommendations {
+  [key: string]: string;
+}
 
 const PlannerTaskManagement: React.FC = () => {
-  const [moisturePlans, setMoisturePlans] = useState<MoisturePlan[]>(sampleMoisturePlans);
-  const [temperaturePlans, setTemperaturePlans] = useState<TemperaturePlan[]>(sampleTemperaturePlans);
-  const [moistureRecommendations, setMoistureRecommendations] = useState<MoistureRecommendations | null>(null);
-  const [temperatureRecommendations, setTemperatureRecommendations] = useState<TemperatureRecommendations | null>(null);
-  const [activeCategory, setActiveCategory] = useState<'moisture' | 'temperature' | 'moistureRecommendations' | 'temperatureRecommendations'>('moisture');
+  const [plans, setPlans] = useState<Record<Category, Plan[]>>({
+    soilMoisture: [],
+    soilTemperature: [],
+    brightness: [],
+    airTemperature: [],
+    airMoisture: []
+  });
+  const [recommendations, setRecommendations] = useState<Record<Category, Recommendations | null>>({
+    soilMoisture: null,
+    soilTemperature: null,
+    brightness: null,
+    airTemperature: null,
+    airMoisture: null
+  });
+  const [activeCategory, setActiveCategory] = useState<AllCategories>('soilMoisture');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Moisture Plans
-        const moistureResponse = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        if (moistureResponse.data && Array.isArray(moistureResponse.data)) {
-          setMoisturePlans(processMoisturePlans(moistureResponse.data));
-        } else {
-          console.error('Invalid moisture data:', moistureResponse.data);
-          setMoisturePlans(sampleMoisturePlans);
-        }
-  
-        // Temperature Plans
-        const temperatureResponse = await axios.get('https://3qcils9mbk.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        if (temperatureResponse.data && Array.isArray(temperatureResponse.data)) {
-          setTemperaturePlans(processTemperaturePlans(temperatureResponse.data));
-        } else {
-          console.error('Invalid temperature data:', temperatureResponse.data);
-          setTemperaturePlans(sampleTemperaturePlans);
-        }
-  
-        // Moisture Recommendations
-        const moistureRecommendationsResponse = await axios.get('https://81dkc5z9yd.execute-api.us-east-1.amazonaws.com/prod/recommendations');
-        if (moistureRecommendationsResponse.data) {
-          try {
-            let parsedData;
-            if (typeof moistureRecommendationsResponse.data === 'string') {
-              // Se a resposta for uma string, tenta fazer o parse
-              parsedData = JSON.parse(moistureRecommendationsResponse.data);
-            } else if (typeof moistureRecommendationsResponse.data === 'object') {
-              // Se já for um objeto, usa diretamente
-              parsedData = moistureRecommendationsResponse.data;
-            }
+        // Fetch plans for all categories
+        const planCategories: Category[] = ['soilMoisture', 'soilTemperature', 'brightness', 'airTemperature', 'airMoisture'];
+        const planUrls: Record<Category, string> = {
+          soilMoisture: 'https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          soilTemperature: 'https://3qcils9mbk.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          brightness: '',
+          airTemperature: '',
+          airMoisture: ''
+        };
 
-            if (parsedData && parsedData['agriculture/soil/moisture']) {
-              // Se o campo esperado existe, tenta fazer o parse dele
-              const moistureData = JSON.parse(parsedData['agriculture/soil/moisture']);
-              setMoistureRecommendations(moistureData);
-            } else {
-              throw new Error('Dados de recomendação de umidade não encontrados na resposta');
-            }
-          } catch (parseError) {
-            console.error('Erro ao analisar as recomendações de umidade:', parseError);
-            console.log('Dados brutos de recomendações de umidade:', moistureRecommendationsResponse.data);
-            setMoistureRecommendations(null);
+        const planPromises = planCategories.map(category => 
+          axios.get(planUrls[category]).then(response => ({ category, data: response.data }))
+        );
+
+        const planResults = await Promise.all(planPromises);
+        
+        const newPlans: Record<Category, Plan[]> = { ...plans };
+        planResults.forEach(({ category, data }) => {
+          if (Array.isArray(data)) {
+            newPlans[category] = data.map(plan => ({
+              ...plan,
+              status: plan.status || 'todo'
+            }));
+          } else {
+            console.error(`Invalid ${category} data:`, data);
+            newPlans[category] = [];
           }
-        } else {
-          console.error('Dados de recomendações de umidade inválidos:', moistureRecommendationsResponse);
-          setMoistureRecommendations(null);
-        }
-  
-        // Temperature Recommendations
-        const temperatureRecommendationsResponse = await axios.get('https://uphc1w9gfc.execute-api.us-east-1.amazonaws.com/prod/recommendations');
-        if (temperatureRecommendationsResponse.data && temperatureRecommendationsResponse.data.completion) {
+        });
+        setPlans(newPlans);
+
+        // Fetch recommendations for all categories
+        const recommendationCategories: RecommendationCategory[] = [
+          'soilMoistureRecommendations', 'soilTemperatureRecommendations', 
+          'brightnessRecommendations', 'airTemperatureRecommendations', 'airMoistureRecommendations'
+        ];
+        const recommendationUrls: Record<RecommendationCategory, string> = {
+          soilMoistureRecommendations: 'https://81dkc5z9yd.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          soilTemperatureRecommendations: 'https://uphc1w9gfc.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          brightnessRecommendations: '',
+          airTemperatureRecommendations: '',
+          airMoistureRecommendations: ''
+        };
+
+        const recommendationPromises = recommendationCategories.map(category => 
+          axios.get(recommendationUrls[category]).then(response => ({ category, data: response.data }))
+        );
+
+        const recommendationResults = await Promise.all(recommendationPromises);
+        
+        const newRecommendations: Record<Category, Recommendations | null> = { ...recommendations };
+        recommendationResults.forEach(({ category, data }) => {
           try {
-            const parsedTemperatureRecommendations = JSON.parse(temperatureRecommendationsResponse.data.completion);
-            setTemperatureRecommendations(parsedTemperatureRecommendations);
-          } catch (parseError) {
-            console.error('Error parsing temperature recommendations:', parseError);
-            setTemperatureRecommendations(null);
+            let parsedData: Recommendations;
+            if (category === 'soilMoistureRecommendations' && data['agriculture/soil/moisture']) {
+              parsedData = JSON.parse(data['agriculture/soil/moisture']);
+            } else if (category === 'soilTemperatureRecommendations' && data.completion) {
+              parsedData = JSON.parse(data.completion);
+            } else {
+              parsedData = data;
+            }
+            newRecommendations[category.replace('Recommendations', '') as Category] = parsedData;
+          } catch (error) {
+            console.error(`Error parsing ${category} recommendations:`, error);
+            newRecommendations[category.replace('Recommendations', '') as Category] = null;
           }
-        } else {
-          console.error('Invalid temperature recommendations data:', temperatureRecommendationsResponse.data);
-          setTemperatureRecommendations(null);
-        }
-  
+        });
+        setRecommendations(newRecommendations);
+
       } catch (error) {
         console.error('Error fetching data:', error);
-        setMoisturePlans(sampleMoisturePlans);
-        setTemperaturePlans(sampleTemperaturePlans);
-        setMoistureRecommendations(null);
-        setTemperatureRecommendations(null);
       }
     };
-  
+
     fetchData();
   }, []);
 
+  const handleSetActiveCategory = (category: AllCategories) => {
+    setActiveCategory(category);
+  };
+
+  const isRecommendationCategory = (category: AllCategories): category is RecommendationCategory => {
+    return category.endsWith('Recommendations');
+  };
+
+  const getBaseCategory = (category: AllCategories): Category => {
+    return isRecommendationCategory(category) 
+      ? category.replace('Recommendations', '') as Category 
+      : category as Category;
+  };
+
   return (
-    <div className="flex h-screen w-full overflow-hidden -mt-20">
-      <Sidebar
-        activeCategory={activeCategory}
-        setActiveCategory={setActiveCategory}
-      />
-      <div className="flex-1 overflow-hidden">
-        <div className="h-full p-4 overflow-y-auto">
-          {(activeCategory === 'moisture' || activeCategory === 'temperature') && (
-            <TaskBoard
-              plans={activeCategory === 'moisture' ? moisturePlans : temperaturePlans}
-              category={activeCategory}
-            />
-          )}
-          {(activeCategory === 'moistureRecommendations' || activeCategory === 'temperatureRecommendations') && (
+    <div className="flex-1">
+      <div className="flex h-full">
+        <Sidebar
+          activeCategory={activeCategory}
+          setActiveCategory={handleSetActiveCategory}
+        />
+        <div className="flex-1 p-4">
+          {isRecommendationCategory(activeCategory) ? (
             <RecommendationsBoard
-              recommendations={activeCategory === 'moistureRecommendations' ? moistureRecommendations : temperatureRecommendations}
+              recommendations={recommendations[getBaseCategory(activeCategory)]}
+              category={getBaseCategory(activeCategory)}
+            />
+          ) : (
+            <TaskBoard
+              plans={plans[activeCategory]}
               category={activeCategory}
             />
           )}

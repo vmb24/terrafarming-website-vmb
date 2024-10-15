@@ -8,7 +8,7 @@ import { XMarkIcon, CalendarIcon, ClipboardDocumentIcon, CloudIcon, PencilSquare
 interface TaskPopupProps {
   task: string;
   value: number;
-  category: 'moisture' | 'temperature';
+  category: 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
   week: 1 | 2 | 3 | 4;
   taskImagePath: string;
   plantingImagePath: string;
@@ -79,8 +79,8 @@ const TaskPopup: React.FC<TaskPopupProps> = ({
         <div className="mb-4 mt-6">
           <p className="flex items-center mb-2">
             <CloudIcon className="h-5 w-5 text-blue-500 mr-2" />
-            <strong className="dark:text-white">{category === 'moisture' ? 'Umidade:' : 'Temperatura:'}</strong> 
-            <span className="ml-2 dark:text-gray-300">{value.toFixed(2)}{category === 'moisture' ? '%' : '°C'}</span>
+            <strong className="dark:text-white">{category === 'soilMoisture' ? 'Umidade:' : 'Temperatura:'}</strong> 
+            <span className="ml-2 dark:text-gray-300">{value.toFixed(2)}{category === 'soilMoisture' ? '%' : '°C'}</span>
           </p>
           <div className="flex flex-wrap gap-2 mb-2">
             <span className="bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100 text-xs font-medium px-2.5 py-0.5 rounded">Componentes Físicos</span>

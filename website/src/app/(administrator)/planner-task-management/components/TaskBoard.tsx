@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { MoisturePlan, TemperaturePlan } from '../types/soil';
+import { SoilMoisturePlan, SoilTemperaturePlan, BrightnessPlan, AirTemperaturePlan, AirMoisturePlan } from '../types/types';
 import TaskCard from './TaskCard';
 import { useTheme } from 'next-themes';
 
 interface TaskBoardProps {
-  plans: MoisturePlan[] | TemperaturePlan[];
-  category: 'moisture' | 'temperature';
+  plans: Plan[];
+  category: 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
 }
 
-const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
+type Plan = SoilMoisturePlan | SoilTemperaturePlan | BrightnessPlan | AirTemperaturePlan | AirMoisturePlan;
+
+const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
   const { theme } = useTheme();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedWeek, setSelectedWeek] = useState<number>(1);
@@ -35,18 +37,26 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
     return days;
   };
 
-  const extractTasksFromPlan = (plan: MoisturePlan | TemperaturePlan) => {
+  const extractTasksFromPlan = (plan: Plan) => {
     let content: string = '';
-    
+    let value: number | undefined;
+  
     if ('plan' in plan && typeof plan.plan === 'object' && plan.plan !== null) {
       content = plan.plan.recommendations || '';
     } else if (typeof plan.plan === 'string') {
       content = plan.plan;
     }
   
-    if (typeof content !== 'string') {
-      console.error('Conteúdo do plano não é uma string:', content);
-      content = '';
+    if ('moisture' in plan) {
+      value = plan.moisture;
+    } else if ('temperature' in plan) {
+      value = plan.temperature;
+    } else if ('brightness' in plan) {
+      value = plan.brightness;
+    } else if ('airTemperature' in plan) {
+      value = plan.airTemperature;
+    } else if ('airMoisture' in plan) {
+      value = plan.airMoisture;
     }
   
     const tasks = content
@@ -60,7 +70,7 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
       
       return {
         task,
-        value: 'moisture' in plan ? plan.moisture : (plan as TemperaturePlan).temperature,
+        value,
         createdAt: createdAtDate,
         startTime: new Date(createdAtDate.getTime() + Math.random() * 24 * 60 * 60 * 1000),
         duration: 0.5 // 30 minutos
@@ -69,21 +79,25 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
   };
 
   useEffect(() => {
-    const tasks = plans.flatMap(extractTasksFromPlan);
-    const daysInSelectedWeek = getDaysInWeek(selectedWeek);
-    
-    const distributedTasks = tasks.map((task, index) => {
-      const dayOfWeek = index % 7;
-      const taskDate = new Date(daysInSelectedWeek[dayOfWeek]);
+    if (plans && plans.length > 0) {
+      const tasks = plans.flatMap(extractTasksFromPlan);
+      const daysInSelectedWeek = getDaysInWeek(selectedWeek);
       
-      return {
-        ...task,
-        startTime: new Date(taskDate.setHours(8 + Math.floor(Math.random() * 8), Math.floor(Math.random() * 60), 0, 0))
-      };
-    });
-    
-    setAllTasks(distributedTasks);
-    setSelectedDate(daysInSelectedWeek[0]);
+      const distributedTasks = tasks.map((task, index) => {
+        const dayOfWeek = index % 7;
+        const taskDate = new Date(daysInSelectedWeek[dayOfWeek]);
+        
+        return {
+          ...task,
+          startTime: new Date(taskDate.setHours(8 + Math.floor(Math.random() * 8), Math.floor(Math.random() * 60), 0, 0))
+        };
+      });
+      
+      setAllTasks(distributedTasks);
+      setSelectedDate(daysInSelectedWeek[0]);
+    } else {
+      setAllTasks([]);
+    }
   }, [plans, selectedWeek]);
 
   const daysInWeek = getDaysInWeek(selectedWeek);
@@ -107,7 +121,6 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
     task.startTime.toDateString() === selectedDate.toDateString()
   );
 
-  // Função para agrupar tarefas que se sobrepõem
   const groupOverlappingTasks = (tasks: any[]) => {
     const sortedTasks = [...tasks].sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
     const groups: any[][] = [];
@@ -135,7 +148,7 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
   const weekdays = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-4 rounded-md">
+    <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-4 rounded-md -mt-24">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <h2 className="text-xl font-semibold mr-2">
@@ -143,7 +156,7 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans, category }) => {
           </h2>
           <button className="text-green-500 dark:text-green-400">▼</button>
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">You have total {filteredTasks.length} tasks today</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Você tem no total {filteredTasks.length} hoje</p>
       </div>
       <div className='flex flex-row justify-between mt-4'>
         <div className="flex space-x-2 mb-4 overflow-x-auto">

@@ -40,8 +40,8 @@ const routes = [
         label: 'AgriTec',
     },
     {
-        href: '/settings-transactions',
-        label: 'Configurações & Transações',
+        href: '/settings-iot',
+        label: 'Configurações & IOT',
     },
 ]
 

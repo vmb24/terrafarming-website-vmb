@@ -1,15 +1,32 @@
 // components/RecommendationsBoard.tsx
 import React from 'react';
-import { MoistureRecommendations, TemperatureRecommendations } from '../types/soil';
+import { MoistureRecommendations, TemperatureRecommendations } from '../types/types';
 import { useTheme } from 'next-themes';
 
 interface RecommendationsBoardProps {
   recommendations: MoistureRecommendations | TemperatureRecommendations | null;
-  category: 'moistureRecommendations' | 'temperatureRecommendations';
+  category: 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
 }
 
 const RecommendationsBoard: React.FC<RecommendationsBoardProps> = ({ recommendations, category }) => {
   const { theme } = useTheme();
+
+  const getCategoryTitle = () => {
+    switch (category) {
+      case 'soilMoisture':
+        return 'Recomendações de Umidade do Solo';
+      case 'soilTemperature':
+        return 'Recomendações de Temperatura do Solo';
+      case 'brightness':
+        return 'Recomendações de Luminosidade';
+      case 'airTemperature':
+        return 'Recomendações de Temperatura do Ar';
+      case 'brightness':
+        return 'Recomendações de Umidade do Ar';
+      default:
+        return 'Recomendações';
+    }
+  };
 
   if (!recommendations) {
     return <div className="text-gray-800 dark:text-gray-200">Carregando recomendações...</div>;
@@ -19,8 +36,8 @@ const RecommendationsBoard: React.FC<RecommendationsBoardProps> = ({ recommendat
 
   return (
     <div>
-      <h2 className="text-xl text-gray-800 dark:text-white font-bold mb-4">
-        {category === 'moistureRecommendations' ? 'Recomendações de Umidade do Solo' : 'Recomendações de Temperatura do Solo'}
+      <h2 className="text-xl text-gray-800 dark:text-white font-bold mb-4 -mt-24">
+        {getCategoryTitle()}
       </h2>
       {recommendationEntries.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

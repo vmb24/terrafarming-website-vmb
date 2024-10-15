@@ -7,7 +7,7 @@ import { useTheme } from 'next-themes';
 interface TaskCardProps {
   task: string;
   value: number;
-  category: 'moisture' | 'temperature';
+  category: 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
   week: 1 | 2 | 3 | 4;
   taskImagePath: string;
   plantingImagePath: string;
@@ -76,7 +76,7 @@ const TaskCard: React.FC<TaskCardProps> = ({
         <div className="flex justify-between items-start mb-1">
           <div className="overflow-hidden">
             <h3 className="font-semibold text-sm truncate text-gray-800 dark:text-gray-100">
-              {category === 'moisture' ? 'Umidade Task' : 'Temperatura Task'}
+              {category === 'soilMoisture' ? 'Umidade Task' : 'Temperatura Task'}
             </h3>
             <p className="text-xs text-gray-600 dark:text-gray-300">
               {formatTime(startTime)} - {duration * 60}min

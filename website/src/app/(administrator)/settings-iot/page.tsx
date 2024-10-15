@@ -1,11 +1,11 @@
 import { UserButton } from "@clerk/nextjs"
 
-const Settings = () => {
+const SettingsIOT = () => {
     return (
         <div>
-            Settings Page
+            Settings IOT Page
         </div>
     )
 }
 
-export default Settings
+export default SettingsIOT

@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import { Sun, Droplet, Image as ImageIcon, Tractor, Cpu, Plane, Brain, Bug } from 'lucide-react';
+import { Sun, Droplet, Image as ImageIcon, Tractor, Cpu, Brain, Bug } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
@@ -18,7 +18,7 @@ const MetricCard: React.FC<MetricCardProps> = ({ id, title, imageSrc, descriptio
   const { theme } = useTheme();
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-t-4 ${color}`}>
+    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border-t-4${color}`}>
       <div className="relative h-48 rounded-t-lg overflow-hidden">
         {imageSrc ? (
           <Image
@@ -58,20 +58,20 @@ const AgricultureReport: React.FC = () => {
   ];
 
   return (
-    <div className="bg-green-50 dark:bg-gray-900 p-8">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8 min-w-[1100px]">
+    <div className="bg-green-50 dark:bg-gray-900 p-8 rounded-md">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
         <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white flex items-center">
           <Cpu className="w-8 h-8 mr-2 text-green-500 font-semibold" />
           Soluções de Agricultura Sustentável
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-4 px-10">Cultivo de Culturas, Preservação de Recursos</p>
+        <p className="text-gray-600 dark:text-gray-300 mb-4">Cultivo de Culturas, Preservação de Recursos</p>
         <p className="mb-4 text-gray-700 dark:text-gray-200 mt-8">Explore nossa gama de soluções agrícolas inovadoras projetadas para otimizar o rendimento das colheitas, minimizar o uso de recursos e simplificar as operações agrícolas.</p>
-        <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition flex items-center">
+        <button className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 transition flex items-center">
           <Sun className="w-5 h-5 mr-2" />
-          Explore mais
+          Explore o relatório
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-[-1rem] p-6">
         {metrics.map((metric) => (
           <MetricCard key={metric.id} {...metric} />
         ))}
