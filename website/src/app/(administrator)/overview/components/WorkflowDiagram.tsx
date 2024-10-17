@@ -235,6 +235,24 @@ const WorkflowDiagram = () => {
         </div>
       )
 
+      const BedrockNode: React.FC<{ x: string; y: string }> = ({ x, y }) => (
+        <div className={`absolute ${x} ${y} transform -translate-x-1/2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
+          <div className="bg-[#339c86] rounded-lg p-3 w-32 h-32 flex items-center justify-center shadow-lg">
+            <div className="text-center">
+              <svg className="w-16 h-16 text-white mb-2 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.5 7.5L12 3L19.5 7.5L12 12L4.5 7.5Z" />
+                <path d="M4.5 7.5V16.5L12 21L19.5 16.5V7.5" />
+                <path d="M12 12V21" />
+                <path d="M7.5 9.75L12 12L16.5 9.75" />
+                <path d="M19.5 13.5L22 15" />
+                <path d="M19.5 10.5L22 9" />
+              </svg>
+              <span className="font-semibold text-white text-center text-xs">AWS Bedrock</span>
+            </div>
+          </div>
+        </div>
+      );
+
       const SensorNode: React.FC<SensorNodeProps> = ({ icon, title, description, color, left, top }) => {
         const { theme } = useTheme();
       
@@ -466,15 +484,29 @@ const WorkflowDiagram = () => {
 
           {/* AWS Infraestructure node */}
           <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
-                <div className="text-center">
-                    <AWSDiamond textLine1="Integração" textLine2="AWS" />
-                </div>
-            </div>
+              <div className="text-center">
+                  <AWSDiamond textLine1="Integração" textLine2="AWS" />
+              </div>
+          </div>
+
+          {/* AWS Bedrock node */}
+          <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
+              <div className="text-center">
+              </div>
+          </div>
+          
+          <div>
+            <BedrockNode x="mx-[300px]" y="top-[420px]" />
+          </div>
+
+          <div>
+            <BedrockNode x="mx-[1200px]" y="top-[420px]" />
+          </div>
 
           {/* CARDS nodes */}
           <div className="absolute grid grid-cols-3 w-full top-[700px] space-y-20">
           {tasks.map((task, index) => (
-            <React.Fragment key={task.id}>
+            <React.Fragment key={task.title}>
                 <TaskNode task={task} />
                 {index < tasks.length - 1 && <VerticalArrow />}
                 {/* Check submit node */}

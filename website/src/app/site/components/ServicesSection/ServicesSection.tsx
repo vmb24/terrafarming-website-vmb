@@ -131,7 +131,7 @@ export const ServicesSection = () => {
             </div> 
 
             <div className='flex flex-row justify-between mt-12'>
-                <a className='text-xl font-normal text-[#757575]'>Descubra as vantagens distintas da parceria com a Terra Farming</a>
+                <a className='text-xl font-normal text-[#757575]'>Descubra as vantagens distintas da parceria com a TerraFarming</a>
                 <Link href="/plans" className='bg-green-700 py-4 max-md:p-4 max-lg:p-4 px-8 rounded-full'>
                     <h1 className='text-white max-md:text-sm max-lg:text-sm'>Todos os Benefícios</h1>
                 </Link>
