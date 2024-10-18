@@ -4,11 +4,11 @@ import { useTheme } from 'next-themes'
 import { FaCircleArrowRight } from "react-icons/fa6"
 import { CgArrowTopRightO } from "react-icons/cg"
 
-export const Footer = () => {
+export const FooterApplication = () => {
     const { theme } = useTheme()
 
     return (
-        <div className="flex flex-col h-auto mt-[800px] max-md:mt-12 max-lg:mt-12 bg-white dark:bg-gray-800 px-12 text-gray-800 dark:text-gray-200">
+        <div className="flex flex-col h-auto mt-[100px] max-md:mt-12 max-lg:mt-12 bg-white dark:bg-[#121212] px-12 text-gray-800 dark:text-gray-200">
 
             <div className='flex flex-row'>
                 <h1 className='text-[#020405] dark:text-gray-200 text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Junte-se a nós</h1>
