@@ -10,9 +10,9 @@ export const Home = () => {
         <SlideHomePage />
       </div>
       <div className="flex flex-col items-start space-y-2 font-black text-white text-5xl mt-20">
-        <div className="bg-green-700 z-10 inline-block px-3 bg-primary mt-2">Descubra as vantagens distintas</div>{' '}
+        <div className="bg-green-700 z-10 inline-block px-3 bg-primary mt-2">Mente nenhuma imaginou</div>{' '}
         <div className="bg-green-700 z-10 inline-block w-full max-w-md px-3 bg-primary text-white">
-          da parceria com a TerraFarming!
+          as vantagens do TerraFarming!
         </div>
         <Link
           href="/search"

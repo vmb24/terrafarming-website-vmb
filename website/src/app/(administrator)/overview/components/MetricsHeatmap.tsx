@@ -111,8 +111,8 @@ const MetricsHeatmap: React.FC = () => {
   };
 
   return (
-    <div className="metrics-heatmap w-full font-sans p-6 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-md mt-20">
-      <div className="flex justify-between items-center mb-6">
+    <div className="metrics-heatmap w-full font-sans p-6 bg-white dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-md mt-12">
+      <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold">Métricas</h2>
         <div className="flex items-center space-x-4">
           <select

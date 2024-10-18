@@ -69,22 +69,26 @@ const WorkflowDiagram = () => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const response = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-            const processedTasks = processTasks(response.data);
-            setTasks(processedTasks);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setError('Failed to load tasks. Please try again later.');
-        } finally {
-            setIsLoading(false);
-        }
-        };
-
-        fetchData();
+      const fetchData = async () => {
+          setIsLoading(true);
+          setError(null);
+          try {
+              const response = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
+              if (response.data && response.data.length > 0) {
+                  const processedTasks = processTasks(response.data);
+                  setTasks(processedTasks);
+              } else {
+                  setTasks([]); // Define um array vazio se não houver tarefas
+              }
+          } catch (error) {
+              console.error('Error fetching data:', error);
+              setError('Failed to load tasks. Please try again later.');
+          } finally {
+              setIsLoading(false);
+          }
+      };
+  
+      fetchData();
     }, []);
 
     const processTasks = (data: any[]): Task[] => {
@@ -116,7 +120,7 @@ const WorkflowDiagram = () => {
     };
 
     if (isLoading) return <div className="text-center p-4">Carregando tarefas...</div>;
-    if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
+    // if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
       
       const getStatusText = (status: Task['status']): string => {
         switch (status) {
@@ -366,314 +370,379 @@ const WorkflowDiagram = () => {
           </div>
         );
       };
-      
-  return (
-    <div className="bg-white dark:bg-gray-800 p-4 font-sans mt-20 rounded-md">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[4300px]">
-        <div className="flex flex-col mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold">Plano de tarefas Agrícola</h1>
-              <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-              </svg>
-            </div>
-          </div>
-          <div className="flex justify-between items-center">
-            <div className="flex space-x-2">
-              <TabButton 
-                active={activeTab === 'all'} 
-                onClick={() => handleTabChange('all')}
-              >
-                Todas
-              </TabButton>
-              <TabButton 
-                active={activeTab === 'soil_moisture'} 
-                onClick={() => handleTabChange('soil_moisture')}
-              >
-                Umidade Solo
-              </TabButton>
-              <TabButton 
-                active={activeTab === 'soil_temperature'} 
-                onClick={() => handleTabChange('soil_temperature')}
-              >
-                Temp. Solo
-              </TabButton>
-              <TabButton 
-                active={activeTab === 'brightness'} 
-                onClick={() => handleTabChange('brightness')}
-              >
-                Luminosidade
-              </TabButton>
-              <TabButton 
-                active={activeTab === 'air_temperature'} 
-                onClick={() => handleTabChange('air_temperature')}
-              >
-                Temp. Ar
-              </TabButton>
-              <TabButton 
-                active={activeTab === 'air_humidity'} 
-                onClick={() => handleTabChange('air_humidity')}
-              >
-                Umidade Ar
-              </TabButton>
-            </div>
-            <StatusBar tasks={tasks} />
-          </div>
-        </div>
+    
+      return (
+        <div className="bg-white dark:bg-gray-800 p-4 font-sans mt-12 rounded-md mb-8">
+            {tasks.length === 0 ? (
+              <div className="relative">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[300px]">
+                  <div className="flex flex-col mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center space-x-4">
+                        <h1 className="text-2xl font-bold">Plano de tarefas Agrícola</h1>
+                        <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="flex space-x-2">
+                        <TabButton 
+                          active={activeTab === 'all'} 
+                          onClick={() => handleTabChange('all')}
+                        >
+                          Todas
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'soil_moisture'} 
+                          onClick={() => handleTabChange('soil_moisture')}
+                        >
+                          Umidade Solo
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'soil_temperature'} 
+                          onClick={() => handleTabChange('soil_temperature')}
+                        >
+                          Temp. Solo
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'brightness'} 
+                          onClick={() => handleTabChange('brightness')}
+                        >
+                          Luminosidade
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'air_temperature'} 
+                          onClick={() => handleTabChange('air_temperature')}
+                        >
+                          Temp. Ar
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'air_humidity'} 
+                          onClick={() => handleTabChange('air_humidity')}
+                        >
+                          Umidade Ar
+                        </TabButton>
+                      </div>
+                      <StatusBar tasks={tasks} />
+                    </div>
+                  </div>
+
+                  {/* Background grid */}
+                  <div className="absolute inset-0 h-[120px] mt-40" style={{
+                    backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
+                    backgroundSize: '20px 20px'
+                  }}></div>
+              
+                  <h1 className="text-center p-4 text-2xl">Nenhum plano de tarefas encontrado para este mês.</h1>
+
+                </div>
+              </div>
+            ) : (
+              <div className="relative">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[4300px]">
+                  <div className="flex flex-col mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center space-x-4">
+                        <h1 className="text-2xl font-bold">Plano de tarefas Agrícola</h1>
+                        <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div className="flex space-x-2">
+                        <TabButton 
+                          active={activeTab === 'all'} 
+                          onClick={() => handleTabChange('all')}
+                        >
+                          Todas
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'soil_moisture'} 
+                          onClick={() => handleTabChange('soil_moisture')}
+                        >
+                          Umidade Solo
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'soil_temperature'} 
+                          onClick={() => handleTabChange('soil_temperature')}
+                        >
+                          Temp. Solo
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'brightness'} 
+                          onClick={() => handleTabChange('brightness')}
+                        >
+                          Luminosidade
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'air_temperature'} 
+                          onClick={() => handleTabChange('air_temperature')}
+                        >
+                          Temp. Ar
+                        </TabButton>
+                        <TabButton 
+                          active={activeTab === 'air_humidity'} 
+                          onClick={() => handleTabChange('air_humidity')}
+                        >
+                          Umidade Ar
+                        </TabButton>
+                      </div>
+                      <StatusBar tasks={tasks} />
+                    </div>
+                  </div>
+
+                  {/* Background grid */}
+                  <div className="absolute inset-0 h-[4050px]" style={{
+                    backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
+                    backgroundSize: '20px 20px'
+                  }}></div>
         
-        <div className="relative">
-          {/* Background grid */}
-          <div className="absolute inset-0 h-[4050px]" style={{
-            backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
-            backgroundSize: '20px 20px'
-          }}></div>
+                  {/* Start node */}
+                  <div className="absolute left-1/2 top-4 transform -translate-x-1/2">
+                    <div className="text-md mb-1 text-center">Iniciar</div>
+                    <div className="bg-green-400 rounded-full w-10 h-10 flex items-center justify-center">
+                        <svg className="w-6 h-6 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                    </div>
+                  </div>
+        
+                  <div className="relative w-full bg-gray-50">
+                    <SensorNode 
+                        icon={<MoistureIcon />}
+                        title="Sensor de Umidade do Solo"
+                        description="Verifica a Umidade do Solo"
+                        color="blue"
+                        left={150}
+                        top={180}
+                    />
+                    <SensorNode 
+                        icon={<TemperatureIcon />}
+                        title="Sensor de Temperatura do Solo"
+                        description="Verifica a Temperatura do Solo"
+                        color="red"
+                        left={450}
+                        top={180}
+                    />
+                    <SensorNode 
+                        icon={<BrightnessIcon />}
+                        title="Sensor de Luminosidade"
+                        description="Verifica a Luminosidade"
+                        color="yellow"
+                        left={750}
+                        top={180}
+                    />
+                    <SensorNode 
+                        icon={<TemperatureIcon />}
+                        title="Sensor de Temperatura do Ar"
+                        description="Verifica a Temperatura do Ar"
+                        color="red"
+                        left={1050}
+                        top={180}
+                    />
+                    <SensorNode 
+                        icon={<HumidityIcon />}
+                        title="Sensor de Umidade do Ar"
+                        description="Verifica a Umidade do Ar"
+                        color="green"
+                        left={1350}
+                        top={180}
+                    />
+                  </div> 
 
-          {/* Start node */}
-          <div className="absolute left-1/2 top-4 transform -translate-x-1/2">
-            <div className="text-md mb-1 text-center">Iniciar</div>
-            <div className="bg-green-400 rounded-full w-10 h-10 flex items-center justify-center">
-                <svg className="w-6 h-6 text-black dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                </svg>
-            </div>
-          </div>
-
-          <div className="relative w-full bg-gray-50">
-            <SensorNode 
-                icon={<MoistureIcon />}
-                title="Sensor de Umidade do Solo"
-                description="Verifica a Umidade do Solo"
-                color="blue"
-                left={150}
-                top={180}
-            />
-            <SensorNode 
-                icon={<TemperatureIcon />}
-                title="Sensor de Temperatura do Solo"
-                description="Verifica a Temperatura do Solo"
-                color="red"
-                left={450}
-                top={180}
-            />
-            <SensorNode 
-                icon={<BrightnessIcon />}
-                title="Sensor de Luminosidade"
-                description="Verifica a Luminosidade"
-                color="yellow"
-                left={750}
-                top={180}
-            />
-            <SensorNode 
-                icon={<TemperatureIcon />}
-                title="Sensor de Temperatura do Ar"
-                description="Verifica a Temperatura do Ar"
-                color="red"
-                left={1050}
-                top={180}
-            />
-            <SensorNode 
-                icon={<HumidityIcon />}
-                title="Sensor de Umidade do Ar"
-                description="Verifica a Umidade do Ar"
-                color="green"
-                left={1350}
-                top={180}
-            />
-        </div>
-
-          {/* AWS Infraestructure node */}
-          <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
-              <div className="text-center">
-                  <AWSDiamond textLine1="Integração" textLine2="AWS" />
-              </div>
-          </div>
-
-          {/* AWS Bedrock node */}
-          <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
-              <div className="text-center">
-              </div>
-          </div>
-          
-          <div>
-            <BedrockNode x="mx-[300px]" y="top-[420px]" />
-          </div>
-
-          <div>
-            <BedrockNode x="mx-[1200px]" y="top-[420px]" />
-          </div>
-
-          {/* CARDS nodes */}
-          <div className="absolute grid grid-cols-3 w-full top-[700px] space-y-20">
-          {tasks.map((task, index) => (
-            <React.Fragment key={task.title}>
-                <TaskNode task={task} />
-                {index < tasks.length - 1 && <VerticalArrow />}
-                {/* Check submit node */}
-                {/* Top */}
-                <AlexaNode x="left-[725px]" y="top-[50px]"/>
-                {/* Left */}
-                <AlexaNode x="right-3/4" y="top-[350px]"/>
-                {/* Right */}
-                <AlexaNode x="left-[1220px]" y="top-[350px]"/>
-                {/* Top */}
-                <AlexaNode x="left-[725px]" y="top-[650px]"/>
-                {/* Left */}
-                <AlexaNode x="right-3/4" y="top-[925px]"/>
-                {/* Right */}
-                <AlexaNode x="left-[1220px]" y="top-[925px]"/>
-                {/* Top */}
-                <AlexaNode x="left-[725px]" y="top-[1250px]"/>
-                {/* Left */}
-                <AlexaNode x="right-3/4" y="top-[1550px]"/>
-                {/* Right */}
-                <AlexaNode x="left-[1220px]" y="top-[1550px]"/>
-                {/* Top */}
-                <AlexaNode x="left-[725px]" y="top-[1850px]"/>
-                {/* Left */}
-                <AlexaNode x="right-3/4" y="top-[2150px]"/>
-                {/* Right */}
-                <AlexaNode x="left-[1220px]" y="top-[2150px]"/>
-                {/* Bottom */}
-                <AlexaNode x="left-[725px]" y="top-[2450px]"/>
-            </React.Fragment>
-            ))}
-          </div>
-
-          <div className="absolute left-1/2 top-[650px] transform -translate-x-1/2">
-            <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
-              <div className="flex items-center">
-                <div className="bg-green-100 rounded-full p-1 mr-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
+                      <div className="text-center">
+                          <AWSDiamond textLine1="Integração" textLine2="AWS" />
+                      </div>
+                  </div>
+        
+                  {/* AWS Bedrock node */}
+                  <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
+                      <div className="text-center">
+                      </div>
+                  </div>
+                  
+                  <div>
+                    <BedrockNode x="mx-[300px]" y="top-[420px]" />
+                  </div>
+        
+                  <div>
+                    <BedrockNode x="mx-[1200px]" y="top-[420px]" />
+                  </div>
+        
+                  {/* CARDS nodes */}
+                  <div className="absolute grid grid-cols-3 w-full top-[700px] space-y-20">
+                  {tasks.map((task, index) => (
+                    <React.Fragment key={task.title}>
+                        <TaskNode task={task} />
+                        {index < tasks.length - 1 && <VerticalArrow />}
+                        {/* Check submit node */}
+                        {/* Top */}
+                        <AlexaNode x="left-[725px]" y="top-[50px]"/>
+                        {/* Left */}
+                        <AlexaNode x="right-3/4" y="top-[350px]"/>
+                        {/* Right */}
+                        <AlexaNode x="left-[1220px]" y="top-[350px]"/>
+                        {/* Top */}
+                        <AlexaNode x="left-[725px]" y="top-[650px]"/>
+                        {/* Left */}
+                        <AlexaNode x="right-3/4" y="top-[925px]"/>
+                        {/* Right */}
+                        <AlexaNode x="left-[1220px]" y="top-[925px]"/>
+                        {/* Top */}
+                        <AlexaNode x="left-[725px]" y="top-[1250px]"/>
+                        {/* Left */}
+                        <AlexaNode x="right-3/4" y="top-[1550px]"/>
+                        {/* Right */}
+                        <AlexaNode x="left-[1220px]" y="top-[1550px]"/>
+                        {/* Top */}
+                        <AlexaNode x="left-[725px]" y="top-[1850px]"/>
+                        {/* Left */}
+                        <AlexaNode x="right-3/4" y="top-[2150px]"/>
+                        {/* Right */}
+                        <AlexaNode x="left-[1220px]" y="top-[2150px]"/>
+                        {/* Bottom */}
+                        <AlexaNode x="left-[725px]" y="top-[2450px]"/>
+                    </React.Fragment>
+                    ))}
+                  </div>
+        
+                  <div className="absolute left-1/2 top-[650px] transform -translate-x-1/2">
+                    <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
+                      <div className="flex items-center">
+                        <div className="bg-green-100 rounded-full p-1 mr-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="font-semibold">Trigger</div>
+                          <div className="text-xs text-gray-500">Configuração de Integração com a Alexa</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  {/* AWS integration (New activities) node */}
+                  <div className="absolute left-1/2 top-[3500px] transform -translate-x-1/2">
+                    <AWSDiamond textLine1="Integração" textLine2="AWS" />
+                  </div>
+        
+                  {/* AWSQuickSight Relatórios de tarefas do mês node */}
+                  <div className="absolute left-[490px] top-[3700px] transform -translate-x-1/2">
+                    <AWSQuickSight textLine1="AWS" textLine2="QuickSight (Relatórios)" />
+                  </div>
+        
+                  {/* AWSQuickSight Relatórios de novas tarefas do mês node */}
+                  <div className="absolute left-[1030px] top-[3700px] transform -translate-x-1/2">
+                    <AWSQuickSight textLine1="AWS" textLine2="QuickSight (Relatórios)" />
+                  </div>
+        
+                  {/* Email nodes */}
+                  <div className="absolute left-1/4 top-[3950px]">
+                    <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
+                      <div className="flex items-center">
+                        <div className="bg-green-100 rounded-full p-1 mr-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="font-semibold">Email</div>
+                          <div className="text-xs text-gray-500">Envio de um relatório das tarefas do mês</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div className="absolute right-1/4 top-[3950px]">
+                    <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
+                      <div className="flex items-center">
+                        <div className="bg-green-100 rounded-full p-1 mr-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div className="font-semibold">Email</div>
+                          <div className="text-xs text-gray-500">Envio e alerta de novas tarefas do mês</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  {/* Connector lines */}
+                  {/* Start to Sensors lines */}
+                  <svg className="absolute -top-20 left-36 w-full h-full" style={{zIndex: 1}}>
+                    {/* Connector lines */}
+                    <path d="M 600,200 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
+                    
+                    {/* Initial soil moisture line */}
+                    <path d="M 600,200 L 180,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
+        
+                    {/* Final soil moisture line */}
+                    <path d="M 40,240 L 180,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
+                    
+                    {/* Soil temperature line */}
+                    <path d="M 600,200 L 300,240" stroke="#FF0000" strokeWidth="2" fill="none" />
+        
+                    {/* Brightness line */}
+                    <path d="M 600,200 L 600,240" stroke="#FFD700" strokeWidth="2" fill="none" />
+                    
+                    {/* Air temperature line */}
+                    <path d="M 600,200 L 900,240" stroke="#FF0000" strokeWidth="2" fill="none" />
+        
+                    {/* Initial soil moisture line */}
+                    <path d="M 600,200 L 950,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
+        
+                    {/* Final soil moisture line */}
+                    <path d="M 1200,240 L 950,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
+                  </svg>
+        
+                  {/* Webhook to Submit Check line */}
+                  <svg className="absolute top-40 left-36 w-full h-full" style={{zIndex: 1}}>
+                    <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
+                  </svg>
+        
+                  {/* Submit Check to triggers lines */}
+                  <svg className="absolute top-80 left-36 w-full h-full" style={{zIndex: 1}}>
+                    <path d="M 600,200 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
+                    <path d="M 600,200 L 300,280" stroke="#008000" strokeWidth="2" fill="none" />
+                    <path d="M 600,200 L 600,280" stroke="#008000" strokeWidth="2" fill="none" />
+                    <path d="M 600,200 L 900,280" stroke="#008000" strokeWidth="2" fill="none" />
+                  </svg>
+        
+                  {/* Triggers to left email line */}
+                  <svg className="absolute top-[2600px] right-32 w-full h-full" style={{zIndex: 1}}>
+                    <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
+                  </svg>
+        
+                  {/* Triggers to right email line */}
+                  <svg className="absolute top-[2610px] left-[415px] w-full h-full" style={{zIndex: 1}}>
+                    <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
+                  </svg>
+        
+                  {/* Left email to event transform line */}
+                  <svg className="absolute top-[2710px] right-[400px] w-full h-full" style={{zIndex: 1}}>
+                    <path d="M 1100,270 L 960,120" stroke="#008000" strokeWidth="2" fill="none" />
+                  </svg>
+        
+                  {/* Event transform to check submit line */}
+                  <svg className="absolute top-[2900px] left-[550px] w-full h-full" style={{zIndex: 1}}>
+                    <path d="M 10,200 L 140,100" stroke="#008000" strokeWidth="2" fill="none" />
+                  </svg>
+        
+                  {/* Check submit to http request line */}
+                  <svg className="absolute top-[3010px] right-[400px] w-full h-full" style={{zIndex: 1}}>
+                    <path d="M 1100,270 L 960,120" stroke="#008000" strokeWidth="2" fill="none" />
                   </svg>
                 </div>
-                <div>
-                  <div className="font-semibold">Trigger</div>
-                  <div className="text-xs text-gray-500">Configuração de Integração com a Alexa</div>
-                </div>
               </div>
-            </div>
-          </div>
-
-          {/* AWS integration (New activities) node */}
-          <div className="absolute left-1/2 top-[3500px] transform -translate-x-1/2">
-            <AWSDiamond textLine1="Integração" textLine2="AWS" />
-          </div>
-
-          {/* AWSQuickSight Relatórios de tarefas do mês node */}
-          <div className="absolute left-[490px] top-[3700px] transform -translate-x-1/2">
-            <AWSQuickSight textLine1="AWS" textLine2="QuickSight (Relatórios)" />
-          </div>
-
-          {/* AWSQuickSight Relatórios de novas tarefas do mês node */}
-          <div className="absolute left-[1030px] top-[3700px] transform -translate-x-1/2">
-            <AWSQuickSight textLine1="AWS" textLine2="QuickSight (Relatórios)" />
-          </div>
-
-          {/* Email nodes */}
-          <div className="absolute left-1/4 top-[3950px]">
-            <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
-              <div className="flex items-center">
-                <div className="bg-green-100 rounded-full p-1 mr-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="font-semibold">Email</div>
-                  <div className="text-xs text-gray-500">Envio de um relatório das tarefas do mês</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute right-1/4 top-[3950px]">
-            <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
-              <div className="flex items-center">
-                <div className="bg-green-100 rounded-full p-1 mr-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="font-semibold">Email</div>
-                  <div className="text-xs text-gray-500">Envio e alerta de novas tarefas do mês</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Connector lines */}
-          {/* Start to Sensors lines */}
-          <svg className="absolute -top-20 left-36 w-full h-full" style={{zIndex: 1}}>
-            {/* Connector lines */}
-            <path d="M 600,200 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-            
-            {/* Initial soil moisture line */}
-            <path d="M 600,200 L 180,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-
-            {/* Final soil moisture line */}
-            <path d="M 40,240 L 180,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-            
-            {/* Soil temperature line */}
-            <path d="M 600,200 L 300,240" stroke="#FF0000" strokeWidth="2" fill="none" />
-
-            {/* Brightness line */}
-            <path d="M 600,200 L 600,240" stroke="#FFD700" strokeWidth="2" fill="none" />
-            
-            {/* Air temperature line */}
-            <path d="M 600,200 L 900,240" stroke="#FF0000" strokeWidth="2" fill="none" />
-
-            {/* Initial soil moisture line */}
-            <path d="M 600,200 L 950,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-
-            {/* Final soil moisture line */}
-            <path d="M 1200,240 L 950,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-          </svg>
-
-          {/* Webhook to Submit Check line */}
-          <svg className="absolute top-40 left-36 w-full h-full" style={{zIndex: 1}}>
-            <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-          </svg>
-
-          {/* Submit Check to triggers lines */}
-          <svg className="absolute top-80 left-36 w-full h-full" style={{zIndex: 1}}>
-            <path d="M 600,200 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-            <path d="M 600,200 L 300,280" stroke="#008000" strokeWidth="2" fill="none" />
-            <path d="M 600,200 L 600,280" stroke="#008000" strokeWidth="2" fill="none" />
-            <path d="M 600,200 L 900,280" stroke="#008000" strokeWidth="2" fill="none" />
-          </svg>
-
-          {/* Triggers to left email line */}
-          <svg className="absolute top-[2600px] right-32 w-full h-full" style={{zIndex: 1}}>
-            <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-          </svg>
-
-          {/* Triggers to right email line */}
-          <svg className="absolute top-[2610px] left-[415px] w-full h-full" style={{zIndex: 1}}>
-            <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-          </svg>
-
-          {/* Left email to event transform line */}
-          <svg className="absolute top-[2710px] right-[400px] w-full h-full" style={{zIndex: 1}}>
-            <path d="M 1100,270 L 960,120" stroke="#008000" strokeWidth="2" fill="none" />
-          </svg>
-
-          {/* Event transform to check submit line */}
-          <svg className="absolute top-[2900px] left-[550px] w-full h-full" style={{zIndex: 1}}>
-            <path d="M 10,200 L 140,100" stroke="#008000" strokeWidth="2" fill="none" />
-          </svg>
-
-          {/* Check submit to http request line */}
-          <svg className="absolute top-[3010px] right-[400px] w-full h-full" style={{zIndex: 1}}>
-            <path d="M 1100,270 L 960,120" stroke="#008000" strokeWidth="2" fill="none" />
-          </svg>
-
-        </div>
-      </div>
+            )}
     </div>
   );
 };
-
+    
 export default WorkflowDiagram;

@@ -28,9 +28,8 @@ const RecommendationsBoard: React.FC<RecommendationsBoardProps> = ({ recommendat
     }
   };
 
-  if (!recommendations) {
-    return <div className="text-gray-800 dark:text-gray-200">Carregando recomendações...</div>;
-  }
+  if (!recommendations) return <div className="text-gray-800 dark:text-gray-200 text-xl">Não foram encontradas recomendações.</div>;
+  
 
   const recommendationEntries = Object.entries(recommendations);
 

@@ -93,13 +93,9 @@ const WeeklyTasksOverview: React.FC = () => {
     return <div className="text-center p-4">Loading tasks...</div>;
   }
 
-  if (error) {
-    return <div className="text-center p-4 text-red-500">{error}</div>;
-  }
-
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md mt-12">
+      <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold flex items-center text-gray-800 dark:text-gray-200">
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -111,54 +107,60 @@ const WeeklyTasksOverview: React.FC = () => {
           <ChevronRightIcon className="w-3 h-3 ml-1" />
         </button>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {tasks.map((task) => (
-          <div key={task.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow overflow-hidden flex">
-            <div className={`w-1 ${priorityColors[task.priority]}`}></div>
-            <div className="flex-1 p-4">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="font-semibold text-sm mb-1 text-gray-800 dark:text-gray-200">{task.title}</h3>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">{task.description}</p>
-                </div>
-                <div className="flex items-center">
-                  <span className={`text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]} text-white mr-2`}>
-                    {task.priority}
-                  </span>
-                  <button className="text-gray-400 dark:text-gray-500">
-                    <EllipsisHorizontalIcon className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-              <p className="text-xs text-gray-700 dark:text-gray-300 mb-4 line-clamp-2">{task.activity}</p>
-              <div className="border-t border-gray-200 dark:border-gray-600 pt-3">
-                <div className="flex justify-between items-center mb-2">
-                  <div className="flex -space-x-1">
-                    {[...Array(2)].map((_, i) => (
-                      <div key={i} className="w-6 h-6 rounded-full overflow-hidden border-2 border-white dark:border-gray-800">
-                        <Image
-                          src={i === 0 ? "/images/task-agriculture.png" : "/images/generic-fruits.png"}
-                          alt={i === 0 ? "Task image" : "Planting image"}
-                          width={24}
-                          height={24}
-                          objectFit="cover"
-                        />
-                      </div>
-                    ))}
+      {tasks.length === 0 ? (
+        <div className="text-center p-4 text-gray-500 dark:text-gray-400">
+          Nenhuma tarefa encontrada para esta semana.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {tasks.map((task) => (
+            <div key={task.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow overflow-hidden flex">
+              <div className={`w-1 ${priorityColors[task.priority]}`}></div>
+              <div className="flex-1 p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-semibold text-sm mb-1 text-gray-800 dark:text-gray-200">{task.title}</h3>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">{task.description}</p>
                   </div>
-                  <div className="text-xs font-semibold text-gray-800 dark:text-gray-200">{task.progress}%</div>
+                  <div className="flex items-center">
+                    <span className={`text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]} text-white mr-2`}>
+                      {task.priority}
+                    </span>
+                    <button className="text-gray-400 dark:text-gray-500">
+                      <EllipsisHorizontalIcon className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
-                <div className="bg-gray-200 dark:bg-gray-600 rounded-full h-1.5">
-                  <div
-                    className="bg-green-500 dark:bg-green-400 h-1.5 rounded-full"
-                    style={{ width: `${task.progress}%` }}
-                  />
+                <p className="text-xs text-gray-700 dark:text-gray-300 mb-4 line-clamp-2">{task.activity}</p>
+                <div className="border-t border-gray-200 dark:border-gray-600 pt-3">
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex -space-x-1">
+                      {[...Array(2)].map((_, i) => (
+                        <div key={i} className="w-6 h-6 rounded-full overflow-hidden border-2 border-white dark:border-gray-800">
+                          <Image
+                            src={i === 0 ? "/images/task-agriculture.png" : "/images/generic-fruits.png"}
+                            alt={i === 0 ? "Task image" : "Planting image"}
+                            width={24}
+                            height={24}
+                            objectFit="cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-xs font-semibold text-gray-800 dark:text-gray-200">{task.progress}%</div>
+                  </div>
+                  <div className="bg-gray-200 dark:bg-gray-600 rounded-full h-1.5">
+                    <div
+                      className="bg-green-500 dark:bg-green-400 h-1.5 rounded-full"
+                      style={{ width: `${task.progress}%` }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
