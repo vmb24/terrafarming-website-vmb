@@ -11,7 +11,7 @@ import { CgArrowTopRightO } from "react-icons/cg"
 
 export const ServicesSection = () => {
     return (
-        <div className='flex flex-col px-12 mt-[800px] max-md:px-12 max-lg:px-12'>
+        <div className='flex flex-col px-12 mt-[880px] max-md:px-12 max-lg:px-12'>
             <div className='flex flex-row'>
                 <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Nossos Serviços</h1>
                 <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[37vw] max-md:w-[10vw] max-lg:w-[10vw]' />

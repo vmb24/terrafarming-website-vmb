@@ -4,11 +4,11 @@ import Link from "next/link"
 
 import { GoArrowLeft, GoArrowRight } from "react-icons/go"
 
-import controlAgriculture from '@/assets/control-agriculture.jpeg'
+import controlAgriculture from '@/assets/predictive-screen.png'
 
 export const ControlAgricultureSection = () => {
     return (
-        <div className="flex flex-col absolute top-[1570px] bottom-0 left-0 right-0 px-32 max-md:mt-32 max-lg:mt-32 max-md:px-8 max-lg:px-8 w-full h-[80vh] overflow-hidden">
+        <div className="flex flex-col absolute top-[1680px] bottom-0 left-0 right-0 px-32 max-md:mt-32 max-lg:mt-32 max-md:px-8 max-lg:px-8 w-full h-[80vh] overflow-hidden">
             <Image
                 alt=""
                 src={controlAgriculture}
@@ -19,14 +19,14 @@ export const ControlAgricultureSection = () => {
                 }}
             />
 
-            <div className='flex flex-row mt-8 relative overflow-hidden'>
+            <div className='flex flex-row mt-8 relative overflow-hidden justify-end'>
                 <h1 className='text-white text-3xl font-normal'>TerraFarming Controle da Agricultura</h1>
             </div>
 
             <div className='flex flex-col mt-64 max-md:mt-56 max-lg:mt-56'>
                 <div className='flex flex-col absolute'>
-                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>Otimize sua agricultura</h1>
-                    <h1 className='text-bold text-6xl max-md:text-4xl max-lg:text-5xl text-white'>Com nosso painel de controle avançado</h1>
+                    <h1 className='text-bold text-6xl max-md:text-3xl max-lg:text-5xl text-white'>Otimize sua agricultura</h1>
+                    <h1 className='text-bold text-6xl max-md:text-3xl max-lg:text-5xl text-white'>Com nosso painel de controle avançado</h1>
                 </div>
                 <div className='flex flex-col absolute mt-40 max-md:mt-32 max-lg:mt-32'>
                     <h1 className='text-bold text-xl text-white'>Nosso painel de controle fornece informações em tempo real sobre as operações de sua fazenda,</h1>
