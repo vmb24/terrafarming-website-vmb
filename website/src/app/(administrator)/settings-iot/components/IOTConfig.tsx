@@ -24,7 +24,7 @@ const IOTConfig: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('http://192.168.1.19/config-uuid', { uuid }, {
+      const response = await axios.post('http://172.20.10.3/config-uuid', { uuid }, {
         headers: {
           'Content-Type': 'application/json',
         },
