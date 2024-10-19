@@ -10,6 +10,9 @@ import ExpenseManagement from './components/ExpenseManagement';
 import Subscription from './components/Subscription';
 import AlexaIntegration from './components/AlexaIntegration';
 import Community from './components/Community';
+import PaymentMethodCard from '@/components/ui/payments/PaymentMethodCard';
+import IAgrixiAssistant from '@/components/ui/agrixi-assistant/IAgrixiAssistant';
+import AccessibilitySettings from './components/AccessibilitySettings';
 
 const SettingsPage: React.FC = () => {
   const { theme } = useTheme();
@@ -20,11 +23,13 @@ const SettingsPage: React.FC = () => {
       case 'iotconfig': return <IOTConfig />;
       case 'logs': return <IOTDeviceLogs />;
       case 'profile': return <PersonalProfile />;
+      case 'accessibility-settings': return <AccessibilitySettings />;
       case 'farm': return <FarmProfile />;
       case 'expenses': return <ExpenseManagement />;
       case 'subscription': return <Subscription />;
       case 'alexa': return <AlexaIntegration />;
       case 'community': return <Community />;
+      case 'payment': return <PaymentMethodCard />;
       default: return <IOTConfig />;
     }
   };
@@ -35,6 +40,8 @@ const SettingsPage: React.FC = () => {
       <div className="flex-1 p-8">
         {renderContent()}
       </div>
+
+      <IAgrixiAssistant />
     </div>
   );
 };

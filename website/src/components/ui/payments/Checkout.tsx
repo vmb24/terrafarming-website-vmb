@@ -1,5 +1,7 @@
+// Checkout.tsx
 import React, { useState } from 'react';
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
+import CreditCard from './CreditCard';
 
 interface CheckoutProps {
   planName: string;
@@ -15,6 +17,34 @@ const Checkout: React.FC<CheckoutProps> = ({ planName, price, currency, interval
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [cardBrand, setCardBrand] = useState<string | null>(null);
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvc, setCvc] = useState('');
+
+  const handleCardNumberChange = (event: any) => {
+    console.log('Card number change event:', event);
+    if (event.complete) {
+      setCardNumber(event.empty ? '' : '•••• •••• •••• ' + event.value.substr(-4));
+    }
+    if (event.brand) {
+      setCardBrand(event.brand);
+    } else {
+      setCardBrand(null);
+    }
+  };
+
+  const handleCardExpiryChange = (event: any) => {
+    if (event.complete) {
+      setExpiry(event.value);
+    }
+  };
+
+  const handleCardCvcChange = (event: any) => {
+    if (event.complete) {
+      setCvc(event.value);
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,10 +58,7 @@ const Checkout: React.FC<CheckoutProps> = ({ planName, price, currency, interval
     }
 
     const cardNumber = elements.getElement(CardNumberElement);
-    const cardExpiry = elements.getElement(CardExpiryElement);
-    const cardCvc = elements.getElement(CardCvcElement);
-
-    if (!cardNumber || !cardExpiry || !cardCvc) {
+    if (!cardNumber) {
       setError('Elementos do cartão não encontrados');
       setLoading(false);
       return;
@@ -80,19 +107,45 @@ const Checkout: React.FC<CheckoutProps> = ({ planName, price, currency, interval
 
         <div>
           <h2 className="text-xl font-semibold mb-4">Detalhes do Pagamento</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
+          <div className='mt-12'>
+            <CreditCard cardNumber={cardNumber} cardBrand={cardBrand} expiry={expiry} cvc={cvc} />
+          </div>
+          <form onSubmit={handleSubmit} className="mt-4">
+            <div className="mb-4 mt-8">
               <label className="block mb-2">Número do Cartão</label>
-              <CardNumberElement className="p-3 border rounded bg-gray-800 border-gray-700" />
+              <CardNumberElement 
+                className="p-3 border rounded bg-gray-800 border-gray-700"
+                onChange={handleCardNumberChange}
+                options={{
+                  style: {
+                    base: {
+                      fontSize: '16px',
+                      color: '#ffffff',
+                      '::placeholder': {
+                        color: '#aab7c4',
+                      },
+                    },
+                    invalid: {
+                      color: '#ff0000',
+                    },
+                  },
+                }}
+              />
             </div>
             <div className="mb-4 flex space-x-4">
               <div className="flex-1">
                 <label className="block mb-2">Data de Expiração</label>
-                <CardExpiryElement className="p-3 border rounded bg-gray-800 border-gray-700" />
+                <CardExpiryElement 
+                  className="p-3 border rounded bg-gray-800 border-gray-700" 
+                  onChange={handleCardExpiryChange}
+                />
               </div>
               <div className="flex-1">
                 <label className="block mb-2">CVC</label>
-                <CardCvcElement className="p-3 border rounded bg-gray-800 border-gray-700" />
+                <CardCvcElement 
+                  className="p-3 border rounded bg-gray-800 border-gray-700" 
+                  onChange={handleCardCvcChange}
+                />
               </div>
             </div>
             {error && <div className="text-red-500 mb-4">{error}</div>}
@@ -114,6 +167,7 @@ const Checkout: React.FC<CheckoutProps> = ({ planName, price, currency, interval
         </div>
       </div>
 
+      {/* Resto do componente (Resumo do Plano e Política de Cancelamento) permanece o mesmo */}
       <div className="mt-8">
         <h2 className="text-xl font-semibold mb-4">Resumo do Plano</h2>
         <div className="bg-gray-800 p-4 rounded-lg">

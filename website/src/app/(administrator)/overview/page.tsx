@@ -7,6 +7,7 @@ import WeeklyTasksOverview from './components/WeeklyTasksOverview';
 import { SoilMoisture, SoilTemperature, AirHumidity, AirTemperature, Luminosity } from './types/metrics'
 import MetricsHeatmap from './components/MetricsHeatmap';
 import WorkflowDiagram from './components/WorkflowDiagram';
+import AgrixiAssistant from '@/components/ui/agrixi-assistant/IAgrixiAssistant';
 
 interface HistoricalDataPoint {
   day: string;
@@ -116,6 +117,8 @@ return (
     <MetricsHeatmap />
 
     <WorkflowDiagram />
+
+    <AgrixiAssistant />
   </div>
   );
 };

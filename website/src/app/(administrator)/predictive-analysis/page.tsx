@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import PredictiveMetricCard from './components/PredictiveMetricCard';
 import WeatherAlert from './components/WeatherAlert';
-import HarvestCalendar from './components/HarvestCalendar';
 import AgriculturalMetricsRadar from './components/AgriculturalMetricsRadar';
 import AgricultureImageAnalysis from './components/AgricultureImageAnalysis';
+import IAgrixiAssistant from '@/components/ui/agrixi-assistant/IAgrixiAssistant';
 
 interface PredictiveData {
   yieldForecast: number | null;
@@ -77,14 +77,17 @@ const PredictiveAnalysisBoard: React.FC = () => {
             />
         </div>
 
-        <div className='flex flex-row space-x-12'>
+        <div className='flex flex-row space-x-12 mt-16'>
           <WeatherAlert />
 
           <AgriculturalMetricsRadar />
         </div>
 
-        <AgricultureImageAnalysis />
+        <div className='mt-12'>
+          <AgricultureImageAnalysis />
+        </div>
 
+        <IAgrixiAssistant />
     </div>
   );
 };

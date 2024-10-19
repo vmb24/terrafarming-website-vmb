@@ -1,3 +1,4 @@
+import IAgrixiAssistant from "@/components/ui/agrixi-assistant/IAgrixiAssistant"
 import AgricultureReport from "./components/AgricultureReport"
 import CropDisplay from "./components/CropCard"
 import IrrigationSystem from "./components/IrrigationSystem"
@@ -15,7 +16,7 @@ const AgricultureTecnology = () => {
                 <AgricultureReport />
             </div>
             
-            {/* Outros componentes da página */}
+            <IAgrixiAssistant />
       </div>
     )
 }

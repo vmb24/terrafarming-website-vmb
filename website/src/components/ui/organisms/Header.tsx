@@ -14,7 +14,12 @@ export const Header = () => {
     const { theme, setTheme } = useTheme();
 
     return (
-        <header className="px-4 py-8 lg:px-14 pb-36 bg-gradient-to-b from-green-700 to-green-500 dark:from-green-900 dark:to-green-700">
+        <header className={`px-4 py-8 lg:px-14 pb-36
+            ${theme === 'dark'
+                ? 'bg-[linear-gradient(135deg,#1a365d,#2f855a)] shadow-[0_0_20px_rgba(26,54,93,0.5),0_0_40px_rgba(47,133,90,0.3)]'
+                : 'bg-gradient-to-b from-green-300 to-green-100 shadow-lg'
+            }`
+        }>
             <div className="max-w-screen-2xl mx-auto">
                 <div className="w-full flex items-center justify-between mb-14">
                     <div className="flex items-center lg:gap-x-16">

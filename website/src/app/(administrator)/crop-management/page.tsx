@@ -1,3 +1,4 @@
+import IAgrixiAssistant from "@/components/ui/agrixi-assistant/IAgrixiAssistant";
 import HarvestCalendar from "./components/HarvestCalendar";
 import SustainableAgricultureSolutions from "./components/SustainableAgricultureSolutions";
 
@@ -9,6 +10,8 @@ const CropManagement: React.FC = () => {
       <div>
         <SustainableAgricultureSolutions />
       </div>
+
+      <IAgrixiAssistant />
     </div>
   );
 };

@@ -6,6 +6,7 @@ import Sidebar from './components/SideBar';
 import TaskBoard from './components/TaskBoard';
 import RecommendationsBoard from './components/RecommendationsBoard';
 import { AirMoisturePlan, AirTemperaturePlan, BrightnessPlan, SoilMoisturePlan, SoilTemperaturePlan } from './types/types';
+import IAgrixiAssistant from '@/components/ui/agrixi-assistant/IAgrixiAssistant';
 
 type Category = 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
 type RecommendationCategory = `${Category}Recommendations`;
@@ -148,6 +149,7 @@ const PlannerTaskManagement: React.FC = () => {
           )}
         </div>
       </div>
+      <IAgrixiAssistant />
     </div>
   );
 };
