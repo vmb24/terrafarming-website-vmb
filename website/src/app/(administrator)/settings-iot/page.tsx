@@ -30,7 +30,7 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900 -mt-20 rounded-md">
+    <div className="flex h-full bg-gray-100 dark:bg-gray-900 -mt-20 rounded-md">
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
       <div className="flex-1 p-8">
         {renderContent()}

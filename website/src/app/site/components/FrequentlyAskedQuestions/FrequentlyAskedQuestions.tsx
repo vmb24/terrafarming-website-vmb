@@ -46,20 +46,28 @@ export const FrequentlyAskedQuestions: React.FC = () => {
       </div>
 
       <FAQItem 
-        question="1. O que é a tecnologia TerraRobot e como ela funciona na colheita de frutas?"
-        answer="A tecnologia TerraRobot usa sensores avançados e IA para colher frutas com eficiência..."
+        question="Sensores de Precisão para Agricultura de Alta Performance"
+        answer="O TerraFarming utiliza sensores de última geração para monitorar constantemente a umidade do solo, temperatura do solo e do ar, luminosidade e umidade do ar. Estes dados são essenciais para otimizar o crescimento das culturas e maximizar a produtividade."
       />
       <FAQItem 
-        question="2. Os robôs TerraRobot são seguros para as árvores frutíferas e plantas?"
-        answer="Sim, os robôs TerraRobot são projetados com cuidado para garantir a segurança de árvores e plantas..."
+        question="IA aplicada para Tomada de Decisões Agrícolas"
+        answer="Nossa plataforma utiliza inteligência artificial para analisar os dados coletados e fornecer recomendações precisas sobre irrigação, plantio e manejo de culturas. Isso inclui previsões de rendimento, alertas de risco de estresse hídrico e janelas ideais de plantio."
       />
       <FAQItem 
-        question="3. Como funciona o transporte de frutas do TerraRobot e quais são seus benefícios?"
-        answer="O sistema de transporte utiliza contêineres seguros e rotas otimizadas para entregar frutas..."
+        question="Planejamento Eficiente para Operações Agrícolas"
+        answer="O TerraFarming oferece um sistema de gerenciamento de tarefas que organiza e prioriza as atividades agrícolas com base nas análises de dados. Isso ajuda a otimizar o trabalho diário, melhorando a eficiência operacional da fazenda."
       />
       <FAQItem 
-        question="4. Como faço para integrar a tecnologia TerraRobot em minhas operações agrícolas?"
-        answer="A integração envolve algumas etapas, incluindo a instalação de sensores e a calibração..."
+        question="Conectando Agricultores a Fornecedores e Compradores"
+        answer="Nossa plataforma inclui um marketplace que conecta agricultores a fornecedores de insumos e compradores de produtos. Isso facilita a compra de suprimentos necessários e a venda da produção, otimizando toda a cadeia de valor agrícola."
+      />
+      <FAQItem 
+        question="Detecção Precoce de Problemas nas Plantações"
+        answer="Utilizando análise de imagens e dados dos sensores, o TerraFarming pode detectar precocemente problemas como doenças, pragas ou deficiências nutricionais nas culturas, permitindo intervenções rápidas e eficazes."
+      />
+      <FAQItem 
+        question="Adaptabilidade para Diferentes Tipos de Fazendas"
+        answer="O TerraFarming é altamente configurável e pode se integrar a diversos dispositivos IoT agrícolas. Isso permite que a plataforma seja adaptada às necessidades específicas de diferentes tipos e tamanhos de operações agrícolas."
       />
     </div>
   )

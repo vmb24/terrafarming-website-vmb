@@ -9,7 +9,7 @@ export const JoinUsSection = () => {
     const { theme } = useTheme()
 
     return (
-        <div className="lg:absolute max-md:relative max-lg:relative lg:top-[6520px] bottom-0 left-0 right-0 w-full h-[80vh] max-md:h-[35vh] max-lg:h-[35vh] mt-12 overflow-hidden bg-white dark:bg-[#121212]">
+        <div className="lg:absolute max-md:relative max-lg:relative lg:top-[6750px] bottom-0 left-0 right-0 w-full h-[80vh] max-md:h-[35vh] max-lg:h-[35vh] mt-12 overflow-hidden bg-white dark:bg-[#121212]">
             <div className='flex flex-row justify-center px-32'>
                 <h1 className='text-[#020405] dark:text-white text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Junte-se a nós</h1>
                 <div className='flex flex-row border-t-2 border-gray-400 dark:border-gray-600 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[39vw] max-md:w-[20vw] max-lg:w-[20vw]' />

@@ -3,20 +3,20 @@ import { GoArrowLeft, GoArrowRight } from 'react-icons/go'
 import Image from 'next/image'
 import { CgArrowTopRightO } from 'react-icons/cg'
 
-import greenhouseAnalisysFruits from '@/assets/picking.jpg'
-import analyseSoilRobot from '@/assets/analyse-soil-robot.png'
-import farmMapping from '@/assets/robot-farmer-soil.jpg'
-import agricultureRobotHarvesting from '@/assets/smart-harvest-robots.png'
+import cropManagement from '@/assets/application-images/crop-management.png'
+import predictiveAnalisys from '@/assets/application-images/predictive-analisys.png'
+import taskPlanner from '@/assets/application-images/task-planner.png'
+import envIrrigationSystem from '@/assets/application-images/env-irrigation-system.png'
 import agriculturalComputerVision from '@/assets/services/agricultural-compute-vision.png'
-import agricultureTechnologyChat from '@/assets/agriculture-technology-chat.png'
+import agriculturalMarket from '@/assets/application-images/agricultural-market.png'
 
 const slides = [
-  { title: 'Controle de Estufas', image: greenhouseAnalisysFruits, description: 'Monitorar e gerenciar a localização e a saúde das culturas.' },
-  { title: 'Análise climática do solo', image: analyseSoilRobot, description: 'Analise as condições climáticas do solo para tomar melhores decisões agrícolas.' },
-  { title: 'Mapeamento de fazendas', image: farmMapping, description: 'Mapeie sua fazenda para otimizar suas operações agrícolas.' },
-  { title: 'Controle e análise de frutas', image: agricultureRobotHarvesting, description: 'Rastreie e analise o status de suas frutas para melhorar o rendimento.' },
-  { title: 'Análise de máquina por imagem', image: agriculturalComputerVision, description: 'Avalie as condições do maquinário por meio da análise de imagens.' },
-  { title: 'Interação com o agricultor', image: agricultureTechnologyChat, description: 'Conecte-se com outros agricultores em uma rede social para obter insights compartilhados.' },
+  { title: 'Monitoramento de Culturas', image: cropManagement, description: 'Acompanhe a saúde e o desenvolvimento das suas plantações em tempo real.' },
+  { title: 'Análise do Solo e Clima', image: predictiveAnalisys, description: 'Obtenha insights sobre umidade e temperatura do solo para otimizar suas decisões de cultivo.' },
+  { title: 'Gerenciamento de Tarefas', image: taskPlanner, description: 'Planeje e acompanhe as atividades agrícolas com base em recomendações inteligentes.' },
+  { title: 'Controle Ambiental', image: envIrrigationSystem, description: 'Monitore luminosidade, umidade e temperatura do ar para criar condições ideais de crescimento.' },
+  { title: 'Análise Preditiva', image: predictiveAnalisys, description: 'Antecipe tendências e tome decisões proativas com base em dados históricos e atuais.' },
+  { title: 'Marketplace Agrícola', image: agriculturalMarket, description: 'Conecte-se com fornecedores e compradores para otimizar sua cadeia de suprimentos.' },
 ]
 
 const ITEMS_PER_PAGE = 1 // Show one item per page on smaller screens

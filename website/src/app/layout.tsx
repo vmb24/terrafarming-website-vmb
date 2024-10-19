@@ -7,6 +7,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import { Container } from "@/components/ui/atoms/Container"
 import { ToastContainer } from "@/components/ui/molecules/Toast"
 import { ThemeProvider } from '@/components/ui/layout/ThemeProvider'
+import { StripeWrapper } from '@/components/ui/payments/StripeWrapper';
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,7 +26,9 @@ export default function RootLayout({
       <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
+            <StripeWrapper>
+              {children}
+            </StripeWrapper>
             <ToastContainer />
           </ThemeProvider>
         </body>

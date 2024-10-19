@@ -3,9 +3,9 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import smartHarvestRobot from '@/assets/picking.jpg'
-import analyseSoilRobot from '@/assets/analyse-soil-robot.png'
-import sensorsSoilRebot from '@/assets/robot-farmer-soil.jpg'
+import cropManagement from '@/assets/application-images/crop-management.png'
+import predictiveAnalisys from '@/assets/application-images/predictive-analisys.png'
+import envIrrigationSystem from '@/assets/application-images/env-irrigation-system.png'
 
 import { CgArrowTopRightO } from "react-icons/cg"
 
@@ -13,7 +13,7 @@ export const ServicesSection = () => {
     return (
         <div className='flex flex-col px-12 mt-[880px] max-md:px-12 max-lg:px-12'>
             <div className='flex flex-row'>
-                <h1 className='text-[#020405] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Nossos Serviços</h1>
+                <h1 className='text-[#020405] dark:text-[#FFFFFF] text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Nossos Serviços</h1>
                 <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[37vw] max-md:w-[10vw] max-lg:w-[10vw]' />
                 <a className='text-green-700 text-xl max-md:ml-2 max-lg:ml-2'>TerraFarming</a>
                 <div className='flex flex-row border-t-2 border-gray-400 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[37vw] max-md:w-[10vw] max-lg:w-[10vw]' />
@@ -22,7 +22,7 @@ export const ServicesSection = () => {
 
             <div className='flex flex-col items-end mt-12'>
                 <p className='text-4xl max-md:text-3xl max-lg:text-3xl'>
-                    <a className='text-[#a1a1a1]'>Transforme sua experiência agrícola com</a> Nossas soluções de ponta
+                    <a className='text-[#a1a1a1]'>Transforme sua experiência agrícola com</a> nossas soluções de ponta.
                 </p>
                 <p className='text-4xl pr-8 max-md:text-3xl max-lg:text-3xl'>
                     Eleve suas práticas agrícolas com nosso conjunto abrangente de serviços  
@@ -34,10 +34,10 @@ export const ServicesSection = () => {
 
             <div className='flex flex-row max-md:flex-col max-lg:flex-col justify-between mt-20 lg:space-x-12 max-md:mt-12 max-lg:mt-12'>
    
-                <div className='flex justify-start relative items-start max-md:justify-center max-lg:justify-center p-12 rounded-xl w-full h-96 max-md:w-auto max-lg:w-auto overflow-hidden'>
+                <div className='flex justify-center relative items-center max-md:justify-center max-lg:justify-center p-12 rounded-xl w-full h-96 max-md:w-auto max-lg:w-auto overflow-hidden'>
                     <Image
                         alt=""
-                        src={smartHarvestRobot}
+                        src={cropManagement}
                         layout="fill"
                         objectFit="cover"
                         style={{
@@ -45,22 +45,25 @@ export const ServicesSection = () => {
                         }}
                     />  
                     <div className='flex flex-col absolute'>
-                        <div className='flex flex-row justify-between items-center'>
-                            <h1 className='text-center text-xl text-[#cecdce]'>Colheita inteligente</h1>
+                        <div className='flex flex-row items-center'>
+                            <div>
+                                <h1 className='text-center text-xl text-[#cecdce] pr-2'>Monitoramento Inteligente</h1>
+                                <h1 className='text-center text-xl text-[#cecdce] pr-2'>de Culturas</h1>
+                            </div>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <p className='mt-12 text-base text-[#cecdce] max-w-sm mx-auto break-words'>
-                            Usamos soluções da AWS de AI para que o robô execute uma 
-                            colheita inteligênte, analisando as frutas que podem ser 
-                            colhidas ou quando poderão ser colhidas, verificando 
-                            possíveis métodos para a saúde do que está sendo plantado.</p>
+                            Utilize sensores avançados para monitorar em tempo real a umidade do solo, 
+                            temperatura, luminosidade e condições atmosféricas. Nossa IA analisa esses 
+                            dados para otimizar o crescimento das plantas e prevenir problemas antes 
+                            que ocorram.</p>
                     </div>
                 </div>
 
-                <div className='flex justify-start relative items-start max-md:justify-center max-lg:justify-center p-12 rounded-xl w-full h-96 max-md:w-auto max-lg:w-auto overflow-hidden max-md:mt-12 max-lg:mt-12'>
+                <div className='flex justify-center relative items-center max-md:justify-center max-lg:justify-center p-12 rounded-xl w-full h-96 max-md:w-auto max-lg:w-auto overflow-hidden max-md:mt-12 max-lg:mt-12'>
                     <Image
                         alt=""
-                        src={analyseSoilRobot}
+                        src={predictiveAnalisys}
                         layout="fill"
                         objectFit="cover"
                         style={{
@@ -68,24 +71,23 @@ export const ServicesSection = () => {
                         }}
                     />  
                     <div className='flex flex-col absolute'>
-                        <div className='flex flex-row justify-between items-center'>
-                            <h1 className='text-center text-xl text-[#cecdce]'>Análise inteligente do solo</h1>
+                        <div className='flex flex-row items-center'>
+                            <h1 className='text-center text-xl text-[#cecdce]'>Previsões e Recomendações Personalizadas</h1>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <p className='mt-12 text-base text-[#cecdce] max-w-sm mx-auto break-words'>
-                            Usamos soluções da AWS de AI para que o robô colete as medidas de
-                            pH, temperatura e umidade do solo, captando também o clima da semana
-                            na determinada região. Após essas etapas, todas essas métricas são unidas
-                            e processadas, provendo recomendações para que o solo do agricultor possa 
-                            sempre dar muitos frutos.
+                            Com base na análise de dados históricos e atuais, nosso sistema fornece 
+                            previsões precisas de rendimento e janelas ideais de plantio. Receba 
+                            recomendações personalizadas para irrigação, fertilização e manejo 
+                            de pragas, maximizando sua produtividade.
                         </p>
                     </div>
                 </div>
        
-                <div className='flex justify-start relative items-start max-md:justify-center max-lg:justify-center rounded-xl p-12 w-full h-96 max-md:w-auto max-lg:w-auto overflow-hidden max-md:mt-12 max-lg:mt-12'>
+                <div className='flex justify-center relative items-center max-md:justify-center max-lg:justify-center rounded-xl p-12 w-full h-96 max-md:w-auto max-lg:w-auto overflow-hidden max-md:mt-12 max-lg:mt-12'>
                     <Image
                         alt=""
-                        src={sensorsSoilRebot}
+                        src={envIrrigationSystem}
                         layout="fill"
                         objectFit="cover"
                         style={{
@@ -93,15 +95,16 @@ export const ServicesSection = () => {
                         }}
                     />  
                     <div className='flex flex-col absolute'>
-                        <div className='flex flex-row justify-between items-center'>
-                            <h1 className='text-center text-xl text-[#cecdce]'>Sensores inteligentes</h1>
+                        <div className='flex flex-row items-center'>
+                            <h1 className='text-center text-xl text-[#cecdce] pr-2'>Gestão Sustentável e Eficiente</h1>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <p className='mt-12 text-base text-[#cecdce] max-w-sm mx-auto break-words'>
-                            Sensores de proximidade, rodas de trator, cameras e outros Sensores
-                            do mesmo são usados no robô para que suas atividades possam ser 
-                            exercidas com a capacidade essencial e segurança que pode ser 
-                            exercida por um ser humano, mas através de um robô.</p>
+                            Otimize o uso de recursos com nosso sistema de 
+                            irrigação inteligente e gerenciamento sustentável 
+                            de pragas. Monitore o impacto climático na sua 
+                            lavoura e tome decisões informadas para proteger 
+                            suas culturas e aumentar a eficiência operacional.</p>
                     </div>
                 </div>
             </div>
@@ -119,14 +122,14 @@ export const ServicesSection = () => {
 
             <div className='flex flex-col px-32 max-md:px-0 max-lg:px-0 mt-12 max-md:mt-8 max-lg:mt-8'>
                 <p className='px-44 max-md:px-0 max-lg:px-0 text-4xl max-md:text-3xl max-lg:text-3xl'>
-                    <a className='text-[#a1a1a1]'>Nossos serviços avançados incluem o gerenciamento de estufas</a>
+                    <a className='text-[#a1a1a1]'>Nossos serviços avançados incluem o gerenciamento do seu ambiente agrícola</a>
                 </p>
-                <p className='text-4xl px-44 max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>para obter informações em tempo real sobre a saúde da cultura e a localização,</p>
+                <p className='text-4xl px-44 max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>para obter informações em tempo real sobre a saúde cultural da sua agricultura,</p>
                 <p className='px-16 text-4xl max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>
-                    análise precisa do clima do solo, análise aprofundada do clima do solo,
+                    com análise aprofundada das principais métricas do solo,
                 </p>
                 <p className='px-8 text-4xl max-md:text-3xl max-lg:text-3xl max-md:px-0 max-lg:px-0'>
-                mapeamento abrangente de fazendas, <a className='text-[#a1a1a1]'>e controle detalhado de frutas.</a> 
+                    assistencia com base prévia nos seus dados <a className='text-[#a1a1a1]'>e controle detalhado da sua cultura.</a> 
                 </p>
             </div> 
 
@@ -145,25 +148,20 @@ export const ServicesSection = () => {
                             <div className='flex flex-row justify-between'>
                                 <div className='flex flex-row'>
                                     <a className='text-[#659076]'>01</a>
-                                    <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Controle de Estufas</h1>
+                                    <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Controle Inteligente de Estufas</h1>
                                 </div>
                                 <CgArrowTopRightO size={40} color='white'/>
                             </div>
                             <div className='flex flex-col items-start mt-12'>
                                 <p className='text-[#659076]'>
-                                    Gerenciamento e Monitoramento de Estufas: Localização e Saúde das Culturas
+                                    Otimização do Ambiente de Cultivo
                                 </p>
                                 <a className='text-[#ebf0ed] mt-2 text-base'>
-                                    Este serviço envolve o monitoramento da localização 
-                                    e saúde das estufas agrícolas. Ele pode utilizar 
-                                    sensores IoT para coletar dados sobre a temperatura, 
-                                    umidade, e outras condições ambientais dentro das 
-                                    estufas. Informações sobre a saúde das plantas e 
-                                    possíveis problemas são analisadas para garantir 
-                                    condições ideais de crescimento. A integração com 
-                                    AWS IoT Core permite o envio e processamento de 
-                                    dados em tempo real, e o AWS CloudWatch pode ser 
-                                    utilizado para monitoramento e alertas.
+                                    Monitore e ajuste automaticamente temperatura, 
+                                    umidade e luminosidade em suas estufas. Sensores IoT 
+                                    avançados coletam dados em tempo real, permitindo 
+                                    condições ideais para cada cultura e maximizando 
+                                    o rendimento.
                                 </a>
                             </div>
                         </div>
@@ -177,25 +175,20 @@ export const ServicesSection = () => {
                         <div className='flex flex-row justify-between'>
                             <div className='flex flex-row'>
                                 <a className='text-[#659076]'>02</a>
-                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Analise do clima sob o solo</h1>
+                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Gestão Precisa da Irrigação</h1>
                             </div>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <div className='flex flex-col items-start mt-12'>
                             <p className='text-[#659076]'>
-                                Gerenciamento e Monitoramento de Estufas: Localização e Saúde das Culturas
+                                Economia de Água e Saúde das Plantas
                             </p>
                             <a className='text-[#ebf0ed] mt-2 text-base'>
-                                Este serviço envolve o monitoramento da localização 
-                                e saúde das estufas agrícolas. Ele pode utilizar 
-                                sensores IoT para coletar dados sobre a temperatura, 
-                                umidade, e outras condições ambientais dentro das 
-                                estufas. Informações sobre a saúde das plantas e 
-                                possíveis problemas são analisadas para garantir 
-                                condições ideais de crescimento. A integração com 
-                                AWS IoT Core permite o envio e processamento de 
-                                dados em tempo real, e o AWS CloudWatch pode ser 
-                                utilizado para monitoramento e alertas.
+                                Utilize dados de umidade do solo para irrigação 
+                                inteligente. Nosso sistema analisa as necessidades 
+                                hídricas de cada cultura, programando regas eficientes 
+                                e evitando desperdícios, garantindo plantas saudáveis 
+                                e uso sustentável da água.
                             </a>
                         </div>
                     </div>
@@ -209,25 +202,19 @@ export const ServicesSection = () => {
                             <div className='flex flex-row justify-between'>
                                 <div className='flex flex-row'>
                                     <a className='text-[#659076]'>02</a>
-                                    <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Analise do clima sob o solo</h1>
+                                    <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Monitoramento da Saúde do Solo</h1>
                                 </div>
                                 <CgArrowTopRightO size={40} color='white'/>
                             </div>
                             <div className='flex flex-col items-start mt-12'>
                                 <p className='text-[#659076]'>
-                                    Gerenciamento e Monitoramento de Estufas: Localização e Saúde das Culturas
+                                    Nutrição Otimizada para Culturas
                                 </p>
                                 <a className='text-[#ebf0ed] mt-2 text-base'>
-                                    Este serviço envolve o monitoramento da localização 
-                                    e saúde das estufas agrícolas. Ele pode utilizar 
-                                    sensores IoT para coletar dados sobre a temperatura, 
-                                    umidade, e outras condições ambientais dentro das 
-                                    estufas. Informações sobre a saúde das plantas e 
-                                    possíveis problemas são analisadas para garantir 
-                                    condições ideais de crescimento. A integração com 
-                                    AWS IoT Core permite o envio e processamento de 
-                                    dados em tempo real, e o AWS CloudWatch pode ser 
-                                    utilizado para monitoramento e alertas.
+                                    Analise a temperatura e composição do solo em tempo real. 
+                                    Receba recomendações personalizadas de fertilização e manejo, 
+                                    assegurando um solo fértil e equilibrado para o crescimento 
+                                    ideal das plantas.
                                 </a>
                             </div>
                         </div>
@@ -241,25 +228,19 @@ export const ServicesSection = () => {
                         <div className='flex flex-row justify-between'>
                             <div className='flex flex-row'>
                                 <a className='text-[#659076]'>02</a>
-                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Analise do clima sob o solo</h1>
+                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Controle Climático Avançado</h1>
                             </div>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <div className='flex flex-col items-start mt-12'>
                             <p className='text-[#659076]'>
-                                Gerenciamento e Monitoramento de Estufas: Localização e Saúde das Culturas
+                                Adaptação às Condições Meteorológicas
                             </p>
                             <a className='text-[#ebf0ed] mt-2 text-base'>
-                                Este serviço envolve o monitoramento da localização 
-                                e saúde das estufas agrícolas. Ele pode utilizar 
-                                sensores IoT para coletar dados sobre a temperatura, 
-                                umidade, e outras condições ambientais dentro das 
-                                estufas. Informações sobre a saúde das plantas e 
-                                possíveis problemas são analisadas para garantir 
-                                condições ideais de crescimento. A integração com 
-                                AWS IoT Core permite o envio e processamento de 
-                                dados em tempo real, e o AWS CloudWatch pode ser 
-                                utilizado para monitoramento e alertas.
+                                Acompanhe temperatura e umidade do ar, prevendo mudanças 
+                                climáticas. Ajuste proativamente suas estratégias de cultivo, 
+                                protegendo as culturas contra condições adversas e otimizando 
+                                o crescimento.
                             </a>
                         </div>
                     </div>
@@ -269,25 +250,19 @@ export const ServicesSection = () => {
                         <div className='flex flex-row justify-between'>
                             <div className='flex flex-row'>
                                 <a className='text-[#659076]'>02</a>
-                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Analise do clima sob o solo</h1>
+                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Otimização de Luminosidade</h1>
                             </div>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <div className='flex flex-col items-start mt-12'>
                             <p className='text-[#659076]'>
-                                Gerenciamento e Monitoramento de Estufas: Localização e Saúde das Culturas
+                                Maximização da Fotossíntese
                             </p>
                             <a className='text-[#ebf0ed] mt-2 text-base'>
-                                Este serviço envolve o monitoramento da localização 
-                                e saúde das estufas agrícolas. Ele pode utilizar 
-                                sensores IoT para coletar dados sobre a temperatura, 
-                                umidade, e outras condições ambientais dentro das 
-                                estufas. Informações sobre a saúde das plantas e 
-                                possíveis problemas são analisadas para garantir 
-                                condições ideais de crescimento. A integração com 
-                                AWS IoT Core permite o envio e processamento de 
-                                dados em tempo real, e o AWS CloudWatch pode ser 
-                                utilizado para monitoramento e alertas.
+                                Monitore e ajuste os níveis de luz para cada cultura. 
+                                Nossa tecnologia otimiza a exposição à luz natural e 
+                                artificial, garantindo o processo de fotossíntese ideal 
+                                e impulsionando o crescimento e a produtividade das plantas.
                             </a>
                         </div>
                     </div>
@@ -296,30 +271,23 @@ export const ServicesSection = () => {
                         <div className='flex flex-row justify-between'>
                             <div className='flex flex-row'>
                                 <a className='text-[#659076]'>02</a>
-                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Analise do clima sob o solo</h1>
+                                <h1 className='text-[#ebf0ed] text-3xl font-normal underline underline-offset-2 px-2'>Análise Preditiva de Colheitas</h1>
                             </div>
                             <CgArrowTopRightO size={40} color='white'/>
                         </div>
                         <div className='flex flex-col items-start mt-12'>
                             <p className='text-[#659076]'>
-                                Gerenciamento e Monitoramento de Estufas: Localização e Saúde das Culturas
+                                Planejamento Estratégico da Produção
                             </p>
                             <a className='text-[#ebf0ed] mt-2 text-base'>
-                                Este serviço envolve o monitoramento da localização 
-                                e saúde das estufas agrícolas. Ele pode utilizar 
-                                sensores IoT para coletar dados sobre a temperatura, 
-                                umidade, e outras condições ambientais dentro das 
-                                estufas. Informações sobre a saúde das plantas e 
-                                possíveis problemas são analisadas para garantir 
-                                condições ideais de crescimento. A integração com 
-                                AWS IoT Core permite o envio e processamento de 
-                                dados em tempo real, e o AWS CloudWatch pode ser 
-                                utilizado para monitoramento e alertas.
+                                Utilize IA para prever rendimentos e identificar o 
+                                momento ideal de colheita. Baseado em dados históricos 
+                                e condições atuais, otimize seu planejamento de produção 
+                                e maximize a qualidade e quantidade da sua colheita.
                             </a>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     )

@@ -4,14 +4,14 @@ import Link from "next/link"
 
 import { GoArrowLeft, GoArrowRight } from "react-icons/go"
 
-import controlAgriculture from '@/assets/predictive-screen.png'
+import envIrrigationSystem from '@/assets/application-images/env-irrigation-system.png'
 
 export const ControlAgricultureSection = () => {
     return (
         <div className="flex flex-col absolute top-[1680px] bottom-0 left-0 right-0 px-32 max-md:mt-32 max-lg:mt-32 max-md:px-8 max-lg:px-8 w-full h-[80vh] overflow-hidden">
             <Image
                 alt=""
-                src={controlAgriculture}
+                src={envIrrigationSystem}
                 layout="fill"
                 objectFit="cover"
                 style={{

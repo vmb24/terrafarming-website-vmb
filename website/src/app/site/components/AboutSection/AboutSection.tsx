@@ -8,12 +8,12 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { SliderBar } from '../Slider/SliderBar'
 
 const slides = [
-    { title: 'Greenhouse Control', description: 'Monitor and manage the location and health of crops.' },
-    { title: 'Soil Climate Analysis', description: 'Analyze soil climate conditions for better farming decisions.' },
-    { title: 'Farm Mapping', description: 'Map out your farm to optimize your agricultural operations.' },
-    { title: 'Fruit Control & Analysis', description: 'Track and analyze the status of your fruits for improved yield.' },
-    { title: 'Machine Analysis by Image', description: 'Evaluate machinery conditions through image analysis.' },
-    { title: 'Farmer Interaction', description: 'Connect with other farmers in a social network for shared insights.' },
+    { title: 'Monitoramento de Culturas', description: 'Acompanhe a saúde e o desenvolvimento das suas plantações em tempo real.' },
+    { title: 'Análise do Solo e Clima', description: 'Obtenha insights sobre umidade e temperatura do solo para otimizar suas decisões de cultivo.' },
+    { title: 'Gerenciamento de Tarefas', description: 'Planeje e acompanhe as atividades agrícolas com base em recomendações inteligentes.' },
+    { title: 'Controle Ambiental', description: 'Monitore luminosidade, umidade e temperatura do ar para criar condições ideais de crescimento.' },
+    { title: 'Análise Preditiva', description: 'Antecipe tendências e tome decisões proativas com base em dados históricos e atuais.' },
+    { title: 'Marketplace Agrícola', description: 'Conecte-se com fornecedores e compradores para otimizar sua cadeia de suprimentos.' },
 ]
 
 const ITEMS_PER_PAGE = 4
@@ -45,19 +45,19 @@ export const AboutSection = () => {
                 <a className='text-[#020405] dark:text-white max-md:text-sm max-lg:text-sm ml-2 max-md:mt-1 max-lg:mt-1'>© {new Date().getFullYear()}</a>
             </div>
 
-            <div className='mt-8 mb-4'>
+            <div className='mt-16 mb-4'>
                 <div className='flex flex-col lg:flex-row lg:justify-between'>
-                    <h1 className='text-[#020405] dark:text-white text-3xl sm:text-4xl lg:text-5xl mb-4 lg:mb-0'>O que nós fazemos ?</h1>
+                    <h1 className='text-[#020405] dark:text-white text-3xl sm:text-4xl lg:text-5xl mb-4 lg:mb-0'>Como potencializamos sua agricultura?</h1>
                     <div className='flex flex-col lg:justify-center lg:mr-20'>
                         <p className='text-base lg:text-xl text-[#7e7e7e] dark:text-gray-300'>
-                            Oferecemos uma ampla gama de serviços para apoiar os agricultores
+                            Oferecemos tecnologia de ponta para maximizar sua produtividade
                         </p>
                         <p className='text-base lg:text-xl text-[#7e7e7e] dark:text-gray-300'>
-                            e entusiastas da agricultura no cultivo do sucesso de forma sustentável.
+                            e promover uma agricultura inteligente e sustentável.
                         </p>
                     </div>
-                    <Link href="/plans" className='mt-8 lg:mt-0 max-md:w-32 max-lg:w-32 flex items-center bg-green-500 dark:bg-green-600 rounded-full py-2 px-4'>
-                        <h1 className='text-white text-base sm:text-lg'>All Services</h1>
+                    <Link href="/plans" className='mt-8 lg:mt-0 max-md:w-32 max-lg:w-32 flex items-center bg-green-500 dark:bg-green-700 rounded-full py-2 px-4 h-16'>
+                        <h1 className='text-white text-base text-center sm:text-lg'>Nossos Serviços</h1>
                     </Link>
                 </div>
             </div>
