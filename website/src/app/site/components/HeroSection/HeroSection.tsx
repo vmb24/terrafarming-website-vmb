@@ -1,11 +1,15 @@
+'use client'
 import React from 'react'
 import Link from "next/link"
 import Image from 'next/image'
+import { useTheme } from 'next-themes'
 
 import { FaCircleArrowRight } from "react-icons/fa6"
 import predictiveAnalisys from '@/assets/application-images/predictive-analisys.png'
 
 export const HeroSection = () => {
+    const { theme, setTheme } = useTheme();
+
     return (
         <div className="absolute top-0 bottom-0 left-0 right-0 overflow-hidden">
             <Image
@@ -62,13 +66,21 @@ export const HeroSection = () => {
                     </h1>
                 </div>
 
-                <Link href="/plans" className='flex items-center justify-center max-md:hidden max-lg:hidden p-2 w-60 md:w-72 rounded-full bg-green-500 dark:bg-green-700 mb-8'>
+                <Link href="/plans" className={`flex items-center justify-center max-md:hidden max-lg:hidden p-2 w-60 md:w-72 rounded-full bg-green-500 dark:bg-green-700 mb-8
+                                ${theme === 'dark'
+                                    ? 'bg-[linear-gradient(135deg,#1a365d,#2f855a)] shadow-[0_0_20px_rgba(26,54,93,0.5),0_0_40px_rgba(47,133,90,0.3)]'
+                                    : 'bg-gradient-to-b from-green-300 to-green-100 shadow-lg'
+                                }`}>
                     <span className='text-white text-lg md:text-xl font-normal'>Faça parte!</span>
                     <FaCircleArrowRight size={20} color="white" className='ml-2'/>
                 </Link>
 
                 <div className='flex flex-row lg:hidden space-x-4'>
-                    <Link href="/plans" className='flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500 dark:bg-green-700 mb-8'>
+                    <Link href="/plans" className={`flex items-center justify-center p-2 w-60 max-md:w-36 max-lg:w-36 rounded-full bg-green-500 dark:bg-green-700 mb-8
+                                ${theme === 'dark'
+                                    ? 'bg-[linear-gradient(135deg,#1a365d,#2f855a)] shadow-[0_0_20px_rgba(26,54,93,0.5),0_0_40px_rgba(47,133,90,0.3)]'
+                                    : 'bg-gradient-to-b from-green-300 to-green-100 shadow-lg'
+                                }`}>
                         <span className='text-white text-lg md:text-xl font-normal'>Faça parte!</span>
                         <FaCircleArrowRight size={20} color="white" className='ml-2'/>
                     </Link>

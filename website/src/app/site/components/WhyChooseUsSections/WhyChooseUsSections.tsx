@@ -12,7 +12,7 @@ export const WhyChooseUsSections = () => {
     const { theme } = useTheme()
 
     return (
-        <div className="flex flex-col bg-white dark:bg-[#121212] px-12 mt-12 max-md:mt-8 max-lg:mt-8">
+        <div className="flex flex-col bg-white dark:bg-[#121212] px-12 mt-[800px] max-md:mt-8 max-lg:mt-8">
             <div className='flex flex-row mt-12'>
                 <h1 className='text-[#020405] dark:text-white text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Por que escolher o TerraFarming?</h1>
                 <div className='flex flex-row border-t-2 border-gray-400 dark:border-gray-600 border-x-gray-400 dark:border-x-gray-600 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[36vw] max-md:w-[6vw] max-lg:w-[6vw]' />

@@ -9,7 +9,7 @@ export const JoinUsSection = () => {
     const { theme } = useTheme()
 
     return (
-        <div className="lg:absolute max-md:relative max-lg:relative lg:top-[6750px] bottom-0 left-0 right-0 w-full h-[80vh] max-md:h-[35vh] max-lg:h-[35vh] mt-12 overflow-hidden bg-white dark:bg-[#121212]">
+        <div className="lg:absolute max-md:relative max-lg:relative lg:top-[8350px] bottom-0 left-0 right-0 w-full h-[80vh] max-md:h-[35vh] max-lg:h-[35vh] mt-12 overflow-hidden bg-white dark:bg-[#121212]">
             <div className='flex flex-row justify-center px-32'>
                 <h1 className='text-[#020405] dark:text-white text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Junte-se a nós</h1>
                 <div className='flex flex-row border-t-2 border-gray-400 dark:border-gray-600 border-x-gray-400 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[39vw] max-md:w-[20vw] max-lg:w-[20vw]' />
@@ -45,7 +45,11 @@ export const JoinUsSection = () => {
                                 placeholder='Seu endereço de email'
                                 className='h-20 max-md:h-12 max-lg:h-12 w-[500px] px-8 rounded-full bg-white dark:bg-gray-700 text-black dark:text-white pr-20 border border-gray-300 dark:border-gray-600'
                             />
-                            <button className='absolute right-2 h-16 max-md:h-10 max-lg:h-10 w-56 max-md:w-[25vw] max-lg:w-[25vw] flex items-center justify-center rounded-full bg-green-700 dark:bg-green-600 hover:bg-green-800 dark:hover:bg-green-700 transition-colors'>
+                            <button className={`absolute right-2 h-16 max-md:h-10 max-lg:h-10 w-56 max-md:w-[25vw] max-lg:w-[25vw] flex items-center justify-center rounded-full dark:bg-green-600 hover:bg-green-800 dark:hover:bg-green-700 transition-colors
+                                ${theme === 'dark'
+                                    ? 'bg-[linear-gradient(135deg,#1a365d,#2f855a)] shadow-[0_0_20px_rgba(26,54,93,0.5),0_0_40px_rgba(47,133,90,0.3)]'
+                                    : 'bg-gradient-to-b from-green-300 to-green-100 shadow-lg'
+                                }`}>
                                 <a className='text-white max-md:text-sm max-lg:text-sm'>Registre-se já!</a>
                             </button>
                         </div>

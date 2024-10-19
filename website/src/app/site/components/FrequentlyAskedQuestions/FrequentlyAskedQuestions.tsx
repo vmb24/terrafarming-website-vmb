@@ -36,7 +36,7 @@ export const FrequentlyAskedQuestions: React.FC = () => {
   const { theme } = useTheme()
 
   return (
-    <div className="flex flex-col px-12 mt-20 max-md:mt-8 max-lg:mt-8">
+    <div className="flex flex-col px-12 mt-[900px] max-md:mt-8 max-lg:mt-8">
       <div className='flex flex-row mt-12'>
           <h1 className='text-gray-900 dark:text-gray-100 text-xl max-md:text-sm max-lg:text-sm max-md:mt-1 max-lg:mt-1 font-normal'>Perguntas frequentes</h1>
           <div className='flex flex-row border-t-2 border-gray-400 dark:border-gray-500 border-x-gray-400 dark:border-x-gray-500 max-md:mt-4 max-lg:mt-4 mt-4 ml-2 lg:w-[25vw] max-md:w-[2vw] max-lg:w-[2vw]' />
