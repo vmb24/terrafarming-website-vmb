@@ -29,7 +29,7 @@ export const WhyChooseUsSections = () => {
                     Monitoramento inteligente e análise preditiva para  
                 </p>
                 <p className='text-4xl pr-44 max-md:pr-12 max-lg:pr-12 max-md:text-2xl max-lg:text-2xl text-[#020405] dark:text-white'>
-                    <a className='text-[#a1a1a1] dark:text-gray-400'>maximizar sua produtividade</a> e sustentabilidade
+                    <a className='text-[#a1a1a1] dark:text-gray-400'>maximizar sua produtividade</a>
                 </p>
             </div>
 

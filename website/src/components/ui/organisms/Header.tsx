@@ -31,7 +31,12 @@ export const Header = () => {
                             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                             variant="outline" 
                             size="icon" 
-                            className="bg-white/10 hover:bg-white/20 text-white dark:bg-green-800 dark:hover:bg-green-700 dark:text-green-100"
+                            className={`bg-white/10 hover:bg-white/20 text-white dark:hover:bg-green-700 dark:text-green-100
+                                    ${theme === 'dark'
+                                        ? 'bg-[linear-gradient(135deg,#1a365d,#2f855a)] shadow-[0_0_20px_rgba(26,54,93,0.5),0_0_40px_rgba(47,133,90,0.3)]'
+                                        : 'bg-gradient-to-b from-green-300 to-green-100 shadow-lg'
+                                    }
+                                `}
                         >
                             {theme === 'dark' 
                                 ? <Sun className="h-[1.2rem] w-[1.2rem]" />

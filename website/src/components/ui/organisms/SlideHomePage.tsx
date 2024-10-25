@@ -10,8 +10,7 @@ import sustainableAgriculture from '@/assets/sustainable-agriculture-join-us.jpg
 const slides = [
   { image: analyseSoilRobotImage, text: 'Texto para a imagem 1' },
   { image: analyseHealthHarvestImage, text: 'Texto para a imagem 2' },
-  { image: smartHarvestRobotImage, text: 'Texto para a imagem 3' },
-  { image: sustainableAgriculture, text: 'Texto para a imagem 4' },
+  { image: sustainableAgriculture, text: 'Texto para a imagem 3' },
 ]
 
 export const SlideHomePage = () => {

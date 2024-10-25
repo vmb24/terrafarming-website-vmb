@@ -56,9 +56,9 @@ const WeeklyTasksOverview: React.FC = () => {
   }, []);
 
   const extractFirstActivity = (content: string): string => {
-    const match = content.match(/\n-(.*?)(?=\n-|$)/s);
+    const match = content.match(/\n-(.*?)(?=\n-|$)/);
     return match ? match[1].trim() : '';
-  };
+  };  
 
   const processTasks = (data: any[], category: 'moisture' | 'temperature'): Task[] => {
     return data.map((item) => {

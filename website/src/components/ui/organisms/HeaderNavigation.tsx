@@ -37,7 +37,7 @@ const routes = [
     },
     {
         href: '/agriculture-tecnology',
-        label: 'AgriTec',
+        label: 'FarmingTec',
     },
     {
         href: '/settings-iot',

@@ -8,13 +8,33 @@ interface TaskBoardProps {
   category: 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
 }
 
-type Plan = SoilMoisturePlan | SoilTemperaturePlan | BrightnessPlan | AirTemperaturePlan | AirMoisturePlan;
+interface Task {
+  date: string;            // Data da tarefa
+  recommendation: string;  // Recomendações associadas à tarefa
+  time: string;            // Hora em que a tarefa deve ser executada
+  task: string;            // Descrição da tarefa
+}
+
+interface Plan {
+  name: string;                   // Nome do plano
+  tasks_by_week: {                // Tarefas organizadas por semanas
+    [key: string]: Task[];        // Chave é o nome da semana, valor é um array de tarefas
+  };
+}
+
+interface ExtractedTask {
+  task: string;                // Tarefa
+  value: number;               // Algum valor associado à tarefa
+  createdAt: Date;             // Data de criação da tarefa
+  startTime: Date;             // Hora de início da tarefa
+  duration: number;            // Duração da tarefa em horas
+}
 
 const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
   const { theme } = useTheme();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedWeek, setSelectedWeek] = useState<number>(1);
-  const [allTasks, setAllTasks] = useState<any[]>([]);
+  const [allTasks, setAllTasks] = useState<ExtractedTask[]>([]);
 
   const getStartOfWeek = (date: Date): Date => {
     const day = date.getDay();
@@ -37,47 +57,24 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
     return days;
   };
 
-  const extractTasksFromPlan = (plan: Plan) => {
-    let content: string = '';
-    let value: number | undefined;
+  const extractTasksFromPlan = (plan: Plan): ExtractedTask[] => {
+    const tasks: Task[] = plan.tasks_by_week[`Semana ${selectedWeek}`] || [];
+    
+    const extractedTasks: ExtractedTask[] = tasks.map((task: Task) => {
+      const createdAtDate = new Date(); // Ajuste conforme necessário para pegar a data correta
   
-    if ('plan' in plan && typeof plan.plan === 'object' && plan.plan !== null) {
-      content = plan.plan.recommendations || '';
-    } else if (typeof plan.plan === 'string') {
-      content = plan.plan;
-    }
-  
-    if ('moisture' in plan) {
-      value = plan.moisture;
-    } else if ('temperature' in plan) {
-      value = plan.temperature;
-    } else if ('brightness' in plan) {
-      value = plan.brightness;
-    } else if ('airTemperature' in plan) {
-      value = plan.airTemperature;
-    } else if ('airMoisture' in plan) {
-      value = plan.airMoisture;
-    }
-  
-    const tasks = content
-      .split('\n-')
-      .slice(1)
-      .map(task => task.trim())
-      .filter(task => task.length > 0);
-  
-    return tasks.map(task => {
-      const createdAtDate = new Date(plan.createdAt);
-      
       return {
-        task,
-        value,
+        task: task.task,
+        value: 0, // Defina o valor apropriado conforme sua lógica
         createdAt: createdAtDate,
-        startTime: new Date(createdAtDate.getTime() + Math.random() * 24 * 60 * 60 * 1000),
-        duration: 0.5 // 30 minutos
+        startTime: new Date(`${task.date} ${task.time}`), // Certifique-se que o formato da data e hora esteja correto
+        duration: 0.5 // Duração em horas (por exemplo, 30 minutos)
       };
     });
-  };
-
+  
+    return extractedTasks;
+  };  
+  
   useEffect(() => {
     if (plans && plans.length > 0) {
       const tasks = plans.flatMap(extractTasksFromPlan);
@@ -201,61 +198,28 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
           <div className="flex border-b border-gray-300 dark:border-gray-600 mb-2">
             {timeSlots.map((hour) => (
               <div key={hour} className="flex-1 text-center text-xs text-gray-500 dark:text-gray-400">
-                {`${hour.toString().padStart(2, '0')}:00`}
+                {hour}:00
               </div>
             ))}
           </div>
-          
-          {timeSlots.map((hour, index) => (
-            <div 
-              key={hour} 
-              className="absolute top-0 bottom-0 border-l border-gray-300 dark:border-gray-600" 
-              style={{ left: `${(index / timeSlots.length) * 100}%` }} 
-            />
-          ))}
-
           {taskGroups.map((group, groupIndex) => (
-            <div key={groupIndex} className="absolute left-0 right-0" style={{ top: `${getTaskPosition(group[0].startTime)}%` }}>
-              {group.map((task, taskIndex) => {
-                const taskWidth = getTaskWidth(task.duration, task.startTime);
-                const taskPosition = getTaskPosition(task.startTime);
-                
-                return (
-                  <div 
-                    key={taskIndex}
-                    className="absolute"
-                    style={{
-                      top: `${taskIndex * 110}px`,
-                      left: `${taskPosition}%`,
-                      width: `${taskWidth}%`,
-                      maxWidth: `${100 - taskPosition}%`,
-                      minWidth: '200px',
-                      height: '150px',
-                    }}
-                  >
-                    <TaskCard
-                      task={task.task}
-                      value={task.value}
-                      category={category}
-                      week={selectedWeek as 1 | 2 | 3 | 4}
-                      createdAt={task.createdAt}
-                      startTime={task.startTime}
-                      duration={task.duration}
-                      taskImagePath="/images/task-agriculture.png"
-                      plantingImagePath="/images/generic-fruits.png"
-                    />
-                  </div>
-                );
-              })}
+            <div key={groupIndex} className="absolute inset-0 flex">
+              {group.map((task, taskIndex) => (
+                <div
+                  key={taskIndex}
+                  className={`absolute rounded-lg border border-gray-400 dark:border-gray-500 bg-opacity-50 ${theme === 'dark' ? 'bg-green-400' : 'bg-green-500'}`}
+                  style={{
+                    left: `${getTaskPosition(task.startTime)}%`,
+                    width: `${getTaskWidth(task.duration, task.startTime)}%`,
+                    top: `${(groupIndex + 1) * 50}px`, // Ajuste a posição vertical
+                  }}
+                >
+                  <TaskCard task={task.task} createdAt={task.createdAt} value={0} category={'soilMoisture'} week={2} taskImagePath={''} plantingImagePath={''} duration={0} />
+                </div>
+              ))}
             </div>
           ))}
         </div>
-        
-        {filteredTasks.length === 0 && (
-          <div className="text-center text-gray-500 dark:text-gray-400 py-4">
-            Não há tarefas para exibir neste dia.
-          </div>
-        )}
       </div>
     </div>
   );

@@ -74,8 +74,8 @@ const PlannerTaskManagement: React.FC = () => {
           'brightnessRecommendations', 'airTemperatureRecommendations', 'airMoistureRecommendations'
         ];
         const recommendationUrls: Record<RecommendationCategory, string> = {
-          soilMoistureRecommendations: 'https://81dkc5z9yd.execute-api.us-east-1.amazonaws.com/prod/recommendations',
-          soilTemperatureRecommendations: 'https://uphc1w9gfc.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          soilMoistureRecommendations: 'https://i5rquoloa9.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          soilTemperatureRecommendations: 'https://7yz5zq6a2b.execute-api.us-east-1.amazonaws.com/prod/recommendations',
           brightnessRecommendations: '',
           airTemperatureRecommendations: '',
           airMoistureRecommendations: ''
@@ -143,7 +143,7 @@ const PlannerTaskManagement: React.FC = () => {
             />
           ) : (
             <TaskBoard
-              plans={plans[activeCategory]}
+              plans={plans[activeCategory] as Plan[]} // Assegure-se que isso está correto
               category={activeCategory}
             />
           )}

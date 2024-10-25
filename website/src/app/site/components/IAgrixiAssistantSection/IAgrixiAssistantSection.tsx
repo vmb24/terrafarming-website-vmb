@@ -38,7 +38,7 @@ export const IAgrixiAssistantSection: React.FC = () => {
 
                 {/* Frases adicionais */}
                 <div className='flex flex-col absolute mt-20 max-md:mt-32 max-lg:mt-32'>
-                    <h1 className='text-bold text-xl text-white'>Analise dados em tempo real e receba recomendações para melhorar a eficiência e sustentabilidade da sua fazenda.</h1>
+                    <h1 className='text-bold text-xl text-white'>Analise dados em tempo real e receba recomendações para melhorar a eficiência da sua fazenda.</h1>
                     <h1 className='text-bold text-xl text-white'>IAgrixi monitora o solo, clima, e muito mais, automatizando decisões inteligentes para você.</h1>
                 </div>
                 <Link href="/plans" className={`flex flex-row justify-center space-x-2 absolute p-4 w-64 rounded-full bg-white mt-40

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import CalendarHeatmap from 'react-calendar-heatmap';
+import CalendarHeatmap, { ReactCalendarHeatmapValue } from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { format, eachMonthOfInterval, startOfYear, endOfYear, subYears, isSameYear } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -169,13 +169,13 @@ const MetricsHeatmap: React.FC = () => {
         startDate={subYears(new Date(), 1)}
         endDate={new Date()}
         values={data}
-        classForValue={(value: DataPoint | null) => {
+        classForValue={(value: ReactCalendarHeatmapValue<string> | undefined) => {  // Altere de "DataPoint | null" para "DataPoint | undefined"
           if (!value) {
             return 'color-empty';
           }
-          return getColorClass(value.value);
+          return getColorClass(value.value);  // Aqui, o valor será tratado corretamente
         }}
-        tooltipDataAttrs={(value: DataPoint) => {
+        tooltipDataAttrs={(value: DataPoint | undefined) => {  // Altere também aqui
           if (!value || !value.date) {
             return { 'data-tooltip-id': "calendar-tooltip", 'data-tooltip-content': 'Sem dados' };
           }

@@ -12,8 +12,8 @@ export interface SoilTemperature {
   timestamp: string;
 }
 
-export interface AirHumidity {
-  humidity: number;
+export interface AirMoisture {
+  moisture: number;
   status: string;
   timestamp: string;
 }
@@ -24,8 +24,8 @@ export interface AirTemperature {
   timestamp: string;
 }
 
-export interface Luminosity {
-  luminosity: number;
+export interface Brightness {
+  brightness: number;
   status: string;
   timestamp: string;
 }

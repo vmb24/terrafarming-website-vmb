@@ -74,7 +74,7 @@ const PlansPage: FC = () => {
                 <a className="text-gray-600 dark:text-gray-300">Escolha o Plano</a> Ideal para Sua Lavoura
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-16 text-center px-4 max-w-[80vw]">
-                TerraFarming é a solução inteligente para otimizar sua produção agrícola. Com nossos planos, você terá acesso a métricas precisas, recomendações personalizadas e ferramentas avançadas de gestão, tudo para maximizar sua produtividade e sustentabilidade.
+                TerraFarming é a solução inteligente para otimizar sua produção agrícola. Com nossos planos, você terá acesso a métricas precisas, recomendações personalizadas e ferramentas avançadas de gestão, tudo para maximizar sua produtividade.
               </p>
               <div className="flex flex-col md:flex-row gap-8 mb-16">
                 {/* Plano Semente */}

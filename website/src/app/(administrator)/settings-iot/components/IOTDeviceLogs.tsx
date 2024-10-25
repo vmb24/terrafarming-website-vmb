@@ -6,7 +6,7 @@ const IOTDeviceLogs: React.FC = () => {
 
   useEffect(() => {
     // Estabelecer conexão WebSocket
-    const ws = new WebSocket('ws://192.168.1.19:81'); // Substitua pelo IP correto da sua placa ESP32
+    const ws = new WebSocket('ws://192.168.1.37:81'); // Substitua pelo IP correto da sua placa ESP32
 
     ws.onopen = () => {
       console.log('Conexão WebSocket estabelecida');

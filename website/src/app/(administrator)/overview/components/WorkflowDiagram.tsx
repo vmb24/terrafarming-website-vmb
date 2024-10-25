@@ -73,9 +73,18 @@ const WorkflowDiagram = () => {
           setIsLoading(true);
           setError(null);
           try {
-              const response = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-              if (response.data && response.data.length > 0) {
-                  const processedTasks = processTasks(response.data);
+              const responses = await Promise.all<ApiResponse>([
+                  axios.get('https://api1.example.com/task-plan'),
+                  axios.get('https://api2.example.com/task-plan'),
+                  axios.get('https://api3.example.com/task-plan'),
+                  axios.get('https://api4.example.com/task-plan'),
+                  axios.get('https://api5.example.com/task-plan')
+              ]);
+
+              const allData = responses.map(response => response.data).flat();
+
+              if (allData && allData.length > 0) {
+                  const processedTasks = processTasks(allData);
                   setTasks(processedTasks);
               } else {
                   setTasks([]); // Define um array vazio se não houver tarefas
@@ -87,37 +96,40 @@ const WorkflowDiagram = () => {
               setIsLoading(false);
           }
       };
-  
+
       fetchData();
-    }, []);
+  }, []);
 
-    const processTasks = (data: any[]): Task[] => {
-        if (!Array.isArray(data)) {
-        console.error('Data is not an array:', data);
-        return [];
-        }
-        const icons = [CloudIcon, BeakerIcon, WrenchIcon, SunIcon, ArrowPathIcon];
-        return data.reduce((acc: Task[], item, index) => {
-        const content = item.plan.recommendations;
-        const activities = extractActivities(content);
-        const newTasks = activities.map((activity, activityIndex) => ({
-            id: `task-${index}-${activityIndex}`,
-            title: 'Moisture Management',
-            description: activity,
-            status: index === 0 && activityIndex === 0 ? 'in_progress' : 'upcoming',
-            icon: icons[index % icons.length],
-            recommendations: [`Recomendação padrão para ${activity}`],
-        }));
-        return [...acc, ...newTasks];
-        }, []);
-    };
+  const processTasks = (data: ApiResponse[]): ProcessedTask[] => {
+      if (!Array.isArray(data)) {
+          console.error('Data is not an array:', data);
+          return [];
+      }
+      
+      const icons = [<CloudIcon />, <BeakerIcon />, <WrenchIcon />, <SunIcon />, <ArrowPathIcon />];
 
-    const extractActivities = (content: string | string[]): string[] => {
-        if (Array.isArray(content)) {
-        return content.filter(activity => activity !== '');
-        }
-        return content.split('\n-').slice(1).map(activity => activity.trim()).filter(activity => activity !== '');
-    };
+      return data.reduce<ProcessedTask[]>((acc, item, index) => {
+          const tasksByWeek = item.plan.tasks_by_week;
+
+          for (const week in tasksByWeek) {
+              const weekTasks = tasksByWeek[week];
+              const newTasks = weekTasks.map((task, taskIndex) => ({
+                  id: `task-${index}-${taskIndex}`,
+                  title: `Atividades da ${week}`,
+                  description: task.recommendation || 'Sem recomendação',
+                  status: 'upcoming', // Ajuste de status conforme necessário
+                  icon: icons[index % icons.length],
+                  date: task.date,
+                  time: task.time,
+                  taskDetail: task.task
+              }));
+
+              return [...acc, ...newTasks];
+          }
+
+          return acc;
+      }, []);
+  };
 
     if (isLoading) return <div className="text-center p-4">Carregando tarefas...</div>;
     // if (error) return <div className="text-center p-4 text-red-500">{error}</div>;

@@ -13,7 +13,7 @@ interface TaskCardProps {
   plantingImagePath: string;
   predictiveAnalysis?: string;
   createdAt: string;
-  startTime: Date;
+  startTime?: Date;
   duration: number;
 }
 
