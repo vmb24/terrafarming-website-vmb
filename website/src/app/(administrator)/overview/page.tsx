@@ -114,7 +114,7 @@ return (
 
     <WeeklyTasksOverview />
 
-    <MetricsHeatmap />
+    {/* <MetricsHeatmap /> */}
 
     <WorkflowDiagram />
 

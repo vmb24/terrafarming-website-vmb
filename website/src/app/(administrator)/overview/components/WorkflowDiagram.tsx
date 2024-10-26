@@ -63,130 +63,146 @@ const WorkflowDiagram = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<TabType>('all');
-
+    const [isMounted, setIsMounted] = useState(false);
+    
+    useEffect(() => {
+      setIsMounted(true);
+      return () => setIsMounted(false);
+    }, []);
+    
     const handleTabChange = (tab: TabType) => {
       setActiveTab(tab);
     };
-
+    
     useEffect(() => {
+      if (!isMounted) return;
+    
       const fetchData = async () => {
-          setIsLoading(true);
-          setError(null);
-          try {
-              const responses = await Promise.all<ApiResponse>([
-                  axios.get('https://api1.example.com/task-plan'),
-                  axios.get('https://api2.example.com/task-plan'),
-                  axios.get('https://api3.example.com/task-plan'),
-                  axios.get('https://api4.example.com/task-plan'),
-                  axios.get('https://api5.example.com/task-plan')
-              ]);
-
-              const allData = responses.map(response => response.data).flat();
-
-              if (allData && allData.length > 0) {
-                  const processedTasks = processTasks(allData);
-                  setTasks(processedTasks);
-              } else {
-                  setTasks([]); // Define um array vazio se não houver tarefas
-              }
-          } catch (error) {
-              console.error('Error fetching data:', error);
-              setError('Failed to load tasks. Please try again later.');
-          } finally {
-              setIsLoading(false);
-          }
-      };
-
-      fetchData();
-  }, []);
-
-  const processTasks = (data: ApiResponse[]): ProcessedTask[] => {
-      if (!Array.isArray(data)) {
-          console.error('Data is not an array:', data);
-          return [];
-      }
-      
-      const icons = [<CloudIcon />, <BeakerIcon />, <WrenchIcon />, <SunIcon />, <ArrowPathIcon />];
-
-      return data.reduce<ProcessedTask[]>((acc, item, index) => {
-          const tasksByWeek = item.plan.tasks_by_week;
-
-          for (const week in tasksByWeek) {
-              const weekTasks = tasksByWeek[week];
-              const newTasks = weekTasks.map((task, taskIndex) => ({
-                  id: `task-${index}-${taskIndex}`,
-                  title: `Atividades da ${week}`,
-                  description: task.recommendation || 'Sem recomendação',
-                  status: 'upcoming', // Ajuste de status conforme necessário
-                  icon: icons[index % icons.length],
-                  date: task.date,
-                  time: task.time,
-                  taskDetail: task.task
-              }));
-
-              return [...acc, ...newTasks];
-          }
-
-          return acc;
-      }, []);
-  };
-
-    if (isLoading) return <div className="text-center p-4">Carregando tarefas...</div>;
-    // if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
-      
-      const getStatusText = (status: Task['status']): string => {
-        switch (status) {
-          case 'completed': return 'Concluído';
-          case 'in_progress': return 'Em andamento';
-          case 'upcoming': return 'Próxima tarefa';
-          default: return 'Status desconhecido';
+        setIsLoading(true);
+        setError(null);
+        try {
+          const apiUrls = [
+            'https://2rxtztbyl5.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+            'https://n3wry4fh5h.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+            'https://vz7vgmwvne.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+            'https://jf5uy84p79.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+            'https://ab394xdjtk.execute-api.us-east-1.amazonaws.com/prod/task-plan'
+          ];
+    
+          const responses = await Promise.allSettled(apiUrls.map(url => axios.get(url)));
+    
+          // eslint-disable-next-line react/jsx-key
+          const icons = [<CloudIcon className="w-5 h-5 mr-2 text-blue-500 dark:text-blue-400" />, 
+                        // eslint-disable-next-line react/jsx-key
+                        <BeakerIcon className="w-5 h-5 mr-2 text-blue-500 dark:text-blue-400" />, 
+                        // eslint-disable-next-line react/jsx-key
+                        <WrenchIcon className="w-5 h-5 mr-2 text-blue-500 dark:text-blue-400" />, 
+                        // eslint-disable-next-line react/jsx-key
+                        <SunIcon className="w-5 h-5 mr-2 text-blue-500 dark:text-blue-400" />, 
+                        // eslint-disable-next-line react/jsx-key
+                        <ArrowPathIcon className="w-5 h-5 mr-2 text-blue-500 dark:text-blue-400" />];
+          const categories = ['moisture', 'temperature', 'brightness', 'air-moisture', 'air-temperature'];
+    
+          const processedTasks = responses.flatMap((result, index) => {
+            if (result.status === 'fulfilled') {
+              const category = categories[index];
+              return result.value.data.flatMap((item: any) => {
+                const recommendations = item.plan.recommendations;
+                // Extrair tarefas individuais do texto de recomendações
+                const taskList = recommendations.split('\n-')
+                  .filter((task: string) => task.trim())
+                  .map((task: string) => task.trim());
+    
+                return taskList.map((taskText: string, taskIndex: number) => {
+                  // Extrair data e hora do texto da tarefa
+                  const dateTimeMatch = taskText.match(/(\d{2}\/\d{2}).*?(\d{2}h)/);
+                  const date = dateTimeMatch ? dateTimeMatch[1] : '';
+                  const time = dateTimeMatch ? dateTimeMatch[2] : '';
+    
+                  return {
+                    id: `task-${index}-${taskIndex}-${Math.random().toString(36).substr(2, 9)}`,
+                    title: `${category.charAt(0).toUpperCase() + category.slice(1)} Task`,
+                    description: `Monitorar ${category}: ${item[category]} ${category.includes('moisture') ? '%' : '°C'}`,
+                    status: Math.random() > 0.5 ? 'in_progress' : 'upcoming',
+                    icon: icons[index],
+                    date: date ? `2024-${date.split('/').reverse().join('-')}` : new Date().toISOString(),
+                    time: time || new Date().toLocaleTimeString(),
+                    taskDetail: taskText,
+                    recommendations: [taskText]
+                  };
+                });
+              });
+            }
+            return [];
+          });
+    
+          // Ordenar as tarefas por data e hora
+          const sortedTasks = processedTasks
+          .sort((a, b) => {
+            const dateA = new Date(`${a.date} ${a.time}`);
+            const dateB = new Date(`${b.date} ${b.time}`);
+            return dateA.getTime() - dateB.getTime();
+          })
+          .slice(0, 20); // Limita a 30 tarefas
+    
+          setTasks(sortedTasks);
+        } catch (error) {
+          console.error('Erro ao processar os dados:', error);
+          setError('Falha ao carregar as tarefas. Por favor, tente novamente mais tarde.');
+        } finally {
+          setIsLoading(false);
         }
       };
-
-      const TaskNode: React.FC<{ task: Task }> = ({ task }) => {
-        const { theme } = useTheme();
-        const IconComponent = task.icon;
+    
+      fetchData();
+    }, [isMounted]);
+    
+    if (isLoading) return <div className="text-center p-4">Carregando tarefas...</div>;
+    if (error) return <div className="text-center p-4 text-red-500">{error}</div>;
+    
+    const TaskNode: React.FC<{ task: Task }> = ({ task }) => {
+      const { theme } = useTheme();
       
-        const getStatusColor = (status: Task['status']): string => {
-          const baseColors: StatusColors = {
-            completed: 'text-green-500',
-            in_progress: 'text-blue-500',
-            upcoming: 'text-yellow-500'
-          };
-          const darkColors: StatusColors = {
-            completed: 'text-green-400',
-            in_progress: 'text-blue-400',
-            upcoming: 'text-yellow-400'
-          };
-          return theme === 'dark' ? darkColors[status] : baseColors[status];
+      const getStatusColor = (status: Task['status']): string => {
+        const baseColors: StatusColors = {
+          completed: 'text-green-500',
+          in_progress: 'text-blue-500',
+          upcoming: 'text-yellow-500'
         };
-      
-        const getStatusText = (status: Task['status']): string => {
-          const statusTexts: StatusColors = {
-            completed: 'Concluído',
-            in_progress: 'Em andamento',
-            upcoming: 'Próximo'
-          };
-          return statusTexts[status];
+        const darkColors: StatusColors = {
+          completed: 'text-green-400',
+          in_progress: 'text-blue-400',
+          upcoming: 'text-yellow-400'
         };
-      
-        return (
-          <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-4 w-full max-w-md">
-            <div className="flex items-center mb-2">
-              <IconComponent className="w-5 h-5 mr-2 text-blue-500 dark:text-blue-400" />
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200">{task.title}</h3>
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{task.description}</p>
-            <div className="bg-blue-100 dark:bg-blue-800 rounded p-2 mt-2">
-              <h4 className="font-semibold text-xs mb-1 text-gray-800 dark:text-gray-200">Recomendação:</h4>
-              <p className="text-xs text-gray-600 dark:text-gray-400">{task.recommendations[0]}</p>
-            </div>
-            <div className={`mt-2 text-xs font-semibold ${getStatusColor(task.status)}`}>
-              {getStatusText(task.status)}
-            </div>
-          </div>
-        );
+        return theme === 'dark' ? darkColors[status] : baseColors[status];
       };
+    
+      const getStatusText = (status: Task['status']): string => {
+        const statusTexts: StatusColors = {
+          completed: 'Concluído',
+          in_progress: 'Em andamento',
+          upcoming: 'Próximo'
+        };
+        return statusTexts[status];
+      };
+    
+      return (
+        <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg p-4 w-full max-w-md">
+          <div className="flex items-center mb-2">
+            {/* {task.icon} */}
+            <h3 className="font-semibold text-gray-800 dark:text-gray-200">{task.title}</h3>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{task.description}</p>
+          <div className="bg-blue-100 dark:bg-blue-800 rounded p-2 mt-2">
+            <h4 className="font-semibold text-xs mb-1 text-gray-800 dark:text-gray-200">Recomendação:</h4>
+            <p className="text-xs text-gray-600 dark:text-gray-400">{task.recommendations[0]}</p>
+          </div>
+          <div className={`mt-2 text-xs font-semibold ${getStatusColor(task.status)}`}>
+            {getStatusText(task.status)}
+          </div>
+        </div>
+      );
+    };
 
       const VerticalArrow: React.FC = () => (
         <svg className="w-6 h-6 text-gray-400 my-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -387,7 +403,7 @@ const WorkflowDiagram = () => {
         <div className="bg-white dark:bg-gray-800 p-4 font-sans mt-12 rounded-md mb-8">
             {tasks.length === 0 ? (
               <div className="relative">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[300px]">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[500px]">
                   <div className="flex flex-col mb-8">
                     <div className="flex justify-between items-center mb-4">
                       <div className="flex items-center space-x-4">
@@ -399,12 +415,6 @@ const WorkflowDiagram = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex space-x-2">
-                        <TabButton 
-                          active={activeTab === 'all'} 
-                          onClick={() => handleTabChange('all')}
-                        >
-                          Todas
-                        </TabButton>
                         <TabButton 
                           active={activeTab === 'soil_moisture'} 
                           onClick={() => handleTabChange('soil_moisture')}
@@ -441,7 +451,7 @@ const WorkflowDiagram = () => {
                   </div>
 
                   {/* Background grid */}
-                  <div className="absolute inset-0 h-[120px] mt-40" style={{
+                  <div className="absolute inset-0 h-[420px] mt-40" style={{
                     backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
                     backgroundSize: '20px 20px'
                   }}></div>
@@ -452,7 +462,7 @@ const WorkflowDiagram = () => {
               </div>
             ) : (
               <div className="relative">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[4300px]">
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 h-[5250px]">
                   <div className="flex flex-col mb-8">
                     <div className="flex justify-between items-center mb-4">
                       <div className="flex items-center space-x-4">
@@ -464,12 +474,6 @@ const WorkflowDiagram = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <div className="flex space-x-2">
-                        <TabButton 
-                          active={activeTab === 'all'} 
-                          onClick={() => handleTabChange('all')}
-                        >
-                          Todas
-                        </TabButton>
                         <TabButton 
                           active={activeTab === 'soil_moisture'} 
                           onClick={() => handleTabChange('soil_moisture')}
@@ -506,7 +510,7 @@ const WorkflowDiagram = () => {
                   </div>
 
                   {/* Background grid */}
-                  <div className="absolute inset-0 h-[4050px]" style={{
+                  <div className="absolute inset-0 h-[5080px] mt-44" style={{
                     backgroundImage: 'radial-gradient(circle, #d1d5db 1px, transparent 1px)',
                     backgroundSize: '20px 20px'
                   }}></div>
@@ -528,7 +532,7 @@ const WorkflowDiagram = () => {
                         description="Verifica a Umidade do Solo"
                         color="blue"
                         left={150}
-                        top={180}
+                        top={120}
                     />
                     <SensorNode 
                         icon={<TemperatureIcon />}
@@ -536,7 +540,7 @@ const WorkflowDiagram = () => {
                         description="Verifica a Temperatura do Solo"
                         color="red"
                         left={450}
-                        top={180}
+                        top={120}
                     />
                     <SensorNode 
                         icon={<BrightnessIcon />}
@@ -544,7 +548,7 @@ const WorkflowDiagram = () => {
                         description="Verifica a Luminosidade"
                         color="yellow"
                         left={750}
-                        top={180}
+                        top={120}
                     />
                     <SensorNode 
                         icon={<TemperatureIcon />}
@@ -552,7 +556,7 @@ const WorkflowDiagram = () => {
                         description="Verifica a Temperatura do Ar"
                         color="red"
                         left={1050}
-                        top={180}
+                        top={120}
                     />
                     <SensorNode 
                         icon={<HumidityIcon />}
@@ -560,68 +564,80 @@ const WorkflowDiagram = () => {
                         description="Verifica a Umidade do Ar"
                         color="green"
                         left={1350}
-                        top={180}
+                        top={120}
                     />
                   </div> 
 
-                  <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
+                  <div className="absolute left-1/2 top-[600px] transform -translate-x-1/2">
                       <div className="text-center">
                           <AWSDiamond textLine1="Integração" textLine2="AWS" />
                       </div>
                   </div>
         
                   {/* AWS Bedrock node */}
-                  <div className="absolute left-1/2 top-[400px] transform -translate-x-1/2">
+                  <div className="absolute left-1/2 top-[600px] transform -translate-x-1/2">
                       <div className="text-center">
                       </div>
                   </div>
                   
                   <div>
-                    <BedrockNode x="mx-[300px]" y="top-[420px]" />
+                    <BedrockNode x="mx-[300px]" y="top-[620px]" />
                   </div>
         
                   <div>
-                    <BedrockNode x="mx-[1200px]" y="top-[420px]" />
+                    <BedrockNode x="mx-[1200px]" y="top-[620px]" />
                   </div>
         
                   {/* CARDS nodes */}
-                  <div className="absolute grid grid-cols-3 w-full top-[700px] space-y-20">
+                  <div className="absolute grid grid-cols-3 w-full top-[950px] space-y-20">
                   {tasks.map((task, index) => (
                     <React.Fragment key={task.title}>
                         <TaskNode task={task} />
                         {index < tasks.length - 1 && <VerticalArrow />}
                         {/* Check submit node */}
                         {/* Top */}
-                        <AlexaNode x="left-[725px]" y="top-[50px]"/>
+                        <AlexaNode x="left-[725px]" y="top-[80px]"/>
                         {/* Left */}
                         <AlexaNode x="right-3/4" y="top-[350px]"/>
                         {/* Right */}
                         <AlexaNode x="left-[1220px]" y="top-[350px]"/>
                         {/* Top */}
-                        <AlexaNode x="left-[725px]" y="top-[650px]"/>
+                        <AlexaNode x="left-[725px]" y="top-[550px]"/>
                         {/* Left */}
-                        <AlexaNode x="right-3/4" y="top-[925px]"/>
+                        <AlexaNode x="right-3/4" y="top-[855px]"/>
                         {/* Right */}
-                        <AlexaNode x="left-[1220px]" y="top-[925px]"/>
+                        <AlexaNode x="left-[1220px]" y="top-[855px]"/>
                         {/* Top */}
-                        <AlexaNode x="left-[725px]" y="top-[1250px]"/>
+                        <AlexaNode x="left-[725px]" y="top-[1100px]"/>
                         {/* Left */}
-                        <AlexaNode x="right-3/4" y="top-[1550px]"/>
+                        <AlexaNode x="right-3/4" y="top-[1400px]"/>
                         {/* Right */}
-                        <AlexaNode x="left-[1220px]" y="top-[1550px]"/>
+                        <AlexaNode x="left-[1220px]" y="top-[1400px]"/>
                         {/* Top */}
-                        <AlexaNode x="left-[725px]" y="top-[1850px]"/>
+                        <AlexaNode x="left-[725px]" y="top-[1650px]"/>
                         {/* Left */}
-                        <AlexaNode x="right-3/4" y="top-[2150px]"/>
+                        <AlexaNode x="right-3/4" y="top-[1950px]"/>
                         {/* Right */}
-                        <AlexaNode x="left-[1220px]" y="top-[2150px]"/>
+                        <AlexaNode x="left-[1220px]" y="top-[1950px]"/>
                         {/* Bottom */}
-                        <AlexaNode x="left-[725px]" y="top-[2450px]"/>
+                        <AlexaNode x="left-[725px]" y="top-[2200px]"/>
+                        {/* Left */}
+                        <AlexaNode x="right-3/4" y="top-[2500px]"/>
+                        {/* Right */}
+                        <AlexaNode x="left-[1220px]" y="top-[2500px]"/>
+                        {/* Bottom */}
+                        <AlexaNode x="left-[725px]" y="top-[2800px]"/>
+                        {/* Left */}
+                        <AlexaNode x="right-3/4" y="top-[3100px]"/>
+                        {/* Right */}
+                        <AlexaNode x="left-[1220px]" y="top-[3100px]"/>
+                        {/* Bottom */}
+                        <AlexaNode x="left-[725px]" y="top-[3350px]"/>
                     </React.Fragment>
                     ))}
                   </div>
         
-                  <div className="absolute left-1/2 top-[650px] transform -translate-x-1/2">
+                  <div className="absolute left-1/2 top-[850px] transform -translate-x-1/2">
                     <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
                       <div className="flex items-center">
                         <div className="bg-green-100 rounded-full p-1 mr-2">
@@ -638,22 +654,22 @@ const WorkflowDiagram = () => {
                   </div>
         
                   {/* AWS integration (New activities) node */}
-                  <div className="absolute left-1/2 top-[3500px] transform -translate-x-1/2">
+                  <div className="absolute left-1/2 top-[4600px] transform -translate-x-1/2">
                     <AWSDiamond textLine1="Integração" textLine2="AWS" />
                   </div>
         
                   {/* AWSQuickSight Relatórios de tarefas do mês node */}
-                  <div className="absolute left-[490px] top-[3700px] transform -translate-x-1/2">
+                  <div className="absolute left-[490px] top-[4800px] transform -translate-x-1/2">
                     <AWSQuickSight textLine1="AWS" textLine2="QuickSight (Relatórios)" />
                   </div>
         
                   {/* AWSQuickSight Relatórios de novas tarefas do mês node */}
-                  <div className="absolute left-[1030px] top-[3700px] transform -translate-x-1/2">
+                  <div className="absolute left-[1030px] top-[4800px] transform -translate-x-1/2">
                     <AWSQuickSight textLine1="AWS" textLine2="QuickSight (Relatórios)" />
                   </div>
         
                   {/* Email nodes */}
-                  <div className="absolute left-1/4 top-[3950px]">
+                  <div className="absolute left-1/4 top-[5050px]">
                     <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
                       <div className="flex items-center">
                         <div className="bg-green-100 rounded-full p-1 mr-2">
@@ -669,7 +685,7 @@ const WorkflowDiagram = () => {
                     </div>
                   </div>
         
-                  <div className="absolute right-1/4 top-[3950px]">
+                  <div className="absolute right-1/4 top-[5050px]">
                     <div className="bg-white dark:bg-gray-800 border rounded-lg p-3 w-48 shadow-md">
                       <div className="flex items-center">
                         <div className="bg-green-100 rounded-full p-1 mr-2">
@@ -684,72 +700,6 @@ const WorkflowDiagram = () => {
                       </div>
                     </div>
                   </div>
-        
-                  {/* Connector lines */}
-                  {/* Start to Sensors lines */}
-                  <svg className="absolute -top-20 left-36 w-full h-full" style={{zIndex: 1}}>
-                    {/* Connector lines */}
-                    <path d="M 600,200 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-                    
-                    {/* Initial soil moisture line */}
-                    <path d="M 600,200 L 180,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-        
-                    {/* Final soil moisture line */}
-                    <path d="M 40,240 L 180,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-                    
-                    {/* Soil temperature line */}
-                    <path d="M 600,200 L 300,240" stroke="#FF0000" strokeWidth="2" fill="none" />
-        
-                    {/* Brightness line */}
-                    <path d="M 600,200 L 600,240" stroke="#FFD700" strokeWidth="2" fill="none" />
-                    
-                    {/* Air temperature line */}
-                    <path d="M 600,200 L 900,240" stroke="#FF0000" strokeWidth="2" fill="none" />
-        
-                    {/* Initial soil moisture line */}
-                    <path d="M 600,200 L 950,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-        
-                    {/* Final soil moisture line */}
-                    <path d="M 1200,240 L 950,100" stroke="#1E90FF" strokeWidth="2" fill="none" />
-                  </svg>
-        
-                  {/* Webhook to Submit Check line */}
-                  <svg className="absolute top-40 left-36 w-full h-full" style={{zIndex: 1}}>
-                    <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-                  </svg>
-        
-                  {/* Submit Check to triggers lines */}
-                  <svg className="absolute top-80 left-36 w-full h-full" style={{zIndex: 1}}>
-                    <path d="M 600,200 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-                    <path d="M 600,200 L 300,280" stroke="#008000" strokeWidth="2" fill="none" />
-                    <path d="M 600,200 L 600,280" stroke="#008000" strokeWidth="2" fill="none" />
-                    <path d="M 600,200 L 900,280" stroke="#008000" strokeWidth="2" fill="none" />
-                  </svg>
-        
-                  {/* Triggers to left email line */}
-                  <svg className="absolute top-[2600px] right-32 w-full h-full" style={{zIndex: 1}}>
-                    <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-                  </svg>
-        
-                  {/* Triggers to right email line */}
-                  <svg className="absolute top-[2610px] left-[415px] w-full h-full" style={{zIndex: 1}}>
-                    <path d="M 600,60 L 600,140" stroke="#008000" strokeWidth="2" fill="none" />
-                  </svg>
-        
-                  {/* Left email to event transform line */}
-                  <svg className="absolute top-[2710px] right-[400px] w-full h-full" style={{zIndex: 1}}>
-                    <path d="M 1100,270 L 960,120" stroke="#008000" strokeWidth="2" fill="none" />
-                  </svg>
-        
-                  {/* Event transform to check submit line */}
-                  <svg className="absolute top-[2900px] left-[550px] w-full h-full" style={{zIndex: 1}}>
-                    <path d="M 10,200 L 140,100" stroke="#008000" strokeWidth="2" fill="none" />
-                  </svg>
-        
-                  {/* Check submit to http request line */}
-                  <svg className="absolute top-[3010px] right-[400px] w-full h-full" style={{zIndex: 1}}>
-                    <path d="M 1100,270 L 960,120" stroke="#008000" strokeWidth="2" fill="none" />
-                  </svg>
                 </div>
               </div>
             )}

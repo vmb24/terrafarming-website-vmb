@@ -11,7 +11,7 @@ interface Task {
   title: string;
   description: string;
   progress: number;
-  category: 'moisture' | 'temperature';
+  category: 'moisture' | 'temperature' | 'brightness' | 'air-moisture' | 'air-temperature';
   createdAt: string;
   activity: string;
   priority: 'Alto' | 'Médio' | 'Baixo' | 'Planejado';
@@ -27,57 +27,71 @@ const priorityColors = {
 const WeeklyTasksOverview: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const moistureResponse = await axios.get('https://lp8vj9qov4.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        const temperatureResponse = await axios.get('https://3qcils9mbk.execute-api.us-east-1.amazonaws.com/prod/task-plan');
-        
-        const moistureTasks = processTasks(moistureResponse.data, 'moisture');
-        const temperatureTasks = processTasks(temperatureResponse.data, 'temperature');
-        
-        const allTasks = [...moistureTasks, ...temperatureTasks];
-        const firstWeekTasks = filterFirstWeekTasks(allTasks);
+        const apiUrls = [
+          'https://2rxtztbyl5.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://n3wry4fh5h.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://vz7vgmwvne.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://jf5uy84p79.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://ab394xdjtk.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+        ];
+
+        const responses = await Promise.allSettled(apiUrls.map(url => axios.get(url)));
+
+        const allTasks: Task[] = responses.flatMap((result, index) => {
+          if (result.status === 'fulfilled') {
+            const category = ['moisture', 'temperature', 'brightness', 'air-moisture', 'air-temperature'][index];
+            return result.value.data.map((item: any) => {
+              const plan = item.plan;
+              const activity = extractFirstActivity(plan.recommendations);
+              return {
+                id: item.planId || Math.random().toString(36).substr(2, 9),
+                title: `${category.charAt(0).toUpperCase() + category.slice(1)} Task`,
+                description: `Monitorar ${category}: ${category === 'moisture' ? item.moisture : item.temperature} ${category === 'moisture' ? '%' : '°C'}`,
+                progress: Math.floor(Math.random() * 100),
+                category: category as Task['category'],
+                createdAt: item.createdAt,
+                activity: activity,
+                priority: ['Alto', 'Médio', 'Baixo', 'Planejado'][Math.floor(Math.random() * 4)] as Task['priority'],
+              };
+            });
+          } else {
+            console.error(`Erro ao buscar dados do endpoint ${apiUrls[index]}:`, result.reason);
+            return [];
+          }
+        });
+
+        const firstWeekTasks = filterFirstWeekTasks(allTasks).slice(0, 4);
         setTasks(firstWeekTasks);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Failed to load tasks. Please try again later.');
+        console.error('Erro ao processar os dados:', error);
+        setError('Falha ao carregar as tarefas. Por favor, tente novamente mais tarde.');
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [isMounted]);
 
   const extractFirstActivity = (content: string): string => {
     const match = content.match(/\n-(.*?)(?=\n-|$)/);
     return match ? match[1].trim() : '';
   };  
-
-  const processTasks = (data: any[], category: 'moisture' | 'temperature'): Task[] => {
-    return data.map((item) => {
-      const content = category === 'moisture' ? item.plan.recommendations : item.plan;
-      const activity = extractFirstActivity(content);
-      return {
-        id: item.planId || Math.random().toString(36).substr(2, 9),
-        title: `${category === 'moisture' ? 'Umidade' : 'Temperatura'} Task`,
-        description: category === 'moisture' 
-          ? `Monitorar umidade: ${item.moisture}%`
-          : `Controlar temperatura: ${item.temperature}°C`,
-        progress: Math.floor(Math.random() * 100),
-        category: category,
-        createdAt: item.createdAt,
-        activity: activity,
-        priority: ['Alto', 'Médio', 'Baixo', 'Planejado'][Math.floor(Math.random() * 4)] as Task['priority'],
-      };
-    });
-  };
 
   const filterFirstWeekTasks = (allTasks: Task[]): Task[] => {
     if (allTasks.length === 0) return [];
@@ -90,7 +104,7 @@ const WeeklyTasksOverview: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center p-4">Loading tasks...</div>;
+    return <div className="text-center p-4">Carregando tarefas...</div>;
   }
 
   return (

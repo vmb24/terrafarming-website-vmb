@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
+const SERVICE_UUID = "4fafc201-1fb5-459e-8d40-b6b0e6e9b6b2";
+const CHARACTERISTIC_UUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
 
 const IOTConfig: React.FC = () => {
   const [uuid, setUuid] = useState('');
-  const [crop, setCrop] = useState('');
-  const [wifiSSID, setWifiSSID] = useState('');
-  const [wifiPassword, setWifiPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [crops, setCrops] = useState<string[]>([]);
   const [status, setStatus] = useState('');
-  const [device, setDevice] = useState<BluetoothDevice | null>(null);
-  const [deviceName, setDeviceName] = useState<string | null>(null);
-  const [isWifiConfigured, setIsWifiConfigured] = useState(false);
-  const [isUUIDSent, setIsUUIDSent] = useState(false);
+  const [characteristic, setCharacteristic] = useState<BluetoothRemoteGATTCharacteristic | null>(null);
+  const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
     generateUUID();
+    connectWebSocket(); // Conectar ao WebSocket quando o componente for montado
   }, []);
 
   const generateUUID = () => {
@@ -27,195 +25,135 @@ const IOTConfig: React.FC = () => {
   const connectToBluetooth = async () => {
     try {
       setStatus('Procurando dispositivo Bluetooth...');
-
-      const device = await navigator.bluetooth.requestDevice({
-        filters: [{ name: 'TerraFarmingAgriculture' }],
-        optionalServices: ['12345678-1234-5678-1234-56789abcdef0']
+      const selectedDevice = await navigator.bluetooth.requestDevice({
+        filters: [{ name: 'ESP32_WiFi_Credentials' }],
+        optionalServices: [SERVICE_UUID]
       });
 
-      setDevice(device);
-      setDeviceName(device.name || 'Dispositivo desconhecido');
       setStatus('Dispositivo encontrado! Conectando...');
-
-      const server = await device.gatt?.connect();
-
+      const server = await selectedDevice.gatt?.connect();
       if (!server) {
         setStatus('Erro ao conectar ao dispositivo BLE.');
         return;
       }
 
+      const service = await server.getPrimaryService(SERVICE_UUID);
+      const char = await service.getCharacteristic(CHARACTERISTIC_UUID);
+      setCharacteristic(char);
       setStatus('Conectado ao dispositivo!');
-    } catch (error) {
-      console.error('Erro ao conectar ao Bluetooth:', error);
-      setStatus('Erro ao conectar ao Bluetooth. Verifique se o dispositivo está visível.');
-    }
-  };
-
-  const sendWifiCredentials = async () => {
-    if (!wifiSSID || !wifiPassword) {
-      setStatus('Por favor, preencha as credenciais de Wi-Fi.');
-      return;
-    }
-
-    try {
-      if (!device) {
-        setStatus('Conecte a um dispositivo Bluetooth primeiro.');
-        return;
+    } catch (error: any) {
+      if (error.name === 'NotFoundError') {
+        setStatus('Conexão Bluetooth cancelada pelo usuário. Tente novamente.');
+      } else {
+        console.error('Erro ao conectar ao Bluetooth:', error);
+        setStatus('Erro ao conectar ao Bluetooth. Verifique se o dispositivo está visível.');
       }
-
-      setStatus('Enviando credenciais de Wi-Fi via Bluetooth...');
-
-      const server = await device.gatt?.connect();
-      const service = await server?.getPrimaryService('12345678-1234-1234-1234-123456789abc');
-      const characteristic = await service?.getCharacteristic('abcd1234-5678-9876-5432-1234567890ab');
-
-      if (!characteristic) {
-        setStatus('Característica BLE não encontrada.');
-        return;
-      }
-
-      const wifiConfig = JSON.stringify({ ssid: wifiSSID, password: wifiPassword });
-      const encoder = new TextEncoder();
-      await characteristic.writeValue(encoder.encode(wifiConfig));
-
-      setStatus('Credenciais Wi-Fi enviadas! Aguardando confirmação da conexão...');
-
-      // Simulação de espera pela confirmação do Wi-Fi
-      setTimeout(() => {
-        setIsWifiConfigured(true);
-        setStatus('Wi-Fi conectado! Pronto para enviar UUID e cultura.');
-      }, 5000);
-    } catch (error) {
-      console.error('Erro ao enviar credenciais Wi-Fi via Bluetooth:', error);
-      setStatus('Erro ao enviar credenciais Wi-Fi.');
     }
   };
 
   const sendConfigData = async () => {
-    if (!isWifiConfigured || !crop) {
-      setStatus('Wi-Fi não está configurado ou cultura não definida.');
+    if (!characteristic || crops.length === 0) {
+      setStatus('Conecte a um dispositivo Bluetooth e defina as culturas.');
       return;
     }
 
     try {
-      setStatus('Enviando UUID e cultura via Bluetooth...');
-
-      const server = await device?.gatt?.connect();
-      const service = await server?.getPrimaryService('12345678-1234-1234-1234-123456789abc');
-      const characteristic = await service?.getCharacteristic('abcd1234-5678-9876-5432-1234567890ab');
-
-      const configData = JSON.stringify({ uuid, crop });
+      setStatus('Enviando UUID e culturas via Bluetooth...');
+      const configData = JSON.stringify({ uuid, crops });
       const encoder = new TextEncoder();
-      await characteristic?.writeValue(encoder.encode(configData));
-
-      setStatus('UUID e cultura enviados com sucesso! Aguardando confirmação...');
-
-      // Simulação de confirmação
-      setTimeout(() => {
-        setIsUUIDSent(true);
-        setStatus('Configuração confirmada!');
-      }, 5000);
+      await characteristic.writeValue(encoder.encode(configData));
+      setStatus('UUID e culturas enviados com sucesso!');
     } catch (error) {
-      console.error('Erro ao enviar UUID e cultura via Bluetooth:', error);
-      setStatus('Erro ao enviar configuração.');
+      console.error('Erro ao enviar UUID e culturas via Bluetooth:', error);
+      setStatus('Erro ao enviar configuração. Tente novamente.');
     }
+  };
+
+  const handleCropChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const cropArray = value.split(',').map(crop => crop.trim()).filter(crop => crop !== '');
+    setCrops(cropArray);
+  };
+
+  const connectWebSocket = () => {
+    const socket = new WebSocket('ws://192.168.1.18/logs'); // Use ws se não estiver usando SSL
+
+    socket.onopen = () => {
+      console.log('Conectado ao WebSocket');
+    };
+
+    socket.onmessage = (event) => {
+      const message = event.data;
+      setLogs((prevLogs) => [...prevLogs, message]);
+    };
+
+    socket.onclose = () => {
+      console.log('Conexão WebSocket fechada');
+      // Aqui você pode tentar reconectar se desejar
+    };
+
+    socket.onerror = (error) => {
+      console.error('Erro no WebSocket:', error);
+    };
   };
 
   return (
     <div className="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Configuração IOT</h2>
 
+      <button 
+        onClick={connectToBluetooth}
+        className="w-full mb-4 bg-blue-500 hover:bg-blue-600 text-white font-normal py-2 px-4 rounded"
+      >
+        Conectar ao Dispositivo Bluetooth
+      </button>
+      <div className="text-gray-600 dark:text-gray-300 mt-8 mb-8">
+        <p>Status: {status}</p>
+      </div>
+
       <div className="mb-8 p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
-        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Nome da Rede Wi-Fi (SSID)</h3>
+        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">UUID</h3>
+        <div className="flex items-center mb-4">
+          <input
+            type="text"
+            value={uuid}
+            readOnly
+            className="w-full p-3 dark:bg-gray-800 dark:text-white rounded"
+          />
+          <button 
+            onClick={generateUUID}
+            className="ml-2 bg-green-500 hover:bg-green-600 text-white font-normal py-2 px-4 rounded"
+          >
+            Gerar Novo UUID
+          </button>
+        </div>
+
+        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Culturas</h3>
         <input
           type="text"
-          value={wifiSSID}
-          onChange={(e) => setWifiSSID(e.target.value)}
-          placeholder="Digite o nome da rede Wi-Fi"
+          onChange={handleCropChange}
+          placeholder="Digite as culturas separadas por vírgulas"
           className="w-full p-3 mb-4 dark:bg-gray-800 dark:text-white rounded"
         />
 
-        <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Senha do Wi-Fi</h3>
-        <div className="relative mb-4">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            value={wifiPassword}
-            onChange={(e) => setWifiPassword(e.target.value)}
-            placeholder="Digite a senha do Wi-Fi"
-            className="w-full p-3 dark:bg-gray-800 dark:text-white rounded pr-10"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-3 flex items-center text-gray-600 dark:text-gray-300"
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </button>
-        </div>
-
         <button 
-          onClick={sendWifiCredentials}
-          className="w-full mb-2 bg-green-500 hover:bg-green-600 text-white font-normal py-2 px-4 rounded"
+          onClick={sendConfigData}
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-normal py-2 px-4 rounded"
         >
-          Enviar Credenciais Wi-Fi
+          Enviar UUID e Culturas
         </button>
       </div>
 
-      {isWifiConfigured && (
-        <div className="mb-8 p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
-          <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">UUID</h3>
-          <div className="flex items-center mb-4">
-            <input
-              type="text"
-              value={uuid}
-              readOnly
-              className="w-full p-3 dark:bg-gray-800 dark:text-white rounded"
-            />
-            <button 
-              onClick={generateUUID}
-              className="ml-2 bg-green-500 hover:bg-green-600 text-white font-normal py-2 px-4 rounded"
-            >
-              Gerar Novo UUID
-            </button>
-          </div>
-
-          <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Cultura</h3>
-          <input
-            type="text"
-            value={crop}
-            onChange={(e) => setCrop(e.target.value)}
-            placeholder="Digite o nome da cultura"
-            className="w-full p-3 mb-4 dark:bg-gray-800 dark:text-white rounded"
-          />
-
-          <button 
-            onClick={sendConfigData}
-            className="w-full bg-green-500 hover:bg-green-600 text-white font-normal py-2 px-4 rounded"
-          >
-            Enviar UUID e Cultura
-          </button>
+      <div className="mb-8 p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
+        <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Logs</h3>
+        <div className="h-48 overflow-y-scroll border border-gray-300 dark:border-gray-600 p-2 bg-gray-100 dark:bg-gray-800 rounded">
+          {logs.map((log, index) => (
+            <div key={index} className="text-gray-800 dark:text-white">
+              {log}
+            </div>
+          ))}
         </div>
-      )}
-
-      <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded mt-4 text-gray-800 dark:text-white">
-        <h3 className="text-lg font-semibold mb-2">Status:</h3>
-        <p>{status}</p>
       </div>
-
-      {!device && (
-        <button 
-          onClick={connectToBluetooth}
-          className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white font-normal py-2 px-4 rounded"
-        >
-          Conectar ao Bluetooth
-        </button>
-      )}
-
-      {device && (
-        <div className="mt-4 p-4 border border-gray-300 dark:border-gray-600 rounded-lg">
-          <p>Dispositivo Conectado: {deviceName}</p>
-        </div>
-      )}
     </div>
   );
 };

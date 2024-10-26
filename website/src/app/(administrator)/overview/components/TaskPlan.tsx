@@ -39,6 +39,11 @@ export default function MetricsComponent() {
         const responses = await Promise.all([
           axios.get<ApiResponse>('https://2rxtztbyl5.execute-api.us-east-1.amazonaws.com/prod/task-plan'),
           axios.get<ApiResponse>('https://n3wry4fh5h.execute-api.us-east-1.amazonaws.com/prod/task-plan'),
+
+          axios.get<ApiResponse>('https://vz7vgmwvne.execute-api.us-east-1.amazonaws.com/prod/task-plan'),
+
+          axios.get<ApiResponse>('https://jf5uy84p79.execute-api.us-east-1.amazonaws.com/prod/task-plan'),
+          axios.get<ApiResponse>('https://ab394xdjtk.execute-api.us-east-1.amazonaws.com/prod/task-plan'),
         ]);
         setPlans(responses.map((response) => response.data.plan));
       } catch (error) {

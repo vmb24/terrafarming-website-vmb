@@ -1,40 +1,110 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { SoilMoisturePlan, SoilTemperaturePlan, BrightnessPlan, AirTemperaturePlan, AirMoisturePlan } from '../types/types';
 import TaskCard from './TaskCard';
 import { useTheme } from 'next-themes';
-
-interface TaskBoardProps {
-  plans: Plan[];
-  category: 'soilMoisture' | 'soilTemperature' | 'brightness' | 'airTemperature' | 'airMoisture';
-}
+import axios from 'axios';
 
 interface Task {
-  date: string;            // Data da tarefa
-  recommendation: string;  // Recomendações associadas à tarefa
-  time: string;            // Hora em que a tarefa deve ser executada
-  task: string;            // Descrição da tarefa
+  id: string;
+  title: string;
+  description: string;
+  progress: number;
+  category: 'moisture' | 'temperature' | 'brightness' | 'air-moisture' | 'air-temperature';
+  createdAt: string;
+  activity: string;
+  priority: 'Alto' | 'Médio' | 'Baixo' | 'Planejado';
+  startTime: Date;
+  duration: number;
 }
 
-interface Plan {
-  name: string;                   // Nome do plano
-  tasks_by_week: {                // Tarefas organizadas por semanas
-    [key: string]: Task[];        // Chave é o nome da semana, valor é um array de tarefas
-  };
-}
-
-interface ExtractedTask {
-  task: string;                // Tarefa
-  value: number;               // Algum valor associado à tarefa
-  createdAt: Date;             // Data de criação da tarefa
-  startTime: Date;             // Hora de início da tarefa
-  duration: number;            // Duração da tarefa em horas
-}
-
-const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
+const TaskBoard: React.FC = () => {
   const { theme } = useTheme();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedWeek, setSelectedWeek] = useState<number>(1);
-  const [allTasks, setAllTasks] = useState<ExtractedTask[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const apiUrls = [
+          'https://2rxtztbyl5.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://n3wry4fh5h.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://vz7vgmwvne.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://jf5uy84p79.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+          'https://ab394xdjtk.execute-api.us-east-1.amazonaws.com/prod/task-plan',
+        ];
+
+        const responses = await Promise.allSettled(apiUrls.map(url => axios.get(url)));
+
+        const allTasks: Task[] = responses.flatMap((result, index) => {
+          if (result.status === 'fulfilled') {
+            const category = ['moisture', 'temperature', 'brightness', 'air-moisture', 'air-temperature'][index];
+            return result.value.data.map((item: any) => {
+              const plan = item.plan;
+              const activity = extractFirstActivity(plan.recommendations);
+              const taskDate = new Date(item.createdAt);
+              return {
+                id: item.planId || Math.random().toString(36).substr(2, 9),
+                title: `${category.charAt(0).toUpperCase() + category.slice(1)} Task`,
+                description: `Monitorar ${category}: ${category === 'moisture' ? item.moisture : item.temperature} ${category === 'moisture' ? '%' : '°C'}`,
+                progress: Math.floor(Math.random() * 100),
+                category: category as Task['category'],
+                createdAt: item.createdAt,
+                activity: activity,
+                priority: ['Alto', 'Médio', 'Baixo', 'Planejado'][Math.floor(Math.random() * 4)] as Task['priority'],
+                startTime: new Date(taskDate.setHours(8 + Math.floor(Math.random() * 8), Math.floor(Math.random() * 60))),
+                duration: 0.5 + Math.random() * 2,
+              };
+            });
+          } else {
+            console.error(`Erro ao buscar dados do endpoint ${apiUrls[index]}:`, result.reason);
+            return [];
+          }
+        });
+
+        const weekTasks = filterWeekTasks(allTasks, selectedWeek);
+        setTasks(weekTasks);
+      } catch (error) {
+        console.error('Erro ao processar os dados:', error);
+        setError('Falha ao carregar as tarefas. Por favor, tente novamente mais tarde.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [isMounted, selectedWeek]);
+
+  const extractFirstActivity = (content: string): string => {
+    const match = content.match(/\n-(.*?)(?=\n-|$)/);
+    return match ? match[1].trim() : '';
+  };
+
+  const filterWeekTasks = (allTasks: Task[], weekNumber: number): Task[] => {
+    if (allTasks.length === 0) return [];
+    
+    const sortedTasks = allTasks.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    const firstTaskDate = new Date(sortedTasks[0].createdAt);
+    const weekStart = new Date(firstTaskDate.getTime() + (weekNumber - 1) * 7 * 24 * 60 * 60 * 1000);
+    const weekEnd = new Date(weekStart.getTime() + 7 * 24 * 60 * 60 * 1000);
+    
+    return sortedTasks.filter(task => {
+      const taskDate = new Date(task.createdAt);
+      return taskDate >= weekStart && taskDate < weekEnd;
+    });
+  };
 
   const getStartOfWeek = (date: Date): Date => {
     const day = date.getDay();
@@ -57,48 +127,9 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
     return days;
   };
 
-  const extractTasksFromPlan = (plan: Plan): ExtractedTask[] => {
-    const tasks: Task[] = plan.tasks_by_week[`Semana ${selectedWeek}`] || [];
-    
-    const extractedTasks: ExtractedTask[] = tasks.map((task: Task) => {
-      const createdAtDate = new Date(); // Ajuste conforme necessário para pegar a data correta
-  
-      return {
-        task: task.task,
-        value: 0, // Defina o valor apropriado conforme sua lógica
-        createdAt: createdAtDate,
-        startTime: new Date(`${task.date} ${task.time}`), // Certifique-se que o formato da data e hora esteja correto
-        duration: 0.5 // Duração em horas (por exemplo, 30 minutos)
-      };
-    });
-  
-    return extractedTasks;
-  };  
-  
-  useEffect(() => {
-    if (plans && plans.length > 0) {
-      const tasks = plans.flatMap(extractTasksFromPlan);
-      const daysInSelectedWeek = getDaysInWeek(selectedWeek);
-      
-      const distributedTasks = tasks.map((task, index) => {
-        const dayOfWeek = index % 7;
-        const taskDate = new Date(daysInSelectedWeek[dayOfWeek]);
-        
-        return {
-          ...task,
-          startTime: new Date(taskDate.setHours(8 + Math.floor(Math.random() * 8), Math.floor(Math.random() * 60), 0, 0))
-        };
-      });
-      
-      setAllTasks(distributedTasks);
-      setSelectedDate(daysInSelectedWeek[0]);
-    } else {
-      setAllTasks([]);
-    }
-  }, [plans, selectedWeek]);
-
+  const timeSlots = Array.from({ length: 16 }, (_, i) => i + 8);
+  const weekdays = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
   const daysInWeek = getDaysInWeek(selectedWeek);
-  const timeSlots = Array.from({ length: 16 }, (_, i) => i + 8); // 8:00 to 23:00
 
   const getTaskPosition = (startTime: Date) => {
     const startHour = startTime.getHours();
@@ -114,35 +145,13 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
     return Math.min(endPosition - startPosition, 100 - startPosition);
   };
 
-  const filteredTasks = allTasks.filter(task => 
-    task.startTime.toDateString() === selectedDate.toDateString()
+  const filteredTasks = tasks.filter(task => 
+    new Date(task.createdAt).toDateString() === selectedDate.toDateString()
   );
 
-  const groupOverlappingTasks = (tasks: any[]) => {
-    const sortedTasks = [...tasks].sort((a, b) => a.startTime.getTime() - b.startTime.getTime());
-    const groups: any[][] = [];
-
-    sortedTasks.forEach(task => {
-      const overlappingGroup = groups.find(group => 
-        group.some(groupTask => 
-          (task.startTime < new Date(groupTask.startTime.getTime() + groupTask.duration * 60 * 60 * 1000)) &&
-          (new Date(task.startTime.getTime() + task.duration * 60 * 60 * 1000) > groupTask.startTime)
-        )
-      );
-
-      if (overlappingGroup) {
-        overlappingGroup.push(task);
-      } else {
-        groups.push([task]);
-      }
-    });
-
-    return groups;
-  };
-
-  const taskGroups = groupOverlappingTasks(filteredTasks);
-
-  const weekdays = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  if (isLoading) {
+    return <div className="text-center p-4">Carregando tarefas...</div>;
+  }
 
   return (
     <div className="flex flex-col h-full bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-4 rounded-md -mt-24">
@@ -153,8 +162,11 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
           </h2>
           <button className="text-green-500 dark:text-green-400">▼</button>
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">Você tem no total {filteredTasks.length} hoje</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Você tem no total {filteredTasks.length} hoje
+        </p>
       </div>
+
       <div className='flex flex-row justify-between mt-4'>
         <div className="flex space-x-2 mb-4 overflow-x-auto">
           {daysInWeek.map((day, index) => (
@@ -167,15 +179,24 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
               }`}
               onClick={() => setSelectedDate(day)}
             >
-              <div className={`text-sm ${day.toDateString() === selectedDate.toDateString() ? 'text-white' : 'text-gray-800 dark:text-gray-200'}`}>
+              <div className={`text-sm ${
+                day.toDateString() === selectedDate.toDateString() 
+                  ? 'text-white' 
+                  : 'text-gray-800 dark:text-gray-200'
+              }`}>
                 {weekdays[day.getDay()]}
               </div>
-              <div className={`font-bold ${day.toDateString() === selectedDate.toDateString() ? 'text-white' : 'text-gray-800 dark:text-gray-200'}`}>
+              <div className={`font-bold ${
+                day.toDateString() === selectedDate.toDateString() 
+                  ? 'text-white' 
+                  : 'text-gray-800 dark:text-gray-200'
+              }`}>
                 {day.getDate()}
               </div>
             </button>
           ))}
         </div>
+
         <div className="flex space-x-2 h-12 mt-4">
           {[1, 2, 3, 4].map((week) => (
             <button
@@ -192,6 +213,7 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
           ))}
         </div>
       </div>
+
       <h3 className="text-lg font-bold mb-2 mt-6">Timeline</h3>
       <div className="flex-grow overflow-y-auto">
         <div className="relative" style={{ height: '600px' }}>
@@ -202,21 +224,22 @@ const TaskBoard: React.FC<TaskBoardProps> = ({ plans = [], category }) => {
               </div>
             ))}
           </div>
-          {taskGroups.map((group, groupIndex) => (
-            <div key={groupIndex} className="absolute inset-0 flex">
-              {group.map((task, taskIndex) => (
-                <div
-                  key={taskIndex}
-                  className={`absolute rounded-lg border border-gray-400 dark:border-gray-500 bg-opacity-50 ${theme === 'dark' ? 'bg-green-400' : 'bg-green-500'}`}
-                  style={{
-                    left: `${getTaskPosition(task.startTime)}%`,
-                    width: `${getTaskWidth(task.duration, task.startTime)}%`,
-                    top: `${(groupIndex + 1) * 50}px`, // Ajuste a posição vertical
-                  }}
-                >
-                  <TaskCard task={task.task} createdAt={task.createdAt} value={0} category={'soilMoisture'} week={2} taskImagePath={''} plantingImagePath={''} duration={0} />
-                </div>
-              ))}
+          {filteredTasks.map((task, index) => (
+            <div
+              key={task.id}
+              className={`absolute rounded-lg border border-gray-400 dark:border-gray-500 bg-opacity-50 ${
+                theme === 'dark' ? 'bg-green-400' : 'bg-green-500'
+              }`}
+              style={{
+                left: `${getTaskPosition(task.startTime)}%`,
+                width: `${getTaskWidth(task.duration, task.startTime)}%`,
+                top: `${(index + 1) * 50}px`,
+              }}
+            >
+              <div className="p-2 text-sm text-white">
+                <h4 className="font-semibold">{task.title}</h4>
+                <p className="text-xs">{task.activity}</p>
+              </div>
             </div>
           ))}
         </div>
