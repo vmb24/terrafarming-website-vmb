@@ -62,7 +62,8 @@ const TaskCard: React.FC<TaskCardProps> = ({
   const priority = getPriority(week);
   const priorityColor = getPriorityColor(week);
 
-  const formatTime = (date: Date) => {
+  const formatTime = (date?: Date) => {
+    if (!date) return "00:00";
     return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
   };
 

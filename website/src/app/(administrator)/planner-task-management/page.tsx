@@ -1,5 +1,4 @@
-// pages/PlannerTaskManagement.tsx
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from './components/SideBar';
@@ -14,6 +13,17 @@ type AllCategories = Category | RecommendationCategory;
 
 type Plan = SoilMoisturePlan | SoilTemperaturePlan | BrightnessPlan | AirTemperaturePlan | AirMoisturePlan;
 
+interface WeeklyTask {
+  date: string;
+  recommendation?: string;
+  time: string;
+  task: string;
+}
+
+interface TasksByWeek {
+  [key: string]: WeeklyTask[];
+}
+
 interface Task {
   id: string;
   title: string;
@@ -23,26 +33,26 @@ interface Task {
   createdAt: string;
   activity: string;
   priority: 'Alto' | 'Médio' | 'Baixo' | 'Planejado';
-}
-
-interface Recommendations {
-  [key: string]: string;
+  week: string;
+  date: string;
+  time: string;
 }
 
 const PlannerTaskManagement: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [recommendations, setRecommendations] = useState<Record<Category, Recommendations | null>>({
-    soilMoisture: null,
-    soilTemperature: null,
-    brightness: null,
-    airTemperature: null,
-    airMoisture: null
-  });
+  const [recommendations, setRecommendations] = useState<Record<string, Record<string, string>>>({});
   const [activeCategory, setActiveCategory] = useState<AllCategories>('soilMoisture');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     const fetchData = async () => {
       setIsLoading(true);
       setError(null);
@@ -55,72 +65,92 @@ const PlannerTaskManagement: React.FC = () => {
           airMoisture: 'https://ab394xdjtk.execute-api.us-east-1.amazonaws.com/prod/task-plan'
         };
 
-        const responses = await Promise.allSettled(
+        const recommendationUrls = {
+          soilMoisture: 'https://i5rquoloa9.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          soilTemperature: 'https://7yz5zq6a2b.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          brightness: 'https://97j8ed04m3.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          airTemperature: 'https://kpb4zkkjhf.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+          airMoisture: 'https://pbdjc21gnc.execute-api.us-east-1.amazonaws.com/prod/recommendations',
+        };
+
+        const taskResponses = await Promise.allSettled(
           Object.entries(apiUrls).map(([category, url]) => 
             axios.get(url).then(response => ({ category, data: response.data }))
           )
         );
 
-        const allTasks: Task[] = responses.flatMap((result) => {
-          if (result.status === 'fulfilled') {
-            const { category, data } = result.value;
-            return data.map((item: any) => {
-              const activity = extractFirstActivity(item.plan.recommendations);
-              return {
-                id: item.planId || Math.random().toString(36).substr(2, 9),
-                title: `${formatCategoryName(category)} Task`,
-                description: `Monitorar ${formatCategoryName(category)}: ${
-                  category.includes('Moisture') ? item.moisture : item.temperature
-                } ${category.includes('Moisture') ? '%' : '°C'}`,
-                progress: Math.floor(Math.random() * 100),
-                category: category as Category,
-                createdAt: item.createdAt,
-                activity: activity,
-                priority: ['Alto', 'Médio', 'Baixo', 'Planejado'][Math.floor(Math.random() * 4)] as Task['priority'],
-              };
-            });
-          }
-          return [];
-        });
-
-        setTasks(allTasks);
-
-        // Fetch recommendations
-        const recommendationUrls = {
-          soilMoisture: 'https://i5rquoloa9.execute-api.us-east-1.amazonaws.com/prod/recommendations',
-          soilTemperature: 'https://7yz5zq6a2b.execute-api.us-east-1.amazonaws.com/prod/recommendations',
-          brightness: 'https://i5rquoloa9.execute-api.us-east-1.amazonaws.com/prod/recommendations',
-          airMoisture: 'https://i5rquoloa9.execute-api.us-east-1.amazonaws.com/prod/recommendations',
-          airTemperature: 'https://7yz5zq6a2b.execute-api.us-east-1.amazonaws.com/prod/recommendations',
-        };
-
         const recommendationResponses = await Promise.allSettled(
-          Object.entries(recommendationUrls).map(([category, url]) =>
+          Object.entries(recommendationUrls).map(([category, url]) => 
             axios.get(url).then(response => ({ category, data: response.data }))
           )
         );
 
-        const newRecommendations: Record<Category, Recommendations | null> = { ...recommendations };
+        const allTasks: Task[] = [];
+        const newRecommendations: Record<string, Record<string, string>> = {};
+
+        taskResponses.forEach((result) => {
+          if (result.status === 'fulfilled') {
+            const { category, data } = result.value;
+            console.log(`Tasks for ${category}:`, data);
+            data.forEach((item: any) => {
+              const tasksByWeek: TasksByWeek = item.plan.tasks_by_week;
+              Object.entries(tasksByWeek).forEach(([week, weekTasks]) => {
+                weekTasks.forEach((weekTask: WeeklyTask) => {
+                  allTasks.push({
+                    id: `${item.planId}-${weekTask.date}-${weekTask.time}`,
+                    title: `${formatCategoryName(category)} Task`,
+                    description: weekTask.task,
+                    progress: Math.floor(Math.random() * 100),
+                    category: category as Category,
+                    createdAt: item.createdAt,
+                    activity: weekTask.recommendation || weekTask.task,
+                    priority: ['Alto', 'Médio', 'Baixo', 'Planejado'][Math.floor(Math.random() * 4)] as Task['priority'],
+                    week,
+                    date: weekTask.date,
+                    time: weekTask.time
+                  });
+                });
+              });
+            });
+          } else {
+            console.error(`Failed to fetch tasks for ${result.reason}`);
+          }
+        });
+
         recommendationResponses.forEach((result) => {
           if (result.status === 'fulfilled') {
             const { category, data } = result.value;
             try {
-              let parsedData: Recommendations;
-              if (category === 'soilMoisture' && data['agriculture/soil/moisture']) {
-                parsedData = JSON.parse(data['agriculture/soil/moisture']);
-              } else if (category === 'soilTemperature' && data.completion) {
-                parsedData = JSON.parse(data.completion);
-              } else {
-                parsedData = data;
-              }
-              newRecommendations[category as Category] = parsedData;
+              const mapping: Record<Category, string> = {
+                soilMoisture: 'agriculture/soil/moisture',
+                soilTemperature: 'agriculture/soil/temperature',
+                brightness: 'agriculture/brightness',
+                airMoisture: 'agriculture/air/moisture',
+                airTemperature: 'agriculture/air/temperature',
+              };
+
+              const key = mapping[category as Category];
+              const parsedData = JSON.parse(data[key]);
+
+              console.log(`Recommendations for ${category}:`, parsedData);
+
+              newRecommendations[category] = Object.entries(parsedData).reduce((acc, [week, details]) => {
+                if (typeof details === 'object' && details !== null && 'recomendações' in details) {
+                  acc[week as string] = (details as { recomendações: string }).recomendações;
+                }
+                return acc;
+              }, {} as Record<string, string>);
             } catch (error) {
-              console.error(`Error parsing ${category} recommendations:`, error);
-              newRecommendations[category as Category] = null;
+              console.error('Error processing recommendations:', error);
             }
+          } else {
+            console.error(`Failed to fetch recommendations for ${result.reason}`);
           }
         });
 
+        setTasks(allTasks.sort((a, b) => 
+          new Date(a.date).getTime() - new Date(b.date).getTime()
+        ));
         setRecommendations(newRecommendations);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -131,12 +161,7 @@ const PlannerTaskManagement: React.FC = () => {
     };
 
     fetchData();
-  }, []);
-
-  const extractFirstActivity = (content: string): string => {
-    const match = content.match(/\n-(.*?)(?=\n-|$)/);
-    return match ? match[1].trim() : '';
-  };
+  }, [isMounted]);
 
   const formatCategoryName = (category: string): string => {
     return category
@@ -162,8 +187,14 @@ const PlannerTaskManagement: React.FC = () => {
   };
 
   const getFilteredTasks = () => {
-    return tasks.filter(task => task.category === activeCategory);
+    const baseCategory = getBaseCategory(activeCategory);
+    return tasks.filter(task => task.category === baseCategory);
   };
+
+  console.log('Active Category:', activeCategory);
+  console.log('Base Category:', getBaseCategory(activeCategory));
+  console.log('Recommendations:', recommendations);
+  console.log('Current Recommendations:', recommendations[getBaseCategory(activeCategory)]);
 
   return (
     <div className="flex-1">
@@ -176,11 +207,12 @@ const PlannerTaskManagement: React.FC = () => {
           {isRecommendationCategory(activeCategory) ? (
             <RecommendationsBoard
               category={getBaseCategory(activeCategory)}
+              recommendations={recommendations[getBaseCategory(activeCategory)]}
             />
           ) : (
             <TaskBoard
               tasks={getFilteredTasks()}
-              category={activeCategory as Category}
+              category={getBaseCategory(activeCategory)}
               isLoading={isLoading}
               error={error}
             />
