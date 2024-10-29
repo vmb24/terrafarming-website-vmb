@@ -39,13 +39,13 @@ const Overview: React.FC = () => {
         const soilMoistureResponse = await axios.get<SoilMoisture>('https://i5rquoloa9.execute-api.us-east-1.amazonaws.com/prod/moisture');
         setSoilMoisture(soilMoistureResponse.data);
 
-        // const soilTemperatureResponse = await axios.get<SoilTemperature>('https://7yz5zq6a2b.execute-api.us-east-1.amazonaws.com/prod/temperature');
-        // setSoilTemperature(soilTemperatureResponse.data);
+        const soilTemperatureResponse = await axios.get<SoilTemperature>('https://7yz5zq6a2b.execute-api.us-east-1.amazonaws.com/prod/temperature');
+        setSoilTemperature(soilTemperatureResponse.data);
 
-        // const airMoistureResponse = await axios.get<AirMoisture>('https://pbdjc21gnc.execute-api.us-east-1.amazonaws.com/prod/moisture');
-        // setAirMoisture(airMoistureResponse.data);
+        const airMoistureResponse = await axios.get<AirMoisture>('https://pbdjc21gnc.execute-api.us-east-1.amazonaws.com/prod/moisture');
+        setAirMoisture(airMoistureResponse.data);
 
-        // const airTemperatureResponse = await axios.get<AirTemperature>('https://kpb4zkkjhf.execute-api.us-east-1.amazonaws.com/prod/temperature');
+        const airTemperatureResponse = await axios.get<AirTemperature>('https://kpb4zkkjhf.execute-api.us-east-1.amazonaws.com/prod/temperature');
         // setAirTemperature(airTemperatureResponse.data);
 
         const brightnessResponse = await axios.get<Brightness>('https://97j8ed04m3.execute-api.us-east-1.amazonaws.com/prod/brightness');

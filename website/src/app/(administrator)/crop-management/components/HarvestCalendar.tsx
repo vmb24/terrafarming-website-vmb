@@ -85,6 +85,18 @@ const HarvestCalendar: React.FC = () => {
     setSelectedDay(day);
   };
 
+  const getWeekDays = (date: Date) => {
+    const startOfWeek = new Date(date);
+    startOfWeek.setDate(date.getDate() - date.getDay());
+    return Array.from({ length: 7 }).map((_, index) => {
+      const day = new Date(startOfWeek);
+      day.setDate(startOfWeek.getDate() + index);
+      return day;
+    });
+  };
+
+  const weekDaysDates = getWeekDays(selectedDate);
+
   const formatDatePtBR = (date: Date) => {
     const months = [
       'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -173,15 +185,12 @@ const HarvestCalendar: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-7 gap-1 mb-1 mt-8">
-          {weekDays.map((day, index) => {
-            const currentDay = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDay - 3 + index);
-            return (
-              <div key={day} className={`text-center p-1 rounded ${currentDay.getDate() === selectedDay ? 'bg-gray-700' : ''}`}>
-                <div className="text-xs">{day.slice(0, 3)}</div>
-                <div className="text-4xl font-bold">{currentDay.getDate()}</div>
-              </div>
-            );
-          })}
+          {weekDaysDates.map((currentDay, index) => (
+            <div key={index} className={`text-center p-1 rounded ${currentDay.getDate() === selectedDay ? 'bg-gray-700' : ''}`}>
+              <div className="text-xs">{weekDays[currentDay.getDay()].slice(0, 3)}</div>
+              <div className="text-4xl font-bold">{currentDay.getDate()}</div>
+            </div>
+          ))}
         </div>
 
         <div className="relative" style={{ height: 'calc(100% - 80px)' }}>
