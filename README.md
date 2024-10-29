@@ -4,7 +4,6 @@ Bem-vindo ao TerraFarming, a plataforma web que transforma a agricultura tradici
 
 ![TerraFarming Home](terrafarming/hero-site.png)
 
-
 ## 📚 Índice
 
 - [Visão Geral](#visão-geral)
@@ -20,7 +19,6 @@ Bem-vindo ao TerraFarming, a plataforma web que transforma a agricultura tradici
 - [Contribuição](#contribuição)
 - [Licença](#licença)
 
-
 ## 🌍 Porque o TerraFarming?
 
 Conheça as nossas soluções acessando o nosso site através do "Entenda a TerraFarming".
@@ -29,8 +27,7 @@ Conheça as nossas soluções acessando o nosso site através do "Entenda a Terr
 
 ---
 
-![TerraFarming Hero Site](terrafarming/hero-site.png)
-
+![TerraFarming Hero Site](terrafarming/hero-site.png)<br>
 
 ## 🌟 Visão Geral
 
@@ -47,8 +44,7 @@ A plataforma TerraFarming oferece uma visão completa do estado atual das suas p
 - Temperatura do Ar
 - Umidade do Ar
 
-![Dashboard Overview](terrafarming/overview-platform.png)
-
+![Dashboard Overview](terrafarming/overview-platform.png)<br>
 
 ## 🗂️ Gerenciamento de Tarefas
 
@@ -62,7 +58,6 @@ Utilize as recomendações para mais eficiência na sua agricultura.
 
 ![Recommendations Management](terrafarming/recommendations-management-platform.png)
 
-
 ## 🔍 Análise Preditiva
 
 Utilize modelos preditivos para antecipar necessidades e riscos, maximizando a produtividade e minimizando desperdícios. Nossa IA analisa dados históricos e atuais para fornecer insights valiosos.
@@ -74,7 +69,6 @@ Utilize modelos preditivos para antecipar necessidades e riscos, maximizando a p
 Obtenha relatórios avançados de análise preditiva sobre a saúde da sua agricultura.
 
 ![Predictive Analysis](terrafarming/predictive-analysis-report-platform.png)
-
 
 ## 🌾 Gestão de Culturas
 
@@ -88,13 +82,11 @@ Obtenha um relatório sobre a cultura da sua agricultura.
 
 ![Crop Management](terrafarming/crop-management-report-platform.png)
 
-
 ## 🛒 Marketplace & Recursos
 
 Acesse uma variedade de insumos, ferramentas e tecnologias agrícolas diretamente no nosso marketplace, facilitando a adoção de práticas agrícolas modernas.
 
 ![Marketplace](terrafarming/marketplace-resources-platform.png)
-
 
 ## 🚜 FarmingTec
 
@@ -113,7 +105,6 @@ Só o TerraFarming pode te oferecer um sistema de análise preditiva para irriga
 Acesse recursos educativos de acordo com as métricas da sua agricultura.
 
 ![FarmingTec](terrafarming/farmingtec-report-platform.png)
-
 
 ## ⚙️ Configurações & IoT
 
@@ -158,7 +149,6 @@ IÁgrix é o assistente de inteligência artificial do TerraFarming, projetado p
 A inteligência de IÁgrix garante que você obtenha o máximo de suas operações agrícolas, aumentando a produtividade e promovendo a sustentabilidade.
 
 ![IÁgrix](terrafarming/iagrixi-assistant-platform.png)
-
 
 ## 🛠️ Tecnologias Utilizadas
 
