@@ -189,4 +189,4 @@ Este projeto está licenciado sob a Licença MIT. Veja o arquivo `LICENSE` para 
 
 * * * * *
 
-## 🏆 Arquitetado e desenvolvido por Vinicius Prudencio - VMB - Challenge FIAP 2024
+- **🏆 Arquitetado e desenvolvido por Vinicius Prudencio - VMB - Challenge FIAP 2024**
