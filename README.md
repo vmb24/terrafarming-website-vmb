@@ -13,7 +13,7 @@ Bem-vindo ao TerraFarming, a plataforma web que transforma a agricultura tradici
 - [Marketplace & Recursos](#marketplace-recursos)
 - [FarmingTec](#farmingtec)
 - [Configurações & IoT](#configurações-iot)
-- [IÁgrix: Seu Assistente Inteligente](#iágrix-seu-assistente-inteligente)
+- [IÁgrixi: Seu Assistente Inteligente](#iágrixi-seu-assistente-inteligente)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Instalação](#instalação)
 - [Contribuição](#contribuição)
@@ -110,7 +110,7 @@ Saiba e execute suas atividades e recomendações de uma maneira muito fácil e 
 ![IoT Settings](terrafarming/alexa-integration-platform.png)
 
 Um checkout personalizado para pagamentos rápidos e efetivos.
-![IoT Settings](terrafarming/chdckout-platform.png)
+![IoT Settings](terrafarming/checkout-platform.png)
 
 ## IÁgrix: Seu Assistente Inteligente
 
@@ -123,7 +123,7 @@ IÁgrix é o assistente de inteligência artificial do TerraFarming, projetado p
 
 A inteligência de IÁgrix garante que você obtenha o máximo de suas operações agrícolas, aumentando a produtividade e promovendo a sustentabilidade.
 
-![IÁgrix](terrafarming/iagrix-platform.png)
+![IÁgrixi](terrafarming/iagrixi-assistant-platform.png)
 
 ## Tecnologias Utilizadas
 
