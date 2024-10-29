@@ -45,7 +45,6 @@ A plataforma TerraFarming oferece uma visão completa do estado atual das suas p
 - Umidade do Ar
 
 ![Dashboard Overview](terrafarming/overview-platform.png)
-<br/>
 
 ## 🗂️ Gerenciamento de Tarefas
 
