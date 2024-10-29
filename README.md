@@ -28,7 +28,7 @@ Conheça as nossas soluções acessando o nosso site através do "Entenda a Terr
 ---
 
 ![TerraFarming Hero Site](terrafarming/hero-site.png)
-<br>
+<br />
 
 ## 🌟 Visão Geral
 
@@ -46,7 +46,7 @@ A plataforma TerraFarming oferece uma visão completa do estado atual das suas p
 - Umidade do Ar
 
 ![Dashboard Overview](terrafarming/overview-platform.png)
-<br>
+<br />
 
 ## 🗂️ Gerenciamento de Tarefas
 
